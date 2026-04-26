@@ -1,37 +1,248 @@
---[[ Obfuscated Level: VM Protect | Lua Engine Ready ]]
-if debug and debug.getinfo then return end
-
-local function rEmrMEZFg(pQqlKyBsl)
-    local SJnjGAv='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'
-    pQqlKyBsl=string.gsub(pQqlKyBsl,'[^'..SJnjGAv..'=]','')
-    local GyAAlTs=''
-    for VCaupgMH in pQqlKyBsl:gmatch('.')do
-        if VCaupgMH~='='then
-            local LwXdAHSeXP=SJnjGAv:find(VCaupgMH)-1
-            for lJv_ksUh=6,1,-1 do
-                GyAAlTs=GyAAlTs..(LwXdAHSeXP%2^lJv_ksUh-LwXdAHSeXP%2^(lJv_ksUh-1)>0 and'1'or'0')
-            end
-        end
-    end
-    local DpbRUkad=''
-    for lJv_ksUh=1,#GyAAlTs,8 do
-        local LwXdAHSeXP=0
-        for VCaupgMH=1,8 do
-            LwXdAHSeXP=LwXdAHSeXP+(GyAAlTs:sub(lJv_ksUh+VCaupgMH-1,lJv_ksUh+VCaupgMH-1)=='1'and 2^(8-VCaupgMH)or 0)
-        end
-        DpbRUkad=DpbRUkad..string.char(LwXdAHSeXP)
-    end
-    return DpbRUkad
+-- [[ Obfuscated by Lua Roblox Obfuscator Pro | Level 1 ]]
+-- [[ ff89195db0c85d04887b1bf075c6df77 ]]
+do
+local _ENV=_ENV or (getfenv and getfenv(1)) or {};
+local IIIlJ={120,66,114,100,162,115,54,193,117,151,193,178,214,205,157,171};
+local lllIJ={};
+local lIK="\42\39\2\8\203\16\87\181\16\243\146\198\185\191\252\204\29";
+do local IllIJ={} for lIllJ=1,#lIK do IllIJ[lIllJ]=string.char(string.byte(lIK,lIllJ)~IIIlJ[(lIllJ-1)%#IIIlJ+1]) end lllIJ[1]=table.concat(IllIJ) end
+local IIK="\40\46\19\29\199\1\69";
+do local IllIJ={} for lIllJ=1,#IIK do IllIJ[lIllJ]=string.char(string.byte(IIK,lIllJ)~IIIlJ[(lIllJ-1)%#IIIlJ+1]) end lllIJ[2]=table.concat(IllIJ) end
+local lIlK="\46\43\0\16\215\18\90\136\27\231\180\198\155\172\243\202\31\39\0";
+do local IllIJ={} for lIllJ=1,#lIlK do IllIJ[lIllJ]=string.char(string.byte(lIlK,lIllJ)~IIIlJ[(lIllJ-1)%#IIIlJ+1]) end lllIJ[3]=table.concat(IllIJ) end
+local llIK="\44\53\23\1\204\32\83\179\3\254\162\215";
+do local IllIJ={} for lIllJ=1,#llIK do IllIJ[lIllJ]=string.char(string.byte(llIK,lIllJ)~IIIlJ[(lIllJ-1)%#IIIlJ+1]) end lllIJ[4]=table.concat(IllIJ) end
+local IIlK="\42\55\28\55\199\1\64\168\22\242";
+do local IllIJ={} for lIllJ=1,#IIlK do IllIJ[lIllJ]=string.char(string.byte(IIlK,lIllJ)~IIIlJ[(lIllJ-1)%#IIIlJ+1]) end lllIJ[5]=table.concat(IllIJ) end
+local IllK="\42\7\93\54\199\20\95\178\1\242\179\250\191\185";
+do local IllIJ={} for lIllJ=1,#IllK do IllIJ[lIllJ]=string.char(string.byte(IllK,lIllJ)~IIIlJ[(lIllJ-1)%#IIIlJ+1]) end lllIJ[6]=table.concat(IllIJ) end
+local lllK="\48\55\31\5\204\28\95\165";
+do local IllIJ={} for lIllJ=1,#lllK do IllIJ[lIllJ]=string.char(string.byte(lllK,lIllJ)~IIIlJ[(lIllJ-1)%#IIIlJ+1]) end lllIJ[7]=table.concat(IllIJ) end
+local IlIK="\48\55\31\5\204\28\95\165\39\248\174\198\134\172\239\223";
+do local IllIJ={} for lIllJ=1,#IlIK do IllIJ[lIllJ]=string.char(string.byte(IlIK,lIllJ)~IIIlJ[(lIllJ-1)%#IIIlJ+1]) end lllIJ[8]=table.concat(IllIJ) end
+local lIIK="\58\35\1\1\242\18\68\181";
+do local IllIJ={} for lIllJ=1,#lIIK do IllIJ[lIllJ]=string.char(string.byte(lIIK,lIllJ)~IIIlJ[(lIllJ-1)%#IIIlJ+1]) end lllIJ[9]=table.concat(IllIJ) end
+local llllK="\48\55\31\5\204\28\95\165";
+do local IllIJ={} for lIllJ=1,#llllK do IllIJ[lIllJ]=string.char(string.byte(llllK,lIllJ)~IIIlJ[(lIllJ-1)%#IIIlJ+1]) end lllIJ[10]=table.concat(IllIJ) end
+local IIllK="\58\35\1\1\242\18\68\181";
+do local IllIJ={} for lIllJ=1,#IIllK do IllIJ[lIllJ]=string.char(string.byte(IIllK,lIllJ)~IIIlJ[(lIllJ-1)%#IIIlJ+1]) end lllIJ[11]=table.concat(IllIJ) end
+local IlIlK="\48\55\31\5\204\28\95\165\39\248\174\198\134\172\239\223";
+do local IllIJ={} for lIllJ=1,#IlIlK do IllIJ[lIllJ]=string.char(string.byte(IlIlK,lIllJ)~IIIlJ[(lIllJ-1)%#IIIlJ+1]) end lllIJ[12]=table.concat(IllIJ) end
+local lIlIK="\48\55\31\5\204\28\95\165\39\248\174\198\134\172\239\223";
+do local IllIJ={} for lIllJ=1,#lIlIK do IllIJ[lIllJ]=string.char(string.byte(lIlIK,lIllJ)~IIIlJ[(lIllJ-1)%#IIIlJ+1]) end lllIJ[13]=table.concat(IllIJ) end
+local IIIlK="\48\55\31\5\204\28\95\165\39\248\174\198\134\172\239\223";
+do local IllIJ={} for lIllJ=1,#IIIlK do IllIJ[lIllJ]=string.char(string.byte(IIIlK,lIllJ)~IIIlJ[(lIllJ-1)%#IIIlJ+1]) end lllIJ[14]=table.concat(IllIJ) end
+local lllIK="\48\55\31\5\204\28\95\165\39\248\174\198\134\172\239\223";
+do local IllIJ={} for lIllJ=1,#lllIK do IllIJ[lIllJ]=string.char(string.byte(lllIK,lIllJ)~IIIlJ[(lIllJ-1)%#IIIlJ+1]) end lllIJ[15]=table.concat(IllIJ) end
+local IllIK="\48\55\31\5\204\28\95\165\39\248\174\198\134\172\239\223";
+do local IllIJ={} for lIllJ=1,#IllIK do IllIJ[lIllJ]=string.char(string.byte(IllIK,lIllJ)~IIIlJ[(lIllJ-1)%#IIIlJ+1]) end lllIJ[16]=table.concat(IllIJ) end
+local lIllK="\48\55\31\5\204\28\95\165";
+do local IllIJ={} for lIllJ=1,#lIllK do IllIJ[lIllJ]=string.char(string.byte(lIllK,lIllJ)~IIIlJ[(lIllJ-1)%#IIIlJ+1]) end lllIJ[17]=table.concat(IllIJ) end
+local IlL="\61\44\23\9\203\22\69";
+do local IllIJ={} for lIllJ=1,#IlL do IllIJ[lIllJ]=string.char(string.byte(IlL,lIllJ)~IIIlJ[(lIllJ-1)%#IIIlJ+1]) end lllIJ[18]=table.concat(IllIJ) end
+local lIL="\53\45\22\1\206";
+do local IllIJ={} for lIllJ=1,#lIL do IllIJ[lIllJ]=string.char(string.byte(lIL,lIllJ)~IIIlJ[(lIllJ-1)%#IIIlJ+1]) end lllIJ[19]=table.concat(IllIJ) end
+local IIL="\48\55\31\5\204\28\95\165";
+do local IllIJ={} for lIllJ=1,#IIL do IllIJ[lIllJ]=string.char(string.byte(IIL,lIllJ)~IIIlJ[(lIllJ-1)%#IIIlJ+1]) end lllIJ[20]=table.concat(IllIJ) end
+local lIlL="\48\55\31\5\204\28\95\165\39\248\174\198\134\172\239\223";
+do local IllIJ={} for lIllJ=1,#lIlL do IllIJ[lIllJ]=string.char(string.byte(lIlL,lIllJ)~IIIlJ[(lIllJ-1)%#IIIlJ+1]) end lllIJ[21]=table.concat(IllIJ) end
+local llIL="\48\55\31\5\204\28\95\165\39\248\174\198\134\172\239\223";
+do local IllIJ={} for lIllJ=1,#llIL do IllIJ[lIllJ]=string.char(string.byte(llIL,lIllJ)~IIIlJ[(lIllJ-1)%#IIIlJ+1]) end lllIJ[22]=table.concat(IllIJ) end
+local IIlL="\48\55\31\5\204\28\95\165";
+do local IllIJ={} for lIllJ=1,#IIlL do IllIJ[lIllJ]=string.char(string.byte(IIlL,lIllJ)~IIIlJ[(lIllJ-1)%#IIIlJ+1]) end lllIJ[23]=table.concat(IllIJ) end
+local IllL="\48\55\31\5\204\28\95\165\39\248\174\198\134\172\239\223";
+do local IllIJ={} for lIllJ=1,#IllL do IllIJ[lIllJ]=string.char(string.byte(IllL,lIllJ)~IIIlJ[(lIllJ-1)%#IIIlJ+1]) end lllIJ[24]=table.concat(IllIJ) end
+local lllL="\52\39\20\16\228\28\89\181";
+do local IllIJ={} for lIllJ=1,#lllL do IllIJ[lIllJ]=string.char(string.byte(lllL,lIllJ)~IIIlJ[(lIllJ-1)%#IIIlJ+1]) end lllIJ[25]=table.concat(IllIJ) end
+local IlIL="\42\43\21\12\214\53\89\174\1";
+do local IllIJ={} for lIllJ=1,#IlIL do IllIJ[lIllJ]=string.char(string.byte(IlIL,lIllJ)~IIIlJ[(lIllJ-1)%#IIIlJ+1]) end lllIJ[26]=table.concat(IllIJ) end
+local lIIL="\48\39\19\0";
+do local IllIJ={} for lIllJ=1,#lIIL do IllIJ[lIllJ]=string.char(string.byte(lIIL,lIllJ)~IIIlJ[(lIllJ-1)%#IIIlJ+1]) end lllIJ[27]=table.concat(IllIJ) end
+local llllL="\72\117\75\6\195\18\15\162";
+do local IllIJ={} for lIllJ=1,#llllL do IllIJ[lIllJ]=string.char(string.byte(llllL,lIllJ)~IIIlJ[(lIllJ-1)%#IIIlJ+1]) end lllIJ[28]=table.concat(IllIJ) end
+_G.FastAttackAll = true
+task.spawn(function()
+ local lIlI = game:GetService(lllIJ[1])
+ local Players = game:GetService(lllIJ[2])
+ local llII = game:GetService(lllIJ[3])
+ local IIlI = game:GetService(lllIJ[4])
+ local IllI = game:GetService(lllIJ[5])
+ local lllI = Players.lllI
+ local IlII = lIlI.Modules.Net:FindFirstChild(lllIJ[6])
+ local lIII = false
+ local llllI = nil
+ local IIllI = nil
+ local IlIlI = nil
+ local lIlII = workspace.Gravity
+ local function IlI()
+ lIII = false
+ llllI = nil
+ if IIllI then
+ IIllI:Cancel()
+ IIllI = nil
+ end
+ if IlIlI then
+ IlIlI:Disconnect()
+ IlIlI = nil
+ end
+ workspace.Gravity = lIlII
+ local IIIlI = lllI.lIlJ
+ if IIIlI then
+ local Humanoid = IIIlI:FindFirstChildOfClass(lllIJ[7])
+ if Humanoid then
+ Humanoid.WalkSpeed = (14+2)
+ Humanoid.JumpPower = (44+6)
+ Humanoid.PlatformStand = false
+ Humanoid.AutoRotate = true
+ end
+ local lllII = IIIlI:FindFirstChild(lllIJ[8])
+ if lllII then
+ lllII.Velocity = Vector3.new(0, 0, 0)
+ lllII.RotVelocity = Vector3.new(0, 0, 0)
+ end
+ for _, Part in ipairs(IIIlI:GetDescendants()) do
+ if Part:IsA(lllIJ[9]) then
+ Part.CanCollide = true
+ end
+ end
+ end
+ end
+ local function lII()
+ if IlIlI then
+ IlIlI:Disconnect()
+ end
+ workspace.Gravity = 0
+ local IIIlI = lllI.lIlJ
+ if IIIlI then
+ local Humanoid = IIIlI:FindFirstChildOfClass(lllIJ[10])
+ if Humanoid then
+ Humanoid.WalkSpeed = 0
+ Humanoid.JumpPower = 0
+ Humanoid.PlatformStand = true
+ end
+ for _, Part in ipairs(IIIlI:GetDescendants()) do
+ if Part:IsA(lllIJ[11]) and Part.Name ~= lllIJ[12] then
+ Part.CanCollide = false
+ end
+ end
+ end
+ IlIlI = IllI.Heartbeat:Connect(function()
+ local IIIlI = lllI.lIlJ
+ if IIIlI then
+ local lllII = IIIlI:FindFirstChild(lllIJ[13])
+ if lllII then
+ lllII.Velocity = Vector3.new(0, 0, 0)
+ lllII.RotVelocity = Vector3.new(0, 0, 0)
+ end
+ end
+ end)
+ end
+ local function III(lIlIJ)
+ if IIllI then
+ IIllI:Cancel()
+ end
+ local IIIlI = lllI.lIlJ
+ if not IIIlI then return end
+ local lllII = IIIlI:FindFirstChild(lllIJ[14])
+ if not lllII then return end
+ local IllII = lIlIJ:FindFirstChild(lllIJ[15])
+ if not IllII then return end
+ lII()
+ local lIllI = IllII.Position + Vector3.new(0, (36-21), 0) 
+ local IlJ = (lllII.Position - lIllI).Magnitude
+ local lIJ = math.clamp(IlJ / (41+159), 0.02, 0.1) 
+ local IIJ = IIlI:Create(lllII, TweenInfo.new(lIJ, Enum.EasingStyle.Linear), {CFrame = CFrame.new(lIllI)})
+ IIJ:Play()
+ IIllI = IIJ
+ end
+ task.spawn(function()
+ while _G.FastAttackAll do
+ if lIII then
+ llII:SendMouseButtonEvent(0, 0, 0, true, game, 1)
+ llII:SendMouseButtonEvent(0, 0, 0, false, game, 1)
+ task.wait(0.002) 
+ else
+ task.wait(0.05)
+ end
+ end
+ end)
+ while _G.FastAttackAll do
+ local lIlJ = lllI.lIlJ
+ if not lIlJ then
+ IlI()
+ task.wait(0.2)
+ continue
+ end
+ local lllII = lIlJ:FindFirstChild(lllIJ[16])
+ if not lllII then
+ IlI()
+ task.wait(0.2)
+ continue
+ end
+ local Humanoid = lIlJ:FindFirstChildOfClass(lllIJ[17])
+ if not Humanoid or Humanoid.Health <= 0 then
+ IlI()
+ task.wait(0.2)
+ continue
+ end
+ local llIJ = workspace:FindFirstChild(lllIJ[18])
+ if not llIJ then
+ IlI()
+ task.wait(0.2)
+ continue
+ end
+ local IIlJ = false
+ local IllJ = nil
+ local lllJ = math.huge
+ local IlIJ = {}
+ for _, lIlIJ in ipairs(llIJ:GetChildren()) do
+ if not _G.FastAttackAll then break end
+ if not lIlIJ:IsA(lllIJ[19]) then continue end
+ local lIIJ = lIlIJ:FindFirstChildOfClass(lllIJ[20])
+ local IllII = lIlIJ:FindFirstChild(lllIJ[21])
+ if not lIIJ or lIIJ.Health <= 0 or not IllII then continue end
+ local IlJ = (lllII.Position - IllII.Position).Magnitude
+ if IlJ <= (9+141) then
+ IIlJ = true
+ table.insert(IlIJ, lIlIJ)
+ if IlJ < lllJ then
+ lllJ = IlJ
+ IllJ = lIlIJ
+ end
+ end
+ end
+ if IIlJ and IllJ then
+ lIII = true
+ if llllI ~= IllJ then
+ llllI = IllJ
+ III(IllJ)
+ end
+ local IllII = IllJ:FindFirstChild(lllIJ[22])
+ if IllII then
+ lllII.CFrame = IllII.CFrame * CFrame.new(0, (35-20), 0) 
+ lllII.Velocity = Vector3.new(0, 0, 0)
+ end
+ for _, lIlIJ in ipairs(IlIJ) do
+ if not _G.FastAttackAll then break end
+ local lIIJ = lIlIJ:FindFirstChildOfClass(lllIJ[23])
+ local llllJ = lIlIJ:FindFirstChild(lllIJ[24])
+ if not lIIJ or lIIJ.Health <= 0 or not llllJ then continue end
+ local IlJ = (lllII.Position - llllJ.Position).Magnitude
+ if IlJ > (35+0) then continue end 
+ local IIllJ = lIlIJ:FindFirstChild(lllIJ[25]) or lIlIJ:FindFirstChild(lllIJ[26]) or lIlIJ:FindFirstChild(lllIJ[27]) or llllJ
+ local IlIlJ = {
+ [1] = IIllJ,
+ [2] = {},
+ [4] = lllIJ[28]
+ }
+ pcall(function()
+ IlII:FireServer(unpack(IlIlJ))
+ end)
+ end
+ else
+ IlI()
+ end
+ task.wait()
+ end
+end)
 end
-local SrinAR={
-	[1]="X0cuRmFzdEF0dGFja0FsbCA9IHRydWUKCnRhc2suc3Bhd24oZnVuY3Rpb24oKQogICAgbG9jYWwgUmVwbGljYXRlZFN0b3JhZ2UgPSBnYW1lOkdldFNlcnZpY2UoIlJlcGxpY2F0ZWRTdG9yYWdlIikKICAgIGxvY2FsIFBsYXllcnMgPSBnYW1lOkdldFNlcnZpY2UoIlBsYXllcnMiKQogICAgbG9jYWwgVmlydHVhbElucHV0TWFuYWdlciA9IGdhbWU6R2V0U2VydmljZSgiVmlydHVhbElucHV0TWFuYWdlciIpCiAgICBsb2NhbCBUd2VlblNlcnZpY2UgPSBnYW1lOkdldFNlcnZpY2UoIlR3ZWVuU2VydmljZSIpCiAgICBsb2NhbCBSdW5TZXJ2aWNlID0gZ2FtZTpHZXRTZXJ2aWNlKCJSdW5TZXJ2aWNlIikKICAgIGxvY2FsIExvY2FsUGxheWVyID0gUGxheWVycy5Mb2NhbFBsYXllcgogICAgbG9jYWwgQXR0YWNrUmVtb3RlID0gUmVwbGljYXRlZFN0b3JhZ2UuTW9kdWxlcy5OZXQ6RmluZEZpcnN0Q2hpbGQoIlJFL1JlZ2lzdGVySGl0IikKICAgIAogICAgbG9jYWwgSXNDbGlja2luZyA9IGZhbHNlCiAgICBsb2NhbCBDdXJyZW50VGFyZ2V0ID0gbmlsCiAgICBsb2NhbCBUd2VlbkNvbm5lY3Rpb24gPSBuaWwKICAgIGxvY2FsIE5vRmFsbENvbm5lY3Rpb24gPSBuaWwKICAgIGxvY2FsIE9yaWdpbmFsR3Jhdml0eSA9IHdvcmtzcGFjZS5HcmF2aXR5CiAgICAKICAgIGxvY2FsIGZ1bmN0aW9uIEZvcmNlUmVzZXQoKQogICAgICAgIElzQ2xpY2tpbmcgPSBmYWxzZQogICAgICAgIEN1cnJlbnRUYXJnZXQgPSBuaWwKICAgICAgICAKICAgICAgICBpZiBUd2VlbkNvbm5lY3Rpb24gdGhlbgogICAgICAgICAgICBUd2VlbkNvbm5lY3Rpb246Q2FuY2VsKCkKICAgICAgICAgICAgVHdlZW5Db25uZWN0aW9uID0gbmlsCiAgICAgICAgZW5kCiAgICAgICAgCiAgICAgICAgaWYgTm9GYWxsQ29ubmVjdGlvbiB0aGVuCiAgICAgICAgICAgIE5vRmFsbENvbm5lY3Rpb246RGlzY29ubmVjdCgpCiAgICAgICAgICAgIE5vRmFsbENvbm5lY3Rpb24gPSBuaWwKICAgICAgICBlbmQKICAgICAgICAKICAgICAgICB3b3Jrc3BhY2UuR3Jhdml0eSA9IE9yaWdpbmFsR3Jhdml0eQogICAgICAgIAogICAgICAgIGxvY2FsIENoYXIgPSBMb2NhbFBsYXllci5DaGFyYWN0ZXIKICAgICAgICBpZiBDaGFyIHRoZW4KICAgICAgICAgICAgbG9jYWwgSHVtYW5vaWQgPSBDaGFyOkZpbmRGaXJzdENoaWxkT2ZDbGFzcygiSHVtYW5vaWQiKQogICAgICAgICAgICBpZiBIdW1hbm9pZCB0aGVuCiAgICAgICAgICAgICAgICBIdW1hbm9pZC5XYWxrU3BlZWQgPSAxNgogICAgICAgICAgICAgICAgSHVtYW5vaWQuSnVtcFBvd2VyID0gNTAKICAgICAgICAgICAgICAgIEh1bWFub2lkLlBsYXRmb3JtU3RhbmQgPSBmYWxzZQogICAgICAgICAgICAgICAgSHVtYW5vaWQuQXV0b1JvdGF0ZSA9IHRydWUKICAgICAgICAgICAgZW5kCiAgICAgICAgICAgIGxvY2FsIFJvb3QgPSBDaGFyOkZpbmRGaXJzdENoaWxkKCJIdW1hbm9pZFJvb3RQYXJ0IikKICAgICAgICAgICAgaWYgUm9vdCB0aGVuCiAgICAgICAgICAgICAgICBSb290LlZlbG9jaXR5ID0gVmVjdG9yMy5uZXcoMCwgMCwgMCkKICAgICAgICAgICAgICAgIFJvb3QuUm90VmVsb2NpdHkgPSBWZWN0b3IzLm5ldygwLCAwLCAwKQogICAgICAgICAgICBlbmQKICAgICAgICAgICAgZm9yIF8sIFBhcnQgaW4gaXBhaXJzKENoYXI6R2V0RGVzY2VuZGFudHMoKSkgZG8KICAgICAgICAgICAgICAgIGlmIFBhcnQ6SXNBKCJCYXNlUGFydCIpIHRoZW4KICAgICAgICAgICAgICAgICAgICBQYXJ0LkNhbkNvbGxpZGUgPSB0cnVlCiAgICAgICAgICAgICAgICBlbmQKICAgICAgICAgICAgZW5kCiAgICAgICAgZW5kCiAgICBlbmQKICAgIAogICAgbG9jYWwgZnVuY3Rpb24gU3RhcnROb0ZhbGwoKQogICAgICAgIGlmIE5vRmFsbENvbm5lY3Rpb24gdGhlbgogICAgICAgICAgICBOb0ZhbGxDb25uZWN0aW9uOkRpc2Nvbm5lY3QoKQogICAgICAgIGVuZAogICAgICAgIAogICAgICAgIHdvcmtzcGFjZS5HcmF2aXR5ID0gMAogICAgICAgIAogICAgICAgIGxvY2FsIENoYXIgPSBMb2NhbFBsYXllci5DaGFyYWN0ZXIKICAgICAgICBpZiBDaGFyIHRoZW4KICAgICAgICAgICAgbG9jYWwgSHVtYW5vaWQgPSBDaGFyOkZpbmRGaXJzdENoaWxkT2ZDbGFzcygiSHVtYW5vaWQiKQogICAgICAgICAgICBpZiBIdW1hbm9pZCB0aGVuCiAgICAgICAgICAgICAgICBIdW1hbm9pZC5XYWxrU3BlZWQgPSAwCiAgICAgICAgICAgICAgICBIdW1hbm9pZC5KdW1wUG93ZXIgPSAwCiAgICAgICAgICAgICAgICBIdW1hbm9pZC5QbGF0Zm9ybVN0YW5kID0gdHJ1ZQogICAgICAgICAgICBlbmQKICAgICAgICAgICAgZm9yIF8sIFBhcnQgaW4gaXBhaXJzKENoYXI6R2V0RGVzY2VuZGFudHMoKSkgZG8KICAgICAgICAgICAgICAgIGlmIFBhcnQ6SXNBKCJCYXNlUGFydCIpIGFuZCBQYXJ0Lk5hbWUgfj0gIkh1bWFub2lkUm9vdFBhcnQiIHRoZW4KICAgICAgICAgICAgICAgICAgICBQYXJ0LkNhbkNvbGxpZGUgPSBmYWxzZQogICAgICAgICAgICAgICAgZW5kCiAgICAgICAgICAgIGVuZAogICAgICAgIGVuZAogICAgICAgIAogICAgICAgIE5vRmFsbENvbm5lY3Rpb24gPSBSdW5TZXJ2aWNlLkhlYXJ0YmVhdDpDb25uZWN0KGZ1bmN0aW9uKCkKICA=",
-	[2]="ICAgICAgICAgIGxvY2FsIENoYXIgPSBMb2NhbFBsYXllci5DaGFyYWN0ZXIKICAgICAgICAgICAgaWYgQ2hhciB0aGVuCiAgICAgICAgICAgICAgICBsb2NhbCBSb290ID0gQ2hhcjpGaW5kRmlyc3RDaGlsZCgiSHVtYW5vaWRSb290UGFydCIpCiAgICAgICAgICAgICAgICBpZiBSb290IHRoZW4KICAgICAgICAgICAgICAgICAgICBSb290LlZlbG9jaXR5ID0gVmVjdG9yMy5uZXcoMCwgMCwgMCkKICAgICAgICAgICAgICAgICAgICBSb290LlJvdFZlbG9jaXR5ID0gVmVjdG9yMy5uZXcoMCwgMCwgMCkKICAgICAgICAgICAgICAgIGVuZAogICAgICAgICAgICBlbmQKICAgICAgICBlbmQpCiAgICBlbmQKICAgIAogICAgbG9jYWwgZnVuY3Rpb24gVHdlZW5Ub0VuZW15KEVuZW15KQogICAgICAgIGlmIFR3ZWVuQ29ubmVjdGlvbiB0aGVuCiAgICAgICAgICAgIFR3ZWVuQ29ubmVjdGlvbjpDYW5jZWwoKQogICAgICAgIGVuZAogICAgICAgIAogICAgICAgIGxvY2FsIENoYXIgPSBMb2NhbFBsYXllci5DaGFyYWN0ZXIKICAgICAgICBpZiBub3QgQ2hhciB0aGVuIHJldHVybiBlbmQKICAgICAgICAKICAgICAgICBsb2NhbCBSb290ID0gQ2hhcjpGaW5kRmlyc3RDaGlsZCgiSHVtYW5vaWRSb290UGFydCIpCiAgICAgICAgaWYgbm90IFJvb3QgdGhlbiByZXR1cm4gZW5kCiAgICAgICAgCiAgICAgICAgbG9jYWwgRW5lbXlSb290ID0gRW5lbXk6RmluZEZpcnN0Q2hpbGQoIkh1bWFub2lkUm9vdFBhcnQiKQogICAgICAgIGlmIG5vdCBFbmVteVJvb3QgdGhlbiByZXR1cm4gZW5kCiAgICAgICAgCiAgICAgICAgU3RhcnROb0ZhbGwoKQogICAgICAgIAogICAgICAgIGxvY2FsIFRhcmdldFBvcyA9IEVuZW15Um9vdC5Qb3NpdGlvbiArIFZlY3RvcjMubmV3KDAsIDE1LCAwKSAtLSBCYXkgY2FvIGjGoW46IDE1IHN0dWRzCiAgICAgICAgbG9jYWwgRGlzdGFuY2UgPSAoUm9vdC5Qb3NpdGlvbiAtIFRhcmdldFBvcykuTWFnbml0dWRlCiAgICAgICAgbG9jYWwgU3BlZWQgPSBtYXRoLmNsYW1wKERpc3RhbmNlIC8gMjAwLCAwLjAyLCAwLjEpIC0tIFR3ZWVuIG5oYW5oIGjGoW46IDAuMDItMC4xcwogICAgICAgIAogICAgICAgIGxvY2FsIFR3ZWVuID0gVHdlZW5TZXJ2aWNlOkNyZWF0ZShSb290LCBUd2VlbkluZm8ubmV3KFNwZWVkLCBFbnVtLkVhc2luZ1N0eWxlLkxpbmVhciksIHtDRnJhbWUgPSBDRnJhbWUubmV3KFRhcmdldFBvcyl9KQogICAgICAgIFR3ZWVuOlBsYXkoKQogICAgICAgIFR3ZWVuQ29ubmVjdGlvbiA9IFR3ZWVuCiAgICBlbmQKICAgIAogICAgLS0gTG9vcCBjbGljayBzacOqdSBuaGFuaCAoNTAwIGNsaWNrcy9nacOieSkKICAgIHRhc2suc3Bhd24oZnVuY3Rpb24oKQogICAgICAgIHdoaWxlIF9HLkZhc3RBdHRhY2tBbGwgZG8KICAgICAgICAgICAgaWYgSXNDbGlja2luZyB0aGVuCiAgICAgICAgICAgICAgICBWaXJ0dWFsSW5wdXRNYW5hZ2VyOlNlbmRNb3VzZUJ1dHRvbkV2ZW50KDAsIDAsIDAsIHRydWUsIGdhbWUsIDEpCiAgICAgICAgICAgICAgICBWaXJ0dWFsSW5wdXRNYW5hZ2VyOlNlbmRNb3VzZUJ1dHRvbkV2ZW50KDAsIDAsIDAsIGZhbHNlLCBnYW1lLCAxKQogICAgICAgICAgICAgICAgdGFzay53YWl0KDAuMDAyKSAtLSA1MDAgY2xpY2tzL2dpw6J5CiAgICAgICAgICAgIGVsc2UKICAgICAgICAgICAgICAgIHRhc2sud2FpdCgwLjA1KQogICAgICAgICAgICBlbmQKICAgICAgICBlbmQKICAgIGVuZCkKICAgIAogICAgd2hpbGUgX0cuRmFzdEF0dGFja0FsbCBkbwogICAgICAgIGxvY2FsIENoYXJhY3RlciA9IExvY2FsUGxheWVyLkNoYXJhY3RlcgogICAgICAgIGlmIG5vdCBDaGFyYWN0ZXIgdGhlbgogICAgICAgICAgICBGb3JjZVJlc2V0KCkKICAgICAgICAgICAgdGFzay53YWl0KDAuMikKICAgICAgICAgICAgY29udGludWUKICAgICAgICBlbmQKICAgICAgICAKICAgICAgICBsb2NhbCBSb290ID0gQ2hhcmFjdGVyOkZpbmRGaXJzdENoaWxkKCJIdW1hbm9pZFJvb3RQYXJ0IikKICAgICAgICBpZiBub3QgUm9vdCB0aGVuCiAgICAgICAgICAgIEZvcmNlUmVzZXQoKQogICAgICAgICAgICB0YXNrLndhaXQoMC4yKQogICAgICAgICAgICBjb250aW51ZQogICAgICAgIGVuZAogICAgICAgIAogICAgICAgIGxvY2FsIEh1bWFub2lkID0gQ2hhcmFjdGVyOkZpbmRGaXJzdENoaWxkT2ZDbGFzcygiSHVtYW5vaWQiKQogICAgICAgIGlmIG5vdCBIdW1hbm9pZCBvciBIdW1hbm9pZC5IZWFsdGggPD0gMCB0aGVuCiAgICAgICAgICAgIEZvcmNlUmVzZXQoKQogICAgICAgICAgICB0YXNrLndhaXQoMC4yKQogICAgICAgICAgICBjb250aW51ZQogICAgICAgIGVuZAogICAgICAgIAogICAgICAgIGxvY2FsIEVuZW1pZXMgPSB3b3Jrc3BhY2U6RmluZEZpcnN0Q2hpbGQoIkVuZW1pZXMiKQogICAgICAgIGlmIG5vdCBFbmVtaWVzIHRoZW4KICAgICAgICAgICAgRm9yY2VSZXNldCgpCiAgICAgICAgICAgIHRhc2sud2FpdCgwLjIpCiAgICAgICAgICAgIGNvbnRpbnVlCiAgICAgICAgZW5kCiAgICAgICAgCiAgICAgICAgbG9jYWwgSGFzRW5lbXlOZWFyYnkgPSBmYWxzZQogICAgICAgIGxvY2FsIENsb3Nlc3RFbmVteSA9IG5pbAogICAgICAgIGxvY2FsIENsb3Nlc3REaXN0YW5jZSA9IG1hdGguaHVnZQ==",
-	[3]="CiAgICAgICAgbG9jYWwgQWxsTmVhcmJ5RW5lbWllcyA9IHt9CiAgICAgICAgCiAgICAgICAgZm9yIF8sIEVuZW15IGluIGlwYWlycyhFbmVtaWVzOkdldENoaWxkcmVuKCkpIGRvCiAgICAgICAgICAgIGlmIG5vdCBfRy5GYXN0QXR0YWNrQWxsIHRoZW4gYnJlYWsgZW5kCiAgICAgICAgICAgIGlmIG5vdCBFbmVteTpJc0EoIk1vZGVsIikgdGhlbiBjb250aW51ZSBlbmQKICAgICAgICAgICAgCiAgICAgICAgICAgIGxvY2FsIEVuZW15SHVtYW5vaWQgPSBFbmVteTpGaW5kRmlyc3RDaGlsZE9mQ2xhc3MoIkh1bWFub2lkIikKICAgICAgICAgICAgbG9jYWwgRW5lbXlSb290ID0gRW5lbXk6RmluZEZpcnN0Q2hpbGQoIkh1bWFub2lkUm9vdFBhcnQiKQogICAgICAgICAgICBpZiBub3QgRW5lbXlIdW1hbm9pZCBvciBFbmVteUh1bWFub2lkLkhlYWx0aCA8PSAwIG9yIG5vdCBFbmVteVJvb3QgdGhlbiBjb250aW51ZSBlbmQKICAgICAgICAgICAgCiAgICAgICAgICAgIGxvY2FsIERpc3RhbmNlID0gKFJvb3QuUG9zaXRpb24gLSBFbmVteVJvb3QuUG9zaXRpb24pLk1hZ25pdHVkZQogICAgICAgICAgICBpZiBEaXN0YW5jZSA8PSAxNTAgdGhlbgogICAgICAgICAgICAgICAgSGFzRW5lbXlOZWFyYnkgPSB0cnVlCiAgICAgICAgICAgICAgICB0YWJsZS5pbnNlcnQoQWxsTmVhcmJ5RW5lbWllcywgRW5lbXkpCiAgICAgICAgICAgICAgICBpZiBEaXN0YW5jZSA8IENsb3Nlc3REaXN0YW5jZSB0aGVuCiAgICAgICAgICAgICAgICAgICAgQ2xvc2VzdERpc3RhbmNlID0gRGlzdGFuY2UKICAgICAgICAgICAgICAgICAgICBDbG9zZXN0RW5lbXkgPSBFbmVteQogICAgICAgICAgICAgICAgZW5kCiAgICAgICAgICAgIGVuZAogICAgICAgIGVuZAogICAgICAgIAogICAgICAgIGlmIEhhc0VuZW15TmVhcmJ5IGFuZCBDbG9zZXN0RW5lbXkgdGhlbgogICAgICAgICAgICBJc0NsaWNraW5nID0gdHJ1ZQogICAgICAgICAgICAKICAgICAgICAgICAgaWYgQ3VycmVudFRhcmdldCB+PSBDbG9zZXN0RW5lbXkgdGhlbgogICAgICAgICAgICAgICAgQ3VycmVudFRhcmdldCA9IENsb3Nlc3RFbmVteQogICAgICAgICAgICAgICAgVHdlZW5Ub0VuZW15KENsb3Nlc3RFbmVteSkKICAgICAgICAgICAgZW5kCiAgICAgICAgICAgIAogICAgICAgICAgICBsb2NhbCBFbmVteVJvb3QgPSBDbG9zZXN0RW5lbXk6RmluZEZpcnN0Q2hpbGQoIkh1bWFub2lkUm9vdFBhcnQiKQogICAgICAgICAgICBpZiBFbmVteVJvb3QgdGhlbgogICAgICAgICAgICAgICAgUm9vdC5DRnJhbWUgPSBFbmVteVJvb3QuQ0ZyYW1lICogQ0ZyYW1lLm5ldygwLCAxNSwgMCkgLS0gQmF5IGNhbyBoxqFuOiAxNSBzdHVkcwogICAgICAgICAgICAgICAgUm9vdC5WZWxvY2l0eSA9IFZlY3RvcjMubmV3KDAsIDAsIDApCiAgICAgICAgICAgIGVuZAogICAgICAgICAgICAKICAgICAgICAgICAgLS0gxJDDoW5oIHThuqV0IGPhuqMgZW5lbXkgdHJvbmcgcGjhuqFtIHZpIDM1IHN0dWRzCiAgICAgICAgICAgIGZvciBfLCBFbmVteSBpbiBpcGFpcnMoQWxsTmVhcmJ5RW5lbWllcykgZG8KICAgICAgICAgICAgICAgIGlmIG5vdCBfRy5GYXN0QXR0YWNrQWxsIHRoZW4gYnJlYWsgZW5kCiAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgIGxvY2FsIEVuZW15SHVtYW5vaWQgPSBFbmVteTpGaW5kRmlyc3RDaGlsZE9mQ2xhc3MoIkh1bWFub2lkIikKICAgICAgICAgICAgICAgIGxvY2FsIEVuZW15Um9vdDIgPSBFbmVteTpGaW5kRmlyc3RDaGlsZCgiSHVtYW5vaWRSb290UGFydCIpCiAgICAgICAgICAgICAgICBpZiBub3QgRW5lbXlIdW1hbm9pZCBvciBFbmVteUh1bWFub2lkLkhlYWx0aCA8PSAwIG9yIG5vdCBFbmVteVJvb3QyIHRoZW4gY29udGludWUgZW5kCiAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgIGxvY2FsIERpc3RhbmNlID0gKFJvb3QuUG9zaXRpb24gLSBFbmVteVJvb3QyLlBvc2l0aW9uKS5NYWduaXR1ZGUKICAgICAgICAgICAgICAgIGlmIERpc3RhbmNlID4gMzUgdGhlbiBjb250aW51ZSBlbmQgLS0gVMSDbmcgbMOqbiAzNSBzdHVkcwogICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICBsb2NhbCBUYXJnZXRQYXJ0ID0gRW5lbXk6RmluZEZpcnN0Q2hpbGQoIkxlZnRGb290Iikgb3IgRW5lbXk6RmluZEZpcnN0Q2hpbGQoIlJpZ2h0Rm9vdCIpIG9yIEVuZW15OkZpbmRGaXJzdENoaWxkKCJIZWFkIikgb3IgRW5lbXlSb290MgogICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICBsb2NhbCBhcmdzID0gewogICAgICAgICAgICAgICAgICAgIFsxXSA9IFRhcmdldFBhcnQsCiAgICAgICAgICAgICAgICAgICAgWzJdID0ge30sCiAgICAgICAgICAgICAgICAgICAgWzRdID0gIjA3OWJhYTljIgogICAgICAgICAgICAgICAgfQogICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICBwY2FsbChmdW5jdGlvbigpCiAgICAgICAgICAgICAgICAgICAgQXR0YWNrUmVtb3RlOkZpcmVTZXJ2ZXIodW5wYWNrKGFyZ3MpKQogICAgICAgICAgICAgICAgZW5kKQogICAgICAgICAgICBlbmQKICAgICAgICBlbHNlCiAgICAgICAgICAgIEZvcmNlUmVzZXQoKQogICAgICAgIGVuZAogICAgICAgIAogICAgICAgIHRhc2sud2FpdCgpCiAgICBlbmQKZW5kKSAK",
-}
-local OgciTzOa=""
-for SKTNFzgC=1,#SrinARdo
-    OgciTzOa=OgciTzOa..rEmrMEZFg(SrinAR[SKTNFzgC])
-end
-local KBFpDvy=loadstring or load
-local FCaPeWqQ=KBFpDvy(OgciTzOa)
-if FCaPeWqQthen FCaPeWqQ()end
