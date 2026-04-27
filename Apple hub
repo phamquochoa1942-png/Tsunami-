@@ -1,337 +1,1597 @@
--- [[ Obfuscated by Lua Roblox Obfuscator Pro | Level 3 ]]
--- [[ a93006466e44822e71eeb3507d667428 ]]
-do
-local _ENV=_ENV or (getfenv and getfenv(1)) or {};
-local lllIK=math.max(f425,0);
-local IllIK=tostring(lllIK);
-if false then local lIllK=lllIK*0 end
-local IlL,lIL=pcall(function() return lllIK end)
-if IlL then IIL=lIL end
-local lIII=33;
-local IIlI={121,61,204,107,175,43,185,136,134,142,139,213,52,36,213,165};
-local IllI={};
-local llllI="\76\121\221\40\231\105\249\29\4\11\249\194\124\119\213\227\61";
-do local lllI={} for IlII=1,#llllI do local _b=string.byte(llllI,IlII) _b=(_b-lIII+256)%256 _b=_b~IIlI[(IlII-1)%#IIlI+1] lllI[IlII]=string.char(_b) end IllI[1]=table.concat(lllI) end
-local IIllI="\74\114\206\51\235\122\235";
-do local lllI={} for IlII=1,#IIllI do local _b=string.byte(IIllI,IlII) _b=(_b-lIII+256)%256 _b=_b~IIlI[(IlII-1)%#IIlI+1] lllI[IlII]=string.char(_b) end IllI[2]=table.concat(lllI) end
-local IlIlI="\80\117\223\64\251\107\246\226\9\31\31\194\154\102\220\229\63\121\223";
-do local lllI={} for IlII=1,#IlIlI do local _b=string.byte(IlIlI,IlII) _b=(_b-lIII+256)%256 _b=_b~IIlI[(IlII-1)%#IIlI+1] lllI[IlII]=string.char(_b) end IllI[3]=table.concat(lllI) end
-local lIlII="\78\107\202\47\226\153\253\27\17\8\9\209";
-do local lllI={} for IlII=1,#lIlII do local _b=string.byte(lIlII,IlII) _b=(_b-lIII+256)%256 _b=_b~IIlI[(IlII-1)%#IIlI+1] lllI[IlII]=string.char(_b) end IllI[4]=table.concat(lllI) end
-local IIIlI="\76\105\195\89\235\122\240\2\6\12";
-do local lllI={} for IlII=1,#IIIlI do local _b=string.byte(IIIlI,IlII) _b=(_b-lIII+256)%256 _b=_b~IIlI[(IlII-1)%#IIlI+1] lllI[IlII]=string.char(_b) end IllI[5]=table.concat(lllI) end
-local lllII="\85\115\201\63\228\111\235";
-do local lllI={} for IlII=1,#lllII do local _b=string.byte(lllII,IlII) _b=(_b-lIII+256)%256 _b=_b~IIlI[(IlII-1)%#IIlI+1] lllI[IlII]=string.char(_b) end IllI[6]=table.concat(lllI) end
-local IllII="\88\121\217";
-do local lllI={} for IlII=1,#IllII do local _b=string.byte(IllII,IlII) _b=(_b-lIII+256)%256 _b=_b~IIlI[(IlII-1)%#IIlI+1] lllI[IlII]=string.char(_b) end IllI[7]=table.concat(lllI) end
-local lIllI="\76\153\4\90\235\109\241\28\19\12\26\190\126\113";
-do local lllI={} for IlII=1,#lIllI do local _b=string.byte(lIllI,IlII) _b=(_b-lIII+256)%256 _b=_b~IIlI[(IlII-1)%#IIlI+1] lllI[IlII]=string.char(_b) end IllI[8]=table.concat(lllI) end
-local IlJ="\76\121\194\37\252\111\29\31\4\1\32";
-do local lllI={} for IlII=1,#IlJ do local _b=string.byte(IlJ,IlII) _b=(_b-lIII+256)%256 _b=_b~IIlI[(IlII-1)%#IIlI+1] lllI[IlII]=string.char(_b) end IllI[9]=table.concat(lllI) end
-local lIJ="\50\117\217";
-do local lllI={} for IlII=1,#lIJ do local _b=string.byte(lIJ,IlII) _b=(_b-lIII+256)%256 _b=_b~IIlI[(IlII-1)%#IIlI+1] lllI[IlII]=string.char(_b) end IllI[10]=table.concat(lllI) end
-local IIJ="\67\156\206\57\252\139\238\29\8\14\1\169\53\145\90\233\122\106\197\239\247\44\12\14\12\2\32\209\47";
-do local lllI={} for IlII=1,#IIJ do local _b=string.byte(IIJ,IlII) _b=(_b-lIII+256)%256 _b=_b~IIlI[(IlII-1)%#IIlI+1] lllI[IlII]=string.char(_b) end IllI[11]=table.concat(lllI) end
-local lIlJ="\67\156\206\57\252\139\238\29\8\14\1\169\53\144\222\114\56\123\13\64\100\103\186\29\15\76\19\22\135\98\217\235\46\121\14";
-do local lllI={} for IlII=1,#lIlJ do local _b=string.byte(lIlJ,IlII) _b=(_b-lIII+256)%256 _b=_b~IIlI[(IlII-1)%#IIlI+1] lllI[IlII]=string.char(_b) end IllI[12]=table.concat(lllI) end
-local llIJ="\76\121\194\37\252\111\29\31\4\1\32";
-do local lllI={} for IlII=1,#llIJ do local _b=string.byte(llIJ,IlII) _b=(_b-lIII+256)%256 _b=_b~IIlI[(IlII-1)%#IIlI+1] lllI[IlII]=string.char(_b) end IllI[13]=table.concat(lllI) end
-local IIlJ="\67\150\164\69\5\151\186\251\228\228\229\162\146\63";
-do local lllI={} for IlII=1,#IIlJ do local _b=string.byte(IIlJ,IlII) _b=(_b-lIII+256)%256 _b=_b~IIlI[(IlII-1)%#IIlI+1] lllI[IlII]=string.char(_b) end IllI[14]=table.concat(lllI) end
-local IllJ="\38\62\174\90\9\153\164";
-do local lllI={} for IlII=1,#IllJ do local _b=string.byte(IllJ,IlII) _b=(_b-lIII+256)%256 _b=_b~IIlI[(IlII-1)%#IIlI+1] lllI[IlII]=string.char(_b) end IllI[15]=table.concat(lllI) end
-local lllJ="\82\105\194\43\226\101\241\13";
-do local lllI={} for IlII=1,#lllJ do local _b=string.byte(lllJ,IlII) _b=(_b-lIII+256)%256 _b=_b~IIlI[(IlII-1)%#IIlI+1] lllI[IlII]=string.char(_b) end IllI[16]=table.concat(lllI) end
-local IlIJ="\82\105\194\43\226\101\241\13\245\2\5\194\133\102\200\242";
-do local lllI={} for IlII=1,#IlIJ do local _b=string.byte(IlIJ,IlII) _b=(_b-lIII+256)%256 _b=_b~IIlI[(IlII-1)%#IIlI+1] lllI[IlII]=string.char(_b) end IllI[17]=table.concat(lllI) end
-local lIIJ="\92\125\224\47\32\107\236\29";
-do local lllI={} for IlII=1,#lIIJ do local _b=string.byte(lIIJ,IlII) _b=(_b-lIII+256)%256 _b=_b~IIlI[(IlII-1)%#IIlI+1] lllI[IlII]=string.char(_b) end IllI[18]=table.concat(lllI) end
-local llllJ="\82\105\194\43\226\101\241\13";
-do local lllI={} for IlII=1,#llllJ do local _b=string.byte(llllJ,IlII) _b=(_b-lIII+256)%256 _b=_b~IIlI[(IlII-1)%#IIlI+1] lllI[IlII]=string.char(_b) end IllI[19]=table.concat(lllI) end
-local IIllJ="\92\125\224\47\32\107\236\29";
-do local lllI={} for IlII=1,#IIllJ do local _b=string.byte(IIllJ,IlII) _b=(_b-lIII+256)%256 _b=_b~IIlI[(IlII-1)%#IIlI+1] lllI[IlII]=string.char(_b) end IllI[20]=table.concat(lllI) end
-local IlIlJ="\82\105\194\43\226\101\241\13\245\2\5\194\133\102\200\242";
-do local lllI={} for IlII=1,#IlIlJ do local _b=string.byte(IlIlJ,IlII) _b=(_b-lIII+256)%256 _b=_b~IIlI[(IlII-1)%#IIlI+1] lllI[IlII]=string.char(_b) end IllI[21]=table.concat(lllI) end
-local lIlIJ="\82\105\194\43\226\101\241\13\245\2\5\194\133\102\200\242";
-do local lllI={} for IlII=1,#lIlIJ do local _b=string.byte(lIlIJ,IlII) _b=(_b-lIII+256)%256 _b=_b~IIlI[(IlII-1)%#IIlI+1] lllI[IlII]=string.char(_b) end IllI[22]=table.concat(lllI) end
-local IIIlJ="\82\105\194\43\226\101\241\13\245\2\5\194\133\102\200\242";
-do local lllI={} for IlII=1,#IIIlJ do local _b=string.byte(IIIlJ,IlII) _b=(_b-lIII+256)%256 _b=_b~IIlI[(IlII-1)%#IIlI+1] lllI[IlII]=string.char(_b) end IllI[23]=table.concat(lllI) end
-local lllIJ="\82\105\194\43\226\101\241\13";
-do local lllI={} for IlII=1,#lllIJ do local _b=string.byte(lllIJ,IlII) _b=(_b-lIII+256)%256 _b=_b~IIlI[(IlII-1)%#IIlI+1] lllI[IlII]=string.char(_b) end IllI[24]=table.concat(lllI) end
-local IllIJ="\82\105\194\43\226\101\241\13\245\2\5\194\133\102\200\242";
-do local lllI={} for IlII=1,#IllIJ do local _b=string.byte(IllIJ,IlII) _b=(_b-lIII+256)%256 _b=_b~IIlI[(IlII-1)%#IIlI+1] lllI[IlII]=string.char(_b) end IllI[25]=table.concat(lllI) end
-local lIllJ="\82\105\194\43\226\101\241\13\245\2\5\194\133\102\200\242";
-do local lllI={} for IlII=1,#lIllJ do local _b=string.byte(lIllJ,IlII) _b=(_b-lIII+256)%256 _b=_b~IIlI[(IlII-1)%#IIlI+1] lllI[IlII]=string.char(_b) end IllI[26]=table.concat(lllI) end
-local IlK="\82\105\194\43\226\101\241\13\245\2\5\194\133\102\200\242";
-do local lllI={} for IlII=1,#IlK do local _b=string.byte(IlK,IlII) _b=(_b-lIII+256)%256 _b=_b~IIlI[(IlII-1)%#IIlI+1] lllI[IlII]=string.char(_b) end IllI[27]=table.concat(lllI) end
-local lIK="\82\105\194\43\226\101\241\13";
-do local lllI={} for IlII=1,#lIK do local _b=string.byte(lIK,IlII) _b=(_b-lIII+256)%256 _b=_b~IIlI[(IlII-1)%#IIlI+1] lllI[IlII]=string.char(_b) end IllI[28]=table.concat(lllI) end
-local IIK="\96\115\193\48\235\122";
-do local lllI={} for IlII=1,#IIK do local _b=string.byte(IIK,IlII) _b=(_b-lIII+256)%256 _b=_b~IIlI[(IlII-1)%#IIlI+1] lllI[IlII]=string.char(_b) end IllI[29]=table.concat(lllI) end
-local lIlK="\85\115\201\47\228";
-do local lllI={} for IlII=1,#lIlK do local _b=string.byte(lIlK,IlII) _b=(_b-lIII+256)%256 _b=_b~IIlI[(IlII-1)%#IIlI+1] lllI[IlII]=string.char(_b) end IllI[30]=table.concat(lllI) end
-local llIK="\85\115\201\47\228";
-do local lllI={} for IlII=1,#llIK do local _b=string.byte(llIK,IlII) _b=(_b-lIII+256)%256 _b=_b~IIlI[(IlII-1)%#IIlI+1] lllI[IlII]=string.char(_b) end IllI[31]=table.concat(lllI) end
-local IIlK="\82\105\194\43\226\101\241\13";
-do local lllI={} for IlII=1,#IIlK do local _b=string.byte(IIlK,IlII) _b=(_b-lIII+256)%256 _b=_b~IIlI[(IlII-1)%#IIlI+1] lllI[IlII]=string.char(_b) end IllI[32]=table.concat(lllI) end
-local IllK="\85\115\201\47\228";
-do local lllI={} for IlII=1,#IllK do local _b=string.byte(IllK,IlII) _b=(_b-lIII+256)%256 _b=_b~IIlI[(IlII-1)%#IIlI+1] lllI[IlII]=string.char(_b) end IllI[33]=table.concat(lllI) end
-local lllK="\82\105\194\43\226\101\241\13";
-do local lllI={} for IlII=1,#lllK do local _b=string.byte(lllK,IlII) _b=(_b-lIII+256)%256 _b=_b~IIlI[(IlII-1)%#IIlI+1] lllI[IlII]=string.char(_b) end IllI[34]=table.concat(lllI) end
-local IlIK="\82\105\194\43\226\101\241\13\245\2\5\194\133\102\200\242";
-do local lllI={} for IlII=1,#IlIK do local _b=string.byte(IlIK,IlII) _b=(_b-lIII+256)%256 _b=_b~IIlI[(IlII-1)%#IIlI+1] lllI[IlII]=string.char(_b) end IllI[35]=table.concat(lllI) end
-local lIIK="\82\105\194\43\226\101\241\13";
-do local lllI={} for IlII=1,#lIIK do local _b=string.byte(lIIK,IlII) _b=(_b-lIII+256)%256 _b=_b~IIlI[(IlII-1)%#IIlI+1] lllI[IlII]=string.char(_b) end IllI[36]=table.concat(lllI) end
-local llllK="\82\105\194\43\226\101\241\13\245\2\5\194\133\102\200\242";
-do local lllI={} for IlII=1,#llllK do local _b=string.byte(llllK,IlII) _b=(_b-lIII+256)%256 _b=_b~IIlI[(IlII-1)%#IIlI+1] lllI[IlII]=string.char(_b) end IllI[37]=table.concat(lllI) end
-local IIllK="\86\121\203\64\10\101\247\29";
-do local lllI={} for IlII=1,#IIllK do local _b=string.byte(IIllK,IlII) _b=(_b-lIII+256)%256 _b=_b~IIlI[(IlII-1)%#IIlI+1] lllI[IlII]=string.char(_b) end IllI[38]=table.concat(lllI) end
-local IlIlK="\76\117\204\36\252\142\247\8\19";
-do local lllI={} for IlII=1,#IlIlK do local _b=string.byte(IlIlK,IlII) _b=(_b-lIII+256)%256 _b=_b~IIlI[(IlII-1)%#IIlI+1] lllI[IlII]=string.char(_b) end IllI[39]=table.concat(lllI) end
-local lIlIK="\82\121\206\48";
-do local lllI={} for IlII=1,#lIlIK do local _b=string.byte(lIlIK,IlII) _b=(_b-lIII+256)%256 _b=_b~IIlI[(IlII-1)%#IIlI+1] lllI[IlII]=string.char(_b) end IllI[40]=table.concat(lllI) end
-local IIIlK="\106\43\22\42\239\107\161\12";
-do local lllI={} for IlII=1,#IIIlK do local _b=string.byte(IIIlK,IlII) _b=(_b-lIII+256)%256 _b=_b~IIlI[(IlII-1)%#IIlI+1] lllI[IlII]=string.char(_b) end IllI[41]=table.concat(lllI) end
-_G.FastAttackAll = true
-task.spawn(function()
- local ReplicatedStorage = game:GetService(IllI[1])
- local Players = game:GetService(IllI[2])
- local VirtualInputManager = game:GetService(IllI[3])
- local TweenService = game:GetService(IllI[4])
- local RunService = game:GetService(IllI[5])
- local LocalPlayer = Players.LocalPlayer
- local AttackRemote = nil
- local NetFolder = ReplicatedStorage:FindFirstChild(IllI[6])
- and ReplicatedStorage.Modules:FindFirstChild(IllI[7])
- if NetFolder then
- AttackRemote = NetFolder:FindFirstChild(IllI[8])
- end
- if not AttackRemote then
- for lII, III in pairs(ReplicatedStorage:GetDescendants()) do
- if v:IsA(IllI[9]) and v.Name:lower():find(IllI[10]) then
- AttackRemote = III
- print(IllI[11], v:GetFullName())
- break
- end
- end
- end
- if not AttackRemote then
- warn(IllI[12])
- for lII, III in pairs(ReplicatedStorage:GetDescendants()) do
- if v:IsA(IllI[13]) then
- local IlI = v.FireServer
- v.FireServer = function(llII, ...)
- print(IllI[14], v:GetFullName(), IllI[15], ...)
- old(llII, ...)
- end
- end
- end
- end
- local IsClicking = false
- local CurrentTarget = nil
- local TweenConnection = nil
- local NoFallConnection = nil
- local OriginalGravity = workspace.Gravity
- local function ForceReset()
- IsClicking = false
- CurrentTarget = nil
- if TweenConnection then
- TweenConnection:Cancel()
- TweenConnection = nil
- end
- if NoFallConnection then
- NoFallConnection:Disconnect()
- NoFallConnection = nil
- end
- workspace.Gravity = OriginalGravity
- local Char = LocalPlayer.Character
- if Char then
- local Humanoid = Char:FindFirstChildOfClass(IllI[16])
- if Humanoid then
- Humanoid.WalkSpeed = (bit32 and bit32.bxor(39,55) or 16)
- Humanoid.JumpPower = (bit32 and bit32.bxor(255,205) or 50)
- Humanoid.PlatformStand = false
- Humanoid.AutoRotate = true
- end
- local Root = Char:FindFirstChild(IllI[17])
- if Root then
- Root.Velocity = Vector3.new(0, 0, 0)
- Root.RotVelocity = Vector3.new(0, 0, 0)
- end
- for lII, Part in ipairs(Char:GetDescendants()) do
- if Part:IsA(IllI[18]) then
- Part.CanCollide = true
- end
- end
- end
- end
- local function StartNoFall()
- if NoFallConnection then
- NoFallConnection:Disconnect()
- NoFallConnection = nil
- end
- workspace.Gravity = 0
- local Char = LocalPlayer.Character
- if Char then
- local Humanoid = Char:FindFirstChildOfClass(IllI[19])
- if Humanoid then
- Humanoid.WalkSpeed = 0
- Humanoid.JumpPower = 0
- Humanoid.PlatformStand = true
- end
- for lII, Part in ipairs(Char:GetDescendants()) do
- if Part:IsA(IllI[20]) and Part.Name ~= IllI[21] then
- Part.CanCollide = false
- end
- end
- end
- NoFallConnection = RunService.Heartbeat:Connect(function()
- if TweenConnection then return end
- local Char = LocalPlayer.Character
- if Char then
- local Root = Char:FindFirstChild(IllI[22])
- if Root then
- Root.Velocity = Vector3.new(0, 0, 0)
- Root.RotVelocity = Vector3.new(0, 0, 0)
- if CurrentTarget then
- local EnemyRoot = CurrentTarget:FindFirstChild(IllI[23])
- local EnemyHum = CurrentTarget:FindFirstChildOfClass(IllI[24])
- if not CurrentTarget.Parent or not EnemyRoot
- or not EnemyHum or EnemyHum.Health <= 0 then
- CurrentTarget = nil
- return
- end
- Root.CFrame = CFrame.new(EnemyRoot.Position + Vector3.new(0, (bit32 and bit32.bxor(100,112) or 20), 0))
- end
- end
- end
- end)
- end
- local function TweenToEnemy(Enemy)
- if TweenConnection then
- TweenConnection:Cancel()
- TweenConnection = nil
- end
- local Char = LocalPlayer.Character
- if not Char then return end
- local Root = Char:FindFirstChild(IllI[25])
- if not Root then return end
- local EnemyRoot = Enemy:FindFirstChild(IllI[26])
- if not EnemyRoot then return end
- StartNoFall()
- local TargetPos = EnemyRoot.Position + Vector3.new(0, (bit32 and bit32.bxor(40,60) or 20), 0)
- local Distance = (Root.Position - TargetPos).Magnitude
- local Speed = math.clamp(Distance / (bit32 and bit32.bxor(183,77) or 250), 0.01, 0.05)
- local Tween = TweenService:Create(
- Root,
- TweenInfo.new(Speed, Enum.EasingStyle.Linear),
- {CFrame = CFrame.new(TargetPos)}
- )
- Tween:Play()
- TweenConnection = Tween
- Tween.Completed:Connect(function()
- TweenConnection = nil
- end)
- end
- RunService.Heartbeat:Connect(function()
- if _G.FastAttackAll and IsClicking then
- VirtualInputManager:SendMouseButtonEvent(0, 0, 0, true, game, 1)
- VirtualInputManager:SendMouseButtonEvent(0, 0, 0, false, game, 1)
- end
- end)
- task.spawn(function()
- while _G.FastAttackAll do
- if IsClicking then
- VirtualInputManager:SendMouseButtonEvent(0, 0, 0, true, game, 1)
- VirtualInputManager:SendMouseButtonEvent(0, 0, 0, false, game, 1)
- end
- task.wait(0.001)
- end
- end)
- while _G.FastAttackAll do
- local Character = LocalPlayer.Character
- if not Character then
- ForceReset()
- task.wait(0.1)
- continue
- end
- local Root = Character:FindFirstChild(IllI[27])
- if not Root then
- ForceReset()
- task.wait(0.1)
- continue
- end
- local Humanoid = Character:FindFirstChildOfClass(IllI[28])
- if not Humanoid or Humanoid.Health <= 0 then
- ForceReset()
- task.wait(0.1)
- continue
- end
- local EnemyFolders = {}
- for lII, III in pairs(workspace:GetChildren()) do
- if v:IsA(IllI[29]) or v:IsA(IllI[30]) then
- for lII, lIlI in pairs(v:GetChildren()) do
- if child:IsA(IllI[31]) and child:FindFirstChildOfClass(IllI[32]) then
- table.insert(EnemyFolders, III)
- break
- end
- end
- end
- end
- if #EnemyFolders == 0 then
- ForceReset()
- task.wait(0.1)
- continue
- end
- local HasEnemyNearby = false
- local ClosestEnemy = nil
- local ClosestDistance = math.huge
- local AllNearbyEnemies = {}
- for lII, Folder in pairs(EnemyFolders) do
- for lII, Enemy in pairs(Folder:GetChildren()) do
- if not _G.FastAttackAll then break end
- if not Enemy:IsA(IllI[33]) then continue end
- local EnemyHumanoid = Enemy:FindFirstChildOfClass(IllI[34])
- local EnemyRoot = Enemy:FindFirstChild(IllI[35])
- if not EnemyHumanoid or EnemyHumanoid.Health <= 0 or not EnemyRoot then continue end
- local Distance = (Root.Position - EnemyRoot.Position).Magnitude
- if Distance <= (bit32 and bit32.bxor(5,205) or 200) then
- HasEnemyNearby = true
- table.insert(AllNearbyEnemies, Enemy)
- if Distance < ClosestDistance then
- ClosestDistance = Distance
- ClosestEnemy = Enemy
- end
- end
- end
- end
- if HasEnemyNearby and ClosestEnemy then
- IsClicking = true
- if CurrentTarget ~= ClosestEnemy then
- CurrentTarget = ClosestEnemy
- TweenToEnemy(ClosestEnemy)
- end
- for lII, Enemy in pairs(AllNearbyEnemies) do
- if not _G.FastAttackAll then break end
- local EnemyHumanoid = Enemy:FindFirstChildOfClass(IllI[36])
- local EnemyRoot2 = Enemy:FindFirstChild(IllI[37])
- if not EnemyHumanoid or EnemyHumanoid.Health <= 0 or not EnemyRoot2 then continue end
- local Distance = (Root.Position - EnemyRoot2.Position).Magnitude
- if Distance > (bit32 and bit32.bxor(152,170) or 50) then continue end
- local TargetPart = Enemy:FindFirstChild(IllI[38])
- or Enemy:FindFirstChild(IllI[39])
- or Enemy:FindFirstChild(IllI[40])
- or EnemyRoot2
- if AttackRemote then
- pcall(function()
- AttackRemote:FireServer(TargetPart, {}, IllI[41])
- end)
- end
- end
- else
- ForceReset()
- end
- task.wait()
- end
-end)
+--[[ Obfuscated | XHider-Style | Level 3 ]]
+--[[ 8b475ef6e1833c1d5ba07dd671e59656 ]]
+return(function(...)
+local lllII=math.floor local IlIII=string.char local lIIlI=string.byte
+local _ENV=_ENV or (getfenv and getfenv(1)) or {}
+local IIlI=math.floor local IllI=string.char local lllI=string.byte
+local function IlII(W,B)local t=0 for a=0,7,1 do local R=W/2+B/2 if R~=IIlI(R)then t=t+2^a end W=IIlI(W/2)B=IIlI(B/2)end return t end
+local lIII={146,62;75,124}
+local function llllI(W,t)local R={}local J=1 local C=#W while J<=C do local B=0 local t=5 if J+(4)>C then t=(C-J)+1 for d=1,t,1 do B=B*85+(lllI(W,(J+d)-1)-33)end for W=t+1,5,1 do B=B*85+84 end else for d=0,4,1 do B=B*85+(lllI(W,J+d)-33)end end local l=IIlI(B/16777216)%256 local c=IIlI(B/65536)%256 local v=IIlI(B/256)%256 local H=B%256 R[#R+1]=l R[#R+1]=c R[#R+1]=v R[#R+1]=H J=J+(t==5 and 5 or t)end for W=1,t,1 do R[#R]=nil end return R end
+local IIllI=([==[K0DqU^frl3qctZWpKAC>rCe[[pQ[p8I)8c2"nt\\MJNc_S`)er)k?fSor(]E]hd7ZMoijGJ5"g:C8M1nYD(Z=Z=""rR5"g:=9-l7c9Ka-\\>EqBFI,@dS$3"-gOZlEcgfm"55"g:=HXnc'=X"C=><+P;8s);1I+hXdR6F8k^fr-!k$&<&pJ=):5"g;"=$Ma0974j+.M(Zk57$jd+<e%*V\\-4,,MDB()&`HO58gEM5"g:FGUa6dIm451>p(;rFX)_?=_e:l;el[8Rke6a>:($G>A@Ej<pBjo<[8@S*\\!EQ*\\Y`/=)2YM*^>bd*^>tg*a4<r=_4!b974NZ-55NG%LVr,5Fao1I*$O71YH8R0%Y.I.+\\Te5"g:k*XXOMD/l".975Gd-6<"]+rGnq975Gd-6<"]+rJ*m,RD7o3=)';975)n3#TS?3=)';975Gd-6<"]+rHb4975)n3#TS?3=(4#975Gd-6<"]+rJ*m,RD7o3=(4#975Gd-6<"]+rJ*m,RD7o3=(4#975Gd-6<"]+rJ*m,RD7o3=(4#975Gd-6<"]+rJ*m,RD7o3=(4#975Gd-6<"]+rJ*m,RD7o3=)';975Gd-6<"]+rHS/975>f/eRtb30ZU"I+2"@)#$^j5"g:\\;(igdQTe&ihbc$ErgH#DI+h4?*W/bY(mR9XI+M1I&c5clQTe&ihbc$ErgH#DI+h4?*W/bY(kOqEI+h4?*W/bY(r/uo#f9q/#b!qMI+h4?*W/bY(kOqEI+h4?*W/bY(r/uo#f9q/#b!qMI,8'Z#h2]s#b+"NI)&f7']sWc'BYTE975Gt.N"U<973H?EZXgZEZY]==])
+local IlIlI=llllI(IIllI,0)
+local lIlII={}
+local function IllII(B)local d=lIlII if not d[B]then local W=B+1 local a=((IlII(IlIlI[W],lIII[1])+IlII(IlIlI[W+1],lIII[2])*256)+IlII(IlIlI[W+2],lIII[3])*65536)+IlII(IlIlI[W+3],lIII[4])*16777216 W=W+4 local C={}for B=1,a,1 do local d=(B-1)%4+1 C[B]=IllI(IlII(IlIlI[(W+B)-1],lIII[d]))end d[B]=table.concat(C)end return lIlII[B]end
+local lIllI=3977091
+local IIIlI={}
+while lIllI do
+if lIllI<8347858 then
+if lIllI<3738315 then
+if lIllI<1927858 then
+if lIllI<1080822 then
+if lIllI<687637 then
+if lIllI<328093 then
+if lIllI<171040 then
+if lIllI==71710 then
+if Char then
+lIllI=5599951
 end
+else
+if lIllI<271457 then
+if lIllI==171040 then
+task.wait(0.1)
+lIllI=12169139
+end
+else
+if lIllI==271457 then
+local function ForceReset()
+lIllI=9582691
+end
+end
+end
+else
+if lIllI<359081 then
+if lIllI<347201 then
+if lIllI==328093 then
+{CFrame = CFrame.new(TargetPos)}
+lIllI=8347858
+end
+else
+if lIllI==347201 then
+local EnemyFolders = {}
+lIllI=8890806
+end
+end
+else
+if lIllI<571060 then
+if lIllI==359081 then
+if not Char then return end
+lIllI=6063723
+end
+else
+if lIllI==571060 then
+end
+lIllI=4543374
+end
+end
+end
+end
+else
+if lIllI<819140 then
+if lIllI<817349 then
+if lIllI==687637 then
+ForceReset()
+lIllI=7845691
+end
+else
+if lIllI<817423 then
+if lIllI==817349 then
+CurrentTarget = nil
+lIllI=2111221
+end
+else
+if lIllI==817423 then
+Humanoid.PlatformStand = true
+lIllI=2038510
+end
+end
+end
+else
+if lIllI<880203 then
+if lIllI<852466 then
+if lIllI==819140 then
+if not Root then
+lIllI=8391275
+end
+else
+if lIllI==852466 then
+local CurrentTarget = nil
+lIllI=3225761
+end
+end
+else
+if lIllI<894886 then
+if lIllI==880203 then
+end
+lIllI=14925720
+end
+else
+if lIllI==894886 then
+if #EnemyFolders == 0 then
+lIllI=8331503
+end
+end
+end
+end
+end
+else
+if lIllI<1490878 then
+if lIllI<1299776 then
+if lIllI<1085610 then
+if lIllI==1080822 then
+end
+lIllI=10709912
+end
+else
+if lIllI<1235715 then
+if lIllI==1085610 then
+end
+lIllI=10227782
+end
+else
+if lIllI==1235715 then
+local Char = LocalPlayer.Character
+lIllI=359081
+end
+end
+end
+else
+if lIllI<1414661 then
+if lIllI<1369029 then
+if lIllI==1299776 then
+end
+lIllI=13924164
+end
+else
+if lIllI==1369029 then
+local Players = game:GetService(IllII(21))
+lIllI=11774073
+end
+end
+else
+if lIllI<1467043 then
+if lIllI==1414661 then
+end
+lIllI=894886
+end
+else
+if lIllI==1467043 then
+local ReplicatedStorage = game:GetService(IllII(0))
+lIllI=1369029
+end
+end
+end
+end
+else
+if lIllI<1806789 then
+if lIllI<1523001 then
+if lIllI==1490878 then
+end
+lIllI=10613103
+end
+else
+if lIllI<1705848 then
+if lIllI==1523001 then
+table.insert(AllNearbyEnemies, Enemy)
+lIllI=14925383
+end
+else
+if lIllI==1705848 then
+local TargetPart = Enemy:FindFirstChild(IllII(617))
+lIllI=5299953
+end
+end
+end
+else
+if lIllI<1897046 then
+if lIllI<1846259 then
+if lIllI==1806789 then
+if v:IsA(IllII(258)) then
+lIllI=15571484
+end
+else
+if lIllI==1846259 then
+local NoFallConnection = nil
+lIllI=13026487
+end
+end
+else
+if lIllI<1924054 then
+if lIllI==1897046 then
+for lII, III in pairs(ReplicatedStorage:GetDescendants()) do
+lIllI=9898534
+end
+else
+if lIllI==1924054 then
+old(llII, ...)
+lIllI=7960337
+end
+end
+end
+end
+end
+end
+else
+if lIllI<2972279 then
+if lIllI<2391409 then
+if lIllI<2033129 then
+if lIllI<1936445 then
+if lIllI==1927858 then
+if Distance <= (0xC8) then
+lIllI=12074065
+end
+else
+if lIllI<1950289 then
+if lIllI==1936445 then
+task.spawn(function()
+lIllI=3277598
+end
+else
+if lIllI==1950289 then
+Root.Velocity = Vector3.new(0, 0, 0)
+lIllI=5344490
+end
+end
+end
+else
+if lIllI<2111221 then
+if lIllI<2038510 then
+if lIllI==2033129 then
+local LocalPlayer = Players.LocalPlayer
+lIllI=11855981
+end
+else
+if lIllI==2038510 then
+end
+lIllI=8845079
+end
+end
+else
+if lIllI<2381474 then
+if lIllI==2111221 then
+if TweenConnection then
+lIllI=8624004
+end
+else
+if lIllI==2381474 then
+if not EnemyHumanoid or EnemyHumanoid.Health <= 0 or not EnemyRoot2 then continue end
+lIllI=10108852
+end
+end
+end
+end
+else
+if lIllI<2714822 then
+if lIllI<2505241 then
+if lIllI==2391409 then
+Humanoid.WalkSpeed = (0x10)
+lIllI=11733706
+end
+else
+if lIllI<2509696 then
+if lIllI==2505241 then
+break
+lIllI=14940606
+end
+else
+if lIllI==2509696 then
+CurrentTarget = ClosestEnemy
+lIllI=14026742
+end
+end
+end
+else
+if lIllI<2817350 then
+if lIllI<2752681 then
+if lIllI==2714822 then
+local IsClicking = false
+lIllI=852466
+end
+else
+if lIllI==2752681 then
+Root.RotVelocity = Vector3.new(0, 0, 0)
+lIllI=14838616
+end
+end
+else
+if lIllI<2826797 then
+if lIllI==2817350 then
+if CurrentTarget ~= ClosestEnemy then
+lIllI=2509696
+end
+else
+if lIllI==2826797 then
+print(IllII(273), v:GetFullName(), IllII(291), ...)
+lIllI=1924054
+end
+end
+end
+end
+end
+else
+if lIllI<3360729 then
+if lIllI<3242797 then
+if lIllI<3095476 then
+if lIllI==2972279 then
+end
+lIllI=8839447
+end
+else
+if lIllI<3225761 then
+if lIllI==3095476 then
+ClosestDistance = Distance
+lIllI=10892531
+end
+else
+if lIllI==3225761 then
+local TweenConnection = nil
+lIllI=1846259
+end
+end
+end
+else
+if lIllI<3277598 then
+if lIllI<3273347 then
+if lIllI==3242797 then
+for lII, Enemy in pairs(Folder:GetChildren()) do
+lIllI=13126037
+end
+else
+if lIllI==3273347 then
+local Distance = (Root.Position - TargetPos).Magnitude
+lIllI=7455483
+end
+end
+else
+if lIllI<3308291 then
+if lIllI==3277598 then
+while _G.FastAttackAll do
+lIllI=7594243
+end
+else
+if lIllI==3308291 then
+task.wait()
+lIllI=5798950
+end
+end
+end
+end
+else
+if lIllI<3459955 then
+if lIllI<3403044 then
+if lIllI==3360729 then
+if not EnemyHumanoid or EnemyHumanoid.Health <= 0 or not EnemyRoot then continue end
+lIllI=6014845
+end
+else
+if lIllI<3417717 then
+if lIllI==3403044 then
+end
+lIllI=7488016
+end
+else
+if lIllI==3417717 then
+if _G.FastAttackAll and IsClicking then
+lIllI=4336009
+end
+end
+end
+else
+if lIllI<3573811 then
+if lIllI<3509977 then
+if lIllI==3459955 then
+if NetFolder then
+lIllI=12166793
+end
+else
+if lIllI==3509977 then
+local Character = LocalPlayer.Character
+lIllI=9878207
+end
+end
+else
+if lIllI<3638498 then
+if lIllI==3573811 then
+Tween:Play()
+lIllI=15688287
+end
+else
+if lIllI==3638498 then
+local ClosestDistance = math.huge
+lIllI=6219514
+end
+end
+end
+end
+end
+end
+end
+else
+if lIllI<6014845 then
+if lIllI<4898890 then
+if lIllI<4320191 then
+if lIllI<3963449 then
+if lIllI<3901519 then
+if lIllI==3738315 then
+if NoFallConnection then
+lIllI=12570313
+end
+else
+if lIllI<3961364 then
+if lIllI==3901519 then
+end
+lIllI=15467463
+end
+else
+if lIllI==3961364 then
+local function StartNoFall()
+lIllI=9555027
+end
+end
+end
+else
+if lIllI<4020645 then
+if lIllI<3977091 then
+if lIllI==3963449 then
+for lII, Folder in pairs(EnemyFolders) do
+lIllI=3242797
+end
+else
+if lIllI==3977091 then
+_G.FastAttackAll = true
+lIllI=11527802
+end
+end
+else
+if lIllI<4122048 then
+if lIllI==4020645 then
+or Enemy:FindFirstChild(IllII(642))
+lIllI=6631859
+end
+else
+if lIllI==4122048 then
+end
+lIllI=3961364
+end
+end
+end
+end
+else
+if lIllI<4543374 then
+if lIllI<4336009 then
+if lIllI==4320191 then
+if Humanoid then
+lIllI=11022954
+end
+else
+if lIllI<4493332 then
+if lIllI==4336009 then
+VirtualInputManager:SendMouseButtonEvent(0, 0, 0, true, game, 1)
+lIllI=15090126
+end
+else
+if lIllI==4493332 then
+local Root = Character:FindFirstChild(IllII(450))
+lIllI=819140
+end
+end
+end
+else
+if lIllI<4764947 then
+if lIllI<4715627 then
+if lIllI==4543374 then
+local function TweenToEnemy(Enemy)
+lIllI=8357849
+end
+else
+if lIllI==4715627 then
+end
+lIllI=7012910
+end
+end
+else
+if lIllI<4851111 then
+if lIllI==4764947 then
+if not Root then return end
+lIllI=5224660
+end
+else
+if lIllI==4851111 then
+print(IllII(150), v:GetFullName())
+lIllI=2505241
+end
+end
+end
+end
+end
+else
+if lIllI<5344490 then
+if lIllI<5004975 then
+if lIllI<4959026 then
+if lIllI==4898890 then
+TweenConnection = nil
+lIllI=14847552
+end
+else
+if lIllI<4973396 then
+if lIllI==4959026 then
+task.wait(0.001)
+lIllI=6906175
+end
+else
+if lIllI==4973396 then
+AttackRemote = III
+lIllI=4851111
+end
+end
+end
+else
+if lIllI<5227768 then
+if lIllI<5224660 then
+if lIllI==5004975 then
+continue
+lIllI=6984103
+end
+else
+if lIllI==5224660 then
+local EnemyRoot = Enemy:FindFirstChild(IllII(430))
+lIllI=6583197
+end
+end
+else
+if lIllI<5299953 then
+if lIllI==5227768 then
+end
+lIllI=11691157
+end
+else
+if lIllI==5299953 then
+or Enemy:FindFirstChild(IllII(629))
+lIllI=4020645
+end
+end
+end
+end
+else
+if lIllI<5813044 then
+if lIllI<5599951 then
+if lIllI==5344490 then
+Root.RotVelocity = Vector3.new(0, 0, 0)
+lIllI=7250638
+end
+else
+if lIllI<5798950 then
+if lIllI==5599951 then
+local Root = Char:FindFirstChild(IllII(390))
+lIllI=15173325
+end
+else
+if lIllI==5798950 then
+end
+lIllI=7895711
+end
+end
+end
+else
+if lIllI<5816332 then
+if lIllI<5814391 then
+if lIllI==5813044 then
+Root.Velocity = Vector3.new(0, 0, 0)
+lIllI=2752681
+end
+else
+if lIllI==5814391 then
+local TweenService = game:GetService(IllII(55))
+lIllI=9142583
+end
+end
+else
+if lIllI<5843281 then
+if lIllI==5816332 then
+TweenConnection:Cancel()
+lIllI=12086933
+end
+else
+if lIllI==5843281 then
+end
+lIllI=14434746
+end
+end
+end
+end
+end
+end
+else
+if lIllI<7250638 then
+if lIllI<6583197 then
+if lIllI<6108759 then
+if lIllI<6063723 then
+if lIllI==6014845 then
+local Distance = (Root.Position - EnemyRoot.Position).Magnitude
+lIllI=1927858
+end
+else
+if lIllI<6076919 then
+if lIllI==6063723 then
+local Root = Char:FindFirstChild(IllII(410))
+lIllI=4764947
+end
+else
+if lIllI==6076919 then
+task.wait(0.1)
+lIllI=5004975
+end
+end
+end
+else
+if lIllI<6219514 then
+if lIllI<6167472 then
+if lIllI==6108759 then
+local EnemyHumanoid = Enemy:FindFirstChildOfClass(IllII(585))
+lIllI=14362032
+end
+else
+if lIllI==6167472 then
+if not _G.FastAttackAll then break end
+lIllI=6108759
+end
+end
+else
+if lIllI<6325819 then
+if lIllI==6219514 then
+local AllNearbyEnemies = {}
+lIllI=3963449
+end
+else
+if lIllI==6325819 then
+for lII, Part in ipairs(Char:GetDescendants()) do
+lIllI=15466503
+end
+end
+end
+end
+else
+if lIllI<6906175 then
+if lIllI<6631859 then
+if lIllI==6583197 then
+if not EnemyRoot then return end
+lIllI=9928275
+end
+else
+if lIllI<6644654 then
+if lIllI==6631859 then
+or EnemyRoot2
+lIllI=11025687
+end
+else
+if lIllI==6644654 then
+continue
+lIllI=14074125
+end
+end
+end
+else
+if lIllI<6984103 then
+if lIllI<6965422 then
+if lIllI==6906175 then
+end
+lIllI=13262570
+end
+else
+if lIllI==6965422 then
+Humanoid.JumpPower = 0
+lIllI=817423
+end
+end
+else
+if lIllI<7012910 then
+if lIllI==6984103 then
+end
+lIllI=10609152
+end
+else
+if lIllI==7012910 then
+local Root = Char:FindFirstChild(IllII(314))
+lIllI=12578635
+end
+end
+end
+end
+end
+else
+if lIllI<7594243 then
+if lIllI<7391818 then
+if lIllI<7333616 then
+if lIllI==7250638 then
+end
+lIllI=3403044
+end
+else
+if lIllI<7361447 then
+if lIllI==7333616 then
+while _G.FastAttackAll do
+lIllI=3509977
+end
+else
+if lIllI==7361447 then
+local Char = LocalPlayer.Character
+lIllI=9802130
+end
+end
+end
+else
+if lIllI<7467264 then
+if lIllI<7455483 then
+if lIllI==7391818 then
+ForceReset()
+lIllI=8492429
+end
+else
+if lIllI==7455483 then
+local Speed = math.clamp(Distance / (0xFA), 0.01, 0.05)
+lIllI=12404430
+end
+end
+else
+if lIllI<7488016 then
+if lIllI==7467264 then
+break
+lIllI=11222591
+end
+else
+if lIllI==7488016 then
+end)
+lIllI=571060
+end
+end
+end
+end
+else
+if lIllI<7960337 then
+if lIllI<7845691 then
+if lIllI<7666924 then
+if lIllI==7594243 then
+if IsClicking then
+lIllI=9810679
+end
+else
+if lIllI==7666924 then
+end
+lIllI=880203
+end
+end
+else
+if lIllI<7895711 then
+if lIllI==7845691 then
+task.wait(0.1)
+lIllI=6644654
+end
+else
+if lIllI==7895711 then
+end)
+lIllI=nil
+end
+end
+end
+else
+if lIllI<8179738 then
+if lIllI<8062413 then
+if lIllI==7960337 then
+end
+lIllI=1490878
+end
+else
+if lIllI==8062413 then
+IsClicking = true
+lIllI=2817350
+end
+end
+else
+if lIllI<8331503 then
+if lIllI==8179738 then
+if not Enemy:IsA(IllII(544)) then continue end
+lIllI=9610194
+end
+else
+if lIllI==8331503 then
+ForceReset()
+lIllI=6076919
+end
+end
+end
+end
+end
+end
+end
+end
+else
+if lIllI<11855981 then
+if lIllI<10227782 then
+if lIllI<9142583 then
+if lIllI<8647128 then
+if lIllI<8443426 then
+if lIllI<8357849 then
+if lIllI==8347858 then
+)
+lIllI=3573811
+end
+else
+if lIllI<8391275 then
+if lIllI==8357849 then
+if TweenConnection then
+lIllI=5816332
+end
+else
+if lIllI==8391275 then
+ForceReset()
+lIllI=12605703
+end
+end
+end
+else
+if lIllI<8492429 then
+if lIllI<8469735 then
+if lIllI==8443426 then
+Humanoid.AutoRotate = true
+lIllI=4715627
+end
+else
+if lIllI==8469735 then
+if Humanoid then
+lIllI=2391409
+end
+end
+else
+if lIllI<8624004 then
+if lIllI==8492429 then
+end
+lIllI=3308291
+end
+else
+if lIllI==8624004 then
+TweenConnection:Cancel()
+lIllI=4898890
+end
+end
+end
+end
+else
+if lIllI<8839447 then
+if lIllI<8738135 then
+if lIllI==8647128 then
+end)
+lIllI=10587928
+end
+else
+if lIllI<8741010 then
+if lIllI==8738135 then
+continue
+lIllI=14703290
+end
+else
+if lIllI==8741010 then
+NoFallConnection = nil
+lIllI=11463769
+end
+end
+end
+else
+if lIllI<8890806 then
+if lIllI<8845079 then
+if lIllI==8839447 then
+RunService.Heartbeat:Connect(function()
+lIllI=3417717
+end
+else
+if lIllI==8845079 then
+for lII, Part in ipairs(Char:GetDescendants()) do
+lIllI=9289517
+end
+end
+else
+if lIllI<9058590 then
+if lIllI==8890806 then
+for lII, III in pairs(workspace:GetChildren()) do
+lIllI=11126404
+end
+else
+if lIllI==9058590 then
+local Char = LocalPlayer.Character
+lIllI=71710
+end
+end
+end
+end
+end
+else
+if lIllI<9802130 then
+if lIllI<9555027 then
+if lIllI<9228131 then
+if lIllI==9142583 then
+local RunService = game:GetService(IllII(71))
+lIllI=2033129
+end
+else
+if lIllI<9289517 then
+if lIllI==9228131 then
+TweenInfo.new(Speed, Enum.EasingStyle.Linear),
+lIllI=328093
+end
+else
+if lIllI==9289517 then
+if Part:IsA(IllII(358)) and Part.Name ~= IllII(370) then
+lIllI=14188303
+end
+end
+end
+else
+if lIllI<9610194 then
+if lIllI<9582691 then
+if lIllI==9555027 then
+if NoFallConnection then
+lIllI=10771581
+end
+else
+if lIllI==9582691 then
+IsClicking = false
+lIllI=817349
+end
+end
+else
+if lIllI<9718834 then
+if lIllI==9610194 then
+local EnemyHumanoid = Enemy:FindFirstChildOfClass(IllII(553))
+lIllI=9718834
+end
+else
+if lIllI==9718834 then
+local EnemyRoot = Enemy:FindFirstChild(IllII(565))
+lIllI=3360729
+end
+end
+end
+end
+else
+if lIllI<9898534 then
+if lIllI<9810679 then
+if lIllI==9802130 then
+if Char then
+lIllI=13393189
+end
+else
+if lIllI<9878207 then
+if lIllI==9810679 then
+VirtualInputManager:SendMouseButtonEvent(0, 0, 0, true, game, 1)
+lIllI=11437888
+end
+else
+if lIllI==9878207 then
+if not Character then
+lIllI=687637
+end
+end
+end
+else
+if lIllI<9928275 then
+if lIllI<9911565 then
+if lIllI==9898534 then
+if v:IsA(IllII(128)) and v.Name:lower():find(IllII(143)) then
+lIllI=4973396
+end
+else
+if lIllI==9911565 then
+end
+lIllI=15125407
+end
+end
+else
+if lIllI<10108852 then
+if lIllI==9928275 then
+StartNoFall()
+lIllI=13122788
+end
+else
+if lIllI==10108852 then
+local Distance = (Root.Position - EnemyRoot2.Position).Magnitude
+lIllI=13834996
+end
+end
+end
+end
+end
+end
+else
+if lIllI<11126404 then
+if lIllI<10613103 then
+if lIllI<10513862 then
+if lIllI<10297631 then
+if lIllI==10227782 then
+if not AttackRemote then
+lIllI=1897046
+end
+else
+if lIllI<10324365 then
+if lIllI==10297631 then
+local Char = LocalPlayer.Character
+lIllI=12719312
+end
+else
+if lIllI==10324365 then
+Root,
+lIllI=9228131
+end
+end
+end
+else
+if lIllI<10587928 then
+if lIllI<10573046 then
+if lIllI==10513862 then
+v.FireServer = function(llII, ...)
+lIllI=2826797
+end
+else
+if lIllI==10573046 then
+end
+lIllI=14782112
+end
+end
+else
+if lIllI<10609152 then
+if lIllI==10587928 then
+end
+lIllI=10573046
+end
+else
+if lIllI==10609152 then
+local HasEnemyNearby = false
+lIllI=13203414
+end
+end
+end
+end
+else
+if lIllI<10867282 then
+if lIllI<10709912 then
+if lIllI==10613103 then
+end
+lIllI=11428531
+end
+else
+if lIllI<10771581 then
+if lIllI==10709912 then
+end
+lIllI=1414661
+end
+else
+if lIllI==10771581 then
+NoFallConnection:Disconnect()
+lIllI=15271251
+end
+end
+end
+else
+if lIllI<11022954 then
+if lIllI<10892531 then
+if lIllI==10867282 then
+for lII, lIlI in pairs(v:GetChildren()) do
+lIllI=13878837
+end
+else
+if lIllI==10892531 then
+ClosestEnemy = Enemy
+lIllI=5843281
+end
+end
+else
+if lIllI<11025687 then
+if lIllI==11022954 then
+Humanoid.WalkSpeed = 0
+lIllI=6965422
+end
+else
+if lIllI==11025687 then
+if AttackRemote then
+lIllI=13465259
+end
+end
+end
+end
+end
+else
+if lIllI<11656907 then
+if lIllI<11437888 then
+if lIllI<11222591 then
+if lIllI==11126404 then
+if v:IsA(IllII(493)) or v:IsA(IllII(503)) then
+lIllI=10867282
+end
+else
+if lIllI<11428531 then
+if lIllI==11222591 then
+end
+lIllI=1080822
+end
+else
+if lIllI==11428531 then
+end
+lIllI=2714822
+end
+end
+end
+else
+if lIllI<11527802 then
+if lIllI<11463769 then
+if lIllI==11437888 then
+VirtualInputManager:SendMouseButtonEvent(0, 0, 0, false, game, 1)
+lIllI=11604801
+end
+else
+if lIllI==11463769 then
+end
+lIllI=13483954
+end
+end
+else
+if lIllI<11604801 then
+if lIllI==11527802 then
+task.spawn(function()
+lIllI=1467043
+end
+else
+if lIllI==11604801 then
+end
+lIllI=4959026
+end
+end
+end
+end
+else
+if lIllI<11711042 then
+if lIllI<11691157 then
+if lIllI==11656907 then
+for lII, III in pairs(ReplicatedStorage:GetDescendants()) do
+lIllI=1806789
+end
+else
+if lIllI<11692246 then
+if lIllI==11691157 then
+end
+lIllI=15614599
+end
+else
+if lIllI==11692246 then
+AttackRemote:FireServer(TargetPart, {}, IllII(650))
+lIllI=8647128
+end
+end
+end
+else
+if lIllI<11738888 then
+if lIllI<11733706 then
+if lIllI==11711042 then
+ForceReset()
+lIllI=171040
+end
+else
+if lIllI==11733706 then
+Humanoid.JumpPower = (0x32)
+lIllI=13135446
+end
+end
+else
+if lIllI<11774073 then
+if lIllI==11738888 then
+end
+lIllI=347201
+end
+else
+if lIllI==11774073 then
+local VirtualInputManager = game:GetService(IllII(32))
+lIllI=5814391
+end
+end
+end
+end
+end
+end
+end
+else
+if lIllI<13878837 then
+if lIllI<12886751 then
+if lIllI<12404430 then
+if lIllI<12090325 then
+if lIllI<12074065 then
+if lIllI==11855981 then
+local AttackRemote = nil
+lIllI=12090325
+end
+else
+if lIllI<12086933 then
+if lIllI==12074065 then
+HasEnemyNearby = true
+lIllI=1523001
+end
+else
+if lIllI==12086933 then
+end
+lIllI=1235715
+end
+end
+end
+else
+if lIllI<12169139 then
+if lIllI<12166793 then
+if lIllI==12090325 then
+local NetFolder = ReplicatedStorage:FindFirstChild(IllII(85))
+lIllI=12735897
+end
+else
+if lIllI==12166793 then
+AttackRemote = NetFolder:FindFirstChild(IllII(103))
+lIllI=1085610
+end
+end
+else
+if lIllI<12241590 then
+if lIllI==12169139 then
+continue
+lIllI=11738888
+end
+else
+if lIllI==12241590 then
+table.insert(EnemyFolders, III)
+lIllI=7467264
+end
+end
+end
+end
+else
+if lIllI<12605703 then
+if lIllI<12570313 then
+if lIllI==12404430 then
+local Tween = TweenService:Create(
+lIllI=10324365
+end
+else
+if lIllI<12578635 then
+if lIllI==12570313 then
+NoFallConnection:Disconnect()
+lIllI=8741010
+end
+else
+if lIllI==12578635 then
+if Root then
+lIllI=5813044
+end
+end
+end
+else
+if lIllI<12719312 then
+if lIllI<12661572 then
+if lIllI==12605703 then
+task.wait(0.1)
+lIllI=8738135
+end
+else
+if lIllI==12661572 then
+local Humanoid = Character:FindFirstChildOfClass(IllII(470))
+lIllI=14167850
+end
+end
+else
+if lIllI<12735897 then
+if lIllI==12719312 then
+if Char then
+lIllI=15363871
+end
+else
+if lIllI==12735897 then
+and ReplicatedStorage.Modules:FindFirstChild(IllII(96))
+lIllI=3459955
+end
+end
+end
+end
+end
+else
+if lIllI<13174371 then
+if lIllI<13122788 then
+if lIllI<12888226 then
+if lIllI==12886751 then
+Part.CanCollide = true
+lIllI=3901519
+end
+else
+if lIllI<13026487 then
+if lIllI==12888226 then
+workspace.Gravity = 0
+lIllI=7361447
+end
+else
+if lIllI==13026487 then
+local OriginalGravity = workspace.Gravity
+lIllI=271457
+end
+end
+end
+else
+if lIllI<13135446 then
+if lIllI<13126037 then
+if lIllI==13122788 then
+local TargetPos = EnemyRoot.Position + Vector3.new(0, (0x14), 0)
+lIllI=3273347
+end
+else
+if lIllI==13126037 then
+if not _G.FastAttackAll then break end
+lIllI=8179738
+end
+end
+else
+if lIllI<13153897 then
+if lIllI==13135446 then
+Humanoid.PlatformStand = false
+lIllI=8443426
+end
+else
+if lIllI==13153897 then
+end
+lIllI=15044328
+end
+end
+end
+end
+else
+if lIllI<13393189 then
+if lIllI<13203414 then
+if lIllI==13174371 then
+NoFallConnection = RunService.Heartbeat:Connect(function()
+lIllI=9058590
+end
+else
+if lIllI<13262570 then
+if lIllI==13203414 then
+local ClosestEnemy = nil
+lIllI=3638498
+end
+else
+if lIllI==13262570 then
+end)
+lIllI=7333616
+end
+end
+end
+else
+if lIllI<13483954 then
+if lIllI<13465259 then
+if lIllI==13393189 then
+local Humanoid = Char:FindFirstChildOfClass(IllII(346))
+lIllI=4320191
+end
+else
+if lIllI==13465259 then
+pcall(function()
+lIllI=11692246
+end
+end
+else
+if lIllI<13834996 then
+if lIllI==13483954 then
+workspace.Gravity = OriginalGravity
+lIllI=10297631
+end
+else
+if lIllI==13834996 then
+if Distance > (0x32) then continue end
+lIllI=1705848
+end
+end
+end
+end
+end
+end
+else
+if lIllI<14925720 then
+if lIllI<14434746 then
+if lIllI<14074125 then
+if lIllI<13924164 then
+if lIllI==13878837 then
+if child:IsA(IllII(512)) and child:FindFirstChildOfClass(IllII(521)) then
+lIllI=12241590
+end
+else
+if lIllI<14026742 then
+if lIllI==13924164 then
+end)
+lIllI=1936445
+end
+else
+if lIllI==14026742 then
+TweenToEnemy(ClosestEnemy)
+lIllI=13153897
+end
+end
+end
+else
+if lIllI<14188303 then
+if lIllI<14167850 then
+if lIllI==14074125 then
+end
+lIllI=4493332
+end
+else
+if lIllI==14167850 then
+if not Humanoid or Humanoid.Health <= 0 then
+lIllI=11711042
+end
+end
+else
+if lIllI<14362032 then
+if lIllI==14188303 then
+Part.CanCollide = false
+lIllI=7666924
+end
+else
+if lIllI==14362032 then
+local EnemyRoot2 = Enemy:FindFirstChild(IllII(597))
+lIllI=2381474
+end
+end
+end
+end
+else
+if lIllI<14782112 then
+if lIllI<14483231 then
+if lIllI==14434746 then
+end
+lIllI=5227768
+end
+else
+if lIllI<14703290 then
+if lIllI==14483231 then
+end
+lIllI=4122048
+end
+else
+if lIllI==14703290 then
+end
+lIllI=12661572
+end
+end
+end
+else
+if lIllI<14847552 then
+if lIllI<14838616 then
+if lIllI==14782112 then
+else
+lIllI=7391818
+end
+else
+if lIllI==14838616 then
+end
+lIllI=6325819
+end
+end
+else
+if lIllI<14925383 then
+if lIllI==14847552 then
+end
+lIllI=3738315
+end
+else
+if lIllI==14925383 then
+if Distance < ClosestDistance then
+lIllI=3095476
+end
+end
+end
+end
+end
+else
+if lIllI<15271251 then
+if lIllI<15090126 then
+if lIllI<14940606 then
+if lIllI==14925720 then
+end
+lIllI=13174371
+end
+else
+if lIllI<15044328 then
+if lIllI==14940606 then
+end
+lIllI=15270228
+end
+else
+if lIllI==15044328 then
+for lII, Enemy in pairs(AllNearbyEnemies) do
+lIllI=6167472
+end
+end
+end
+else
+if lIllI<15173325 then
+if lIllI<15125407 then
+if lIllI==15090126 then
+VirtualInputManager:SendMouseButtonEvent(0, 0, 0, false, game, 1)
+lIllI=1299776
+end
+else
+if lIllI==15125407 then
+if not AttackRemote then
+lIllI=15443174
+end
+end
+else
+if lIllI<15270228 then
+if lIllI==15173325 then
+if Root then
+lIllI=1950289
+end
+else
+if lIllI==15270228 then
+end
+lIllI=9911565
+end
+end
+end
+end
+else
+if lIllI<15467463 then
+if lIllI<15443174 then
+if lIllI<15363871 then
+if lIllI==15271251 then
+end
+lIllI=12888226
+end
+else
+if lIllI==15363871 then
+local Humanoid = Char:FindFirstChildOfClass(IllII(302))
+lIllI=8469735
+end
+end
+else
+if lIllI<15466503 then
+if lIllI==15443174 then
+warn(IllII(183))
+lIllI=11656907
+end
+else
+if lIllI==15466503 then
+if Part:IsA(IllII(334)) then
+lIllI=12886751
+end
+end
+end
+else
+if lIllI<15614599 then
+if lIllI<15571484 then
+if lIllI==15467463 then
+end
+lIllI=14483231
+end
+else
+if lIllI==15571484 then
+local IlI = v.FireServer
+lIllI=10513862
+end
+end
+else
+if lIllI<15688287 then
+if lIllI==15614599 then
+if HasEnemyNearby and ClosestEnemy then
+lIllI=8062413
+end
+else
+if lIllI==15688287 then
+TweenConnection = Tween
+lIllI=2972279
+end
+end
+end
+end
+end
+end
+end
+end
+end
+end
+end)(...) 
