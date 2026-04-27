@@ -1,193 +1,63 @@
---[[ Obfuscated | XHider-Style | Level 3 ]]
---[[ 809b773fcabd6b07e7abfe985e7fa768 ]]
-return(function(...)
-local lIllI=math.floor local IIIlI=string.char local lllII=string.byte local IlIII=table.concat
-local _ENV=_ENV or (getfenv and getfenv(1)) or {}
-local IlIlI={}
-local lIlII={__newindex=function()end,__index=function(IllII,k)return rawget(IllII,k)end}
-pcall(setmetatable,IlIlI,lIlII)
-local III=math.floor local lIlI=string.char local llII=string.byte
-local function IIlI(W,B)local t=0 for a=0,7,1 do local R=W/2+B/2 if R~=III(R)then t=t+2^a end W=III(W/2)B=III(B/2)end return t end
-local IllI={215,174;103,39}
-local function lllI(W,t)local R={}local J=1 local C=#W while J<=C do local B=0 local t=5 if J+4>C then t=(C-J)+1 for d=1,t,1 do B=B*85+(llII(W,(J+d)-1)-33)end for W=t+1,5,1 do B=B*85+84 end else for d=0,4,1 do B=B*85+(llII(W,J+d)-33)end end local l=III(B/16777216)%256 local c=III(B/65536)%256 local v=III(B/256)%256 local H=B%256 R[#R+1]=l R[#R+1]=c R[#R+1]=v R[#R+1]=H J=J+(t==5 and 5 or t)end for W=1,t,1 do R[#R]=nil end return R end
-local IlII=([==[`i`r%L!(9*^<Hj\\ZH>"&\\D.9RZI#ae-\\oPC?F&?#h6(B<L"coUZJ6$e[*-CjB.&8N'iUjQ$Z<N3&lY7F#tD/B(!!Ii-\\C.U<M$uB;PX0l<M@G96I;lJ-^qjR;S1*de?3F3REH8sY%K,9lUZ0(aUV:Fb8"s0g>B&G-_K-#7_->F6cZ?B-_K-#7_->F6\\W>^;hr[6;r=`j-^E!l6ANl%;r=`j-_K-#7_->F6f5%Z-^E!l6ANl%;oc%R-_K-#7_->F6\\W>^;hr[6;oc%R-_K-#7_->F6\\W>^;hr[6;oc%R-_K-#7_->F6\\W>^;hr[6;oc%R-_K-#7_->F6\\W>^;hr[6;r=`j-_K-#7_->F6dVuK-^)7H9"rI_d]R41R_](m]AKc(-_K-#7_->F6cZ?B-_K-#7_->F6\\W>^;hr[6;r=`j-_K-#7_->F6cZ?B-_K-#7_->F6\\W>^;hr[6;r=`j-_K-#7_->F6cZ?B-_K-#7_->F6\\W>^;hr[6;qnHf-_&9[;k(T76Da,c9%pF\\-\\]S@:SZnT:pSk'<P%(jB.'1l!E5,s#ZKT_B.&DR!)KBR#Y:`>Y%K,Sb6C>kY%K-FR9gs&QiS6]==])
-local lIII=lllI(IlII,0)
-local llllI={}
-local function IIllI(B)local d=llllI if not d[B]then local W=B+1 local a=((IIlI(lIII[W],IllI[1])+IIlI(lIII[W+1],IllI[2])*256)+IIlI(lIII[W+2],IllI[3])*65536)+IIlI(lIII[W+3],IllI[4])*16777216 W=W+4 local C={}for B=1,a,1 do local d=(B-1)%4+1 C[B]=lIlI(IIlI(lIII[(W+B)-1],IllI[d]))end d[B]=table.concat(C)end return llllI[B]end
-_G.FastAttackAll = true
-task.spawn(function()
- local ReplicatedStorage = game:GetService(IIllI(0))
- local Players = game:GetService(IIllI(21))
- local RunService = game:GetService(IIllI(32))
- local VirtualInputManager = game:GetService(IIllI(46))
- local UserInputService = game:GetService(IIllI(69))
- local LocalPlayer = Players.LocalPlayer
- local AttackRemote = ReplicatedStorage:WaitForChild(IIllI(89)):WaitForChild(IIllI(100)):WaitForChild(IIllI(107))
- local IsActive = false
- local CurrentTarget = nil
- local OriginalGravity = workspace.Gravity
- local OriginalWalkSpeed = (0x10)
- local OriginalJumpPower = (0x32)
- local NoFallConnection = nil
- local function ForceReset()
- IsActive = false
- CurrentTarget = nil
- if NoFallConnection then
- NoFallConnection:Disconnect()
- NoFallConnection = nil
- end
- workspace.Gravity = OriginalGravity
- local Char = LocalPlayer.Character
- if Char then
- local Humanoid = Char:FindFirstChildOfClass(IIllI(125))
- if Humanoid then
- Humanoid.WalkSpeed = OriginalWalkSpeed
- Humanoid.JumpPower = OriginalJumpPower
- Humanoid.PlatformStand = false
- Humanoid.AutoRotate = true
- end
- local Root = Char:FindFirstChild(IIllI(137))
- if Root then
- Root.Velocity = Vector3.new(0, 0, 0)
- Root.RotVelocity = Vector3.new(0, 0, 0)
- Root.AssemblyLinearVelocity = Vector3.new(0, 0, 0)
- Root.AssemblyAngularVelocity = Vector3.new(0, 0, 0)
- end
- for lII, Part in ipairs(Char:GetDescendants()) do
- if Part:IsA(IIllI(157)) then
- Part.CanCollide = true
- end
- end
- end
- UserInputService.MouseIconEnabled = true
- end
- local function StartNoFall(Target)
- if NoFallConnection then
- NoFallConnection:Disconnect()
- end
- workspace.Gravity = 0
- UserInputService.MouseIconEnabled = false
- local Char = LocalPlayer.Character
- if Char then
- local Humanoid = Char:FindFirstChildOfClass(IIllI(169))
- if Humanoid then
- OriginalWalkSpeed = Humanoid.WalkSpeed
- OriginalJumpPower = Humanoid.JumpPower
- Humanoid.WalkSpeed = 0
- Humanoid.JumpPower = 0
- Humanoid.PlatformStand = true
- Humanoid.AutoRotate = false
- end
- for lII, Part in ipairs(Char:GetDescendants()) do
- if Part:IsA(IIllI(181)) and Part.Name ~= IIllI(193) then
- Part.CanCollide = false
- end
- end
- end
- NoFallConnection = RunService.RenderStepped:Connect(function()
- if not IsActive then return end
- local Char = LocalPlayer.Character
- if Char and Target then
- local Root = Char:FindFirstChild(IIllI(213))
- local EnemyRoot = Target:FindFirstChild(IIllI(233))
- if Root and EnemyRoot then
- Root.CFrame = EnemyRoot.CFrame * CFrame.new(0, (0xA), 0)
- Root.Velocity = Vector3.new(0, 0, 0)
- Root.RotVelocity = Vector3.new(0, 0, 0)
- Root.AssemblyLinearVelocity = Vector3.new(0, 0, 0)
- Root.AssemblyAngularVelocity = Vector3.new(0, 0, 0)
- end
- end
- end)
- end
- task.spawn(function()
- while _G.FastAttackAll do
- if IsActive then
- VirtualInputManager:SendMouseButtonEvent(0, 0, 0, true, game, 1)
- VirtualInputManager:SendMouseButtonEvent(0, 0, 0, false, game, 1)
- end
- task.wait(0.001)
- end
- end)
- while _G.FastAttackAll do
- local Character = LocalPlayer.Character
- if not Character then
- if IsActive then ForceReset() end
- task.wait(0.2)
- continue
- end
- local Root = Character:FindFirstChild(IIllI(253))
- if not Root then
- if IsActive then ForceReset() end
- task.wait(0.2)
- continue
- end
- local Humanoid = Character:FindFirstChildOfClass(IIllI(273))
- if not Humanoid or Humanoid.Health <= 0 then
- if IsActive then ForceReset() end
- task.wait(0.2)
- continue
- end
- local Enemies = workspace:FindFirstChild(IIllI(285))
- if not Enemies then
- if IsActive then ForceReset() end
- task.wait(0.2)
- continue
- end
- local HasEnemyNearby = false
- local ClosestEnemy = nil
- local ClosestDistance = (0xC8)
- local AllNearbyEnemies = {}
- for lII, Enemy in ipairs(Enemies:GetChildren()) do
- if not _G.FastAttackAll then break end
- if not Enemy:IsA(IIllI(296)) then continue end
- local EnemyHumanoid = Enemy:FindFirstChildOfClass(IIllI(305))
- local EnemyRoot = Enemy:FindFirstChild(IIllI(317))
- if not EnemyHumanoid or EnemyHumanoid.Health <= 0 or not EnemyRoot then continue end
- local Distance = (Root.Position - EnemyRoot.Position).Magnitude
- if Distance <= (0xC8) then
- HasEnemyNearby = true
- table.insert(AllNearbyEnemies, Enemy)
- if Distance < ClosestDistance then
- ClosestDistance = Distance
- ClosestEnemy = Enemy
- end
- end
- end
- if HasEnemyNearby and ClosestEnemy then
- if not IsActive then
- IsActive = true
- CurrentTarget = ClosestEnemy
- StartNoFall(ClosestEnemy)
- end
- if CurrentTarget then
- local EnemyHumanoidCheck = CurrentTarget:FindFirstChildOfClass(IIllI(337))
- local EnemyRootCheck = CurrentTarget:FindFirstChild(IIllI(349))
- if not EnemyHumanoidCheck or EnemyHumanoidCheck.Health <= 0 or not EnemyRootCheck then
- CurrentTarget = ClosestEnemy
- end
- end
- for lII, Enemy in ipairs(AllNearbyEnemies) do
- if not _G.FastAttackAll then break end
- local EnemyHumanoid = Enemy:FindFirstChildOfClass(IIllI(369))
- local EnemyRoot = Enemy:FindFirstChild(IIllI(381))
- if not EnemyHumanoid or EnemyHumanoid.Health <= 0 or not EnemyRoot then continue end
- local Distance = (Root.Position - EnemyRoot.Position).Magnitude
- if Distance > (0x96) then continue end
- local TargetPart = Enemy:FindFirstChild(IIllI(401)) or Enemy:FindFirstChild(IIllI(417)) or Enemy:FindFirstChild(IIllI(434)) or Enemy:FindFirstChild(IIllI(446)) or Enemy:FindFirstChild(IIllI(459)) or EnemyRoot
- local IlI = {
- TargetPart,
- {},
- [4] = IIllI(467)
- }
- pcall(function()
- AttackRemote:FireServer(unpack(IlI))
- end)
- end
- else
- if IsActive then ForceReset() end
- end
- task.wait()
- end
+local Library = loadstring(game:HttpGet(" https://raw.githubusercontent.com/phamquochoa1942-png/uinova/refs/heads/main/UILibrary.lua"))()
+
+-- OR if in same script:
+-- local Library = require(script.NovaLib)
+
+local Win = Library:CreateWindow({
+    Title    = "Blox Fruits",
+    Subtitle  = "Nova UI v2.0",
+    Size     = UDim2.new(0, 620, 0, 420),
+})
+
+local Main = Win:AddTab("⚔️  Combat")
+local Farm = Win:AddTab("🌾  Farm")
+local Misc = Win:AddTab("⚙️  Misc")
+
+Main:AddSection("Aimbot Settings")
+
+Main:AddToggle("Auto Attack", false, function(state)
+    print("Auto Attack:", state)
 end)
-end)(...) 
+
+Main:AddDropdown("Target Mode", {"Nearest", "Lowest HP", "Boss"}, "N/A", function(val)
+    print("Target:", val)
+end)
+
+Main:AddSlider("Attack Speed", 0, 100, 50, function(val)
+    print("Speed:", val)
+end)
+
+Main:AddSection("Skills")
+
+Main:AddToggle("Auto Skill", false, function(state)
+    print("Auto Skill:", state)
+end)
+
+Main:AddButton("Kill All", function()
+    print("Kill All triggered!")
+end)
+
+Farm:AddSection("Auto Farm")
+
+Farm:AddToggle("Auto Farm", false, function(state)
+    print("Farm:", state)
+end)
+
+Farm:AddDropdown("Island", {"Starter", "Middle", "Upper", "Sky Island"}, "N/A", function(val)
+    print("Island:", val)
+end)
+
+Farm:AddButton("Teleport Here", function()
+    print("Teleporting...")
+end)
+
+Misc:AddSection("Keybinds")
+
+Misc:AddKeybind("Toggle UI", Enum.KeyCode.RightShift, function(k)
+    print("Key pressed:", k)
+end)
+
+Misc:AddTextbox("Custom Value", "Type here...", function(text)
+    print("Input:", text)
+end)
+ 
