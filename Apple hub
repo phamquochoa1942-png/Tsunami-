@@ -1,11 +1,12 @@
 -- ╔══════════════════════════════════════════════════╗
 -- ║         CONCUHUB | by Quoc Hoa                  ║
--- ║   Auto Farm + Quest + Bring Mob + Fluent UI     ║
 -- ╚══════════════════════════════════════════════════╝
 
--- Load Fluent UI (Delta executor có sẵn)
-local Fluent = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
-local SaveManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/SaveManager.lua"))()
+-- =====================================================
+-- LOAD FLUENT UI
+-- =====================================================
+local Fluent         = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
+local SaveManager    = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/SaveManager.lua"))()
 local InterfaceManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/InterfaceManager.lua"))()
 
 -- =====================================================
@@ -21,7 +22,6 @@ local LocalPlayer         = Players.LocalPlayer
 
 -- =====================================================
 -- LEVEL DATA — Lv 1 → 2800
--- { minLv, maxLv, sea, island, questNPC, mobName }
 -- =====================================================
 local LevelData = {
     {1,   15,  1, "StartIsland",       "Villager1",          "Bandit"},
@@ -70,13 +70,12 @@ local LevelData = {
     {2700,2800,3, "GhostIsland",       "Demonic Soul",       "Demonic Soul"},
 }
 
-local function getDataForLevel(level)
+local function getDataForLevel(lv)
     for i = #LevelData, 1, -1 do
         local d = LevelData[i]
-        if level >= d[1] then return {
-            minLv=d[1], maxLv=d[2], sea=d[3],
-            island=d[4], questNPC=d[5], mobName=d[6]
-        } end
+        if lv >= d[1] then
+            return {minLv=d[1],maxLv=d[2],sea=d[3],island=d[4],questNPC=d[5],mobName=d[6]}
+        end
     end
     return {minLv=1,maxLv=15,sea=1,island="StartIsland",questNPC="Villager1",mobName="Bandit"}
 end
@@ -99,23 +98,35 @@ local AttackRemote = ReplicatedStorage:WaitForChild("Modules")
 local QuestRemote = ReplicatedStorage:WaitForChild("Remotes")
     :WaitForChild("QuestUpdate")
 
--- FIX DAME: Hook AttackRemote để tự lấy hash mới nhất
--- Mỗi lần game gốc fire → ta lấy args đó dùng lại
-local lastArgs = {nil, {}, [4] = "079996f9"}
-
+-- FIX DAME: Hook để lấy hash mới nhất từ game gốc
+local lastHash = "079996f9"
 pcall(function()
     local mt = getrawmetatable(game)
-    local oldIndex = mt.__namecall
+    local old = mt.__namecall
     setreadonly(mt, false)
     mt.__namecall = newcclosure(function(self, ...)
         local method = getnamecallmethod()
         if method == "FireServer" and self == AttackRemote then
-            lastArgs = {...}  -- Lưu args mới nhất từ game gốc
+            local args = {...}
+            if args[4] and type(args[4]) == "string" then
+                lastHash = args[4]
+            end
         end
-        return oldIndex(self, ...)
+        return old(self, ...)
     end)
     setreadonly(mt, true)
+    print("[Concuhub] Hash hook OK")
 end)
+
+-- =====================================================
+-- CONFIG (đọc/ghi từ slider)
+-- =====================================================
+local Cfg = {
+    scanRange    = 2000,  -- quét xa để bay tới đàn khác
+    attackRange  = 150,
+    bringRange   = 500,
+    questInterval = 30,
+}
 
 -- =====================================================
 -- STATE
@@ -125,6 +136,7 @@ local State = {
     bringMob      = false,
     autoQuest     = false,
     isActive      = false,
+    isFlyingQuest = false,
     currentTarget = nil,
     noFallConn    = nil,
     origGravity   = workspace.Gravity,
@@ -133,7 +145,7 @@ local State = {
 }
 
 -- =====================================================
--- CORE
+-- CORE FUNCTIONS
 -- =====================================================
 local function ForceReset()
     State.isActive      = false
@@ -168,31 +180,34 @@ local function ForceReset()
     end
 end
 
+local function LockChar()
+    local Char = LocalPlayer.Character
+    if not Char then return end
+    local Hum = Char:FindFirstChildOfClass("Humanoid")
+    if Hum then
+        State.origWalk    = Hum.WalkSpeed
+        State.origJump    = Hum.JumpPower
+        Hum.WalkSpeed     = 0
+        Hum.JumpPower     = 0
+        Hum.PlatformStand = true
+        Hum.AutoRotate    = false
+    end
+    for _, p in ipairs(Char:GetDescendants()) do
+        if p:IsA("BasePart") and p.Name ~= "HumanoidRootPart" then
+            p.CanCollide = false
+        end
+    end
+    UserInputService.MouseIconEnabled = false
+end
+
 local function StartNoFall(Target)
     if State.noFallConn then
         State.noFallConn:Disconnect()
+        State.noFallConn = nil
     end
 
     workspace.Gravity = 0
-    UserInputService.MouseIconEnabled = false
-
-    local Char = LocalPlayer.Character
-    if Char then
-        local Hum = Char:FindFirstChildOfClass("Humanoid")
-        if Hum then
-            State.origWalk    = Hum.WalkSpeed
-            State.origJump    = Hum.JumpPower
-            Hum.WalkSpeed     = 0
-            Hum.JumpPower     = 0
-            Hum.PlatformStand = true
-            Hum.AutoRotate    = false
-        end
-        for _, p in ipairs(Char:GetDescendants()) do
-            if p:IsA("BasePart") and p.Name ~= "HumanoidRootPart" then
-                p.CanCollide = false
-            end
-        end
-    end
+    LockChar()
 
     State.noFallConn = RunService.RenderStepped:Connect(function()
         if not State.isActive then return end
@@ -201,6 +216,11 @@ local function StartNoFall(Target)
         local Root = C:FindFirstChild("HumanoidRootPart")
         local ER   = Target:FindFirstChild("HumanoidRootPart")
         if not Root or not ER then return end
+
+        -- Kiểm tra mob còn sống
+        local EH = Target:FindFirstChildOfClass("Humanoid")
+        if not EH or EH.Health <= 0 then return end
+
         Root.CFrame                  = ER.CFrame * CFrame.new(0, 10, 0)
         Root.Velocity                = Vector3.new(0,0,0)
         Root.RotVelocity             = Vector3.new(0,0,0)
@@ -209,82 +229,221 @@ local function StartNoFall(Target)
     end)
 end
 
--- Bay đến vị trí bằng TweenService
-local function FlyTo(pos, duration)
+-- FlyTo: Bay đến vị trí bằng CFrame trực tiếp (không dùng Tween vì hay bị kẹt)
+local function FlyTo(targetPos, duration)
     local Char = LocalPlayer.Character
     if not Char then return end
     local Root = Char:FindFirstChild("HumanoidRootPart")
     if not Root then return end
+
+    -- Tạm tắt NoFall trong lúc bay
+    if State.noFallConn then
+        State.noFallConn:Disconnect()
+        State.noFallConn = nil
+    end
+
     workspace.Gravity = 0
-    local Tween = TweenService:Create(Root,
-        TweenInfo.new(duration or 1.5, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
-        {CFrame = CFrame.new(pos)}
-    )
-    Tween:Play()
-    Tween.Completed:Wait()
+    LockChar()
+
+    local startPos  = Root.Position
+    local elapsed   = 0
+    local totalTime = duration or 2
+    local conn
+
+    conn = RunService.RenderStepped:Connect(function(dt)
+        elapsed = elapsed + dt
+        local alpha = math.clamp(elapsed / totalTime, 0, 1)
+        -- Ease out quad
+        alpha = 1 - (1 - alpha)^2
+
+        local Char2 = LocalPlayer.Character
+        if not Char2 then conn:Disconnect(); return end
+        local Root2 = Char2:FindFirstChild("HumanoidRootPart")
+        if not Root2 then conn:Disconnect(); return end
+
+        Root2.CFrame                 = CFrame.new(startPos:Lerp(targetPos, alpha))
+        Root2.Velocity               = Vector3.new(0,0,0)
+        Root2.AssemblyLinearVelocity = Vector3.new(0,0,0)
+
+        if alpha >= 1 then conn:Disconnect() end
+    end)
+
+    -- Chờ bay xong
+    local waited = 0
+    repeat task.wait(0.05); waited += 0.05 until waited >= totalTime + 0.1
 end
 
--- Bring Mob: kéo mob về gần nhân vật
+-- =====================================================
+-- BRING MOB — FIX: dùng CFrame.new thay vì gán trực tiếp
+-- =====================================================
 local function BringMobs()
     local Char = LocalPlayer.Character
     if not Char then return end
     local Root = Char:FindFirstChild("HumanoidRootPart")
     if not Root then return end
     local Enemies = workspace:FindFirstChild("Enemies")
-    if not Enemies then return end
+    if not Enemies then
+        warn("[Concuhub] Không tìm thấy folder Enemies")
+        return
+    end
+
+    local count = 0
+    for _, Enemy in ipairs(Enemies:GetChildren()) do
+        if not Enemy:IsA("Model") then continue end
+        local EH = Enemy:FindFirstChildOfClass("Humanoid")
+        local ER = Enemy:FindFirstChild("HumanoidRootPart")
+        if not EH or EH.Health <= 0 or not ER then continue end
+
+        local dist = (Root.Position - ER.Position).Magnitude
+        if dist <= Cfg.bringRange then
+            -- FIX: dùng pcall để tránh crash khi set CFrame của mob
+            pcall(function()
+                ER.CFrame = CFrame.new(
+                    Root.Position + Vector3.new(
+                        math.random(-8, 8),
+                        0,
+                        math.random(-8, 8)
+                    )
+                )
+            end)
+            count += 1
+        end
+    end
+    print("[Concuhub] Brought", count, "mobs")
+end
+
+-- =====================================================
+-- AUTO QUEST — FIX: tìm NPC bằng nhiều cách
+-- =====================================================
+local function AcceptQuest()
+    if State.isFlyingQuest then return end
+    State.isFlyingQuest = true
+
+    local lv   = getPlayerLevel()
+    local data = getDataForLevel(lv)
+    print("[Concuhub] Tìm NPC quest:", data.questNPC, "| Lv:", lv)
+
+    -- Tìm NPC bằng nhiều cách
+    local npcPos = nil
+
+    -- Cách 1: Tìm Model tên chứa questNPC
+    for _, v in pairs(workspace:GetDescendants()) do
+        if v:IsA("Model") then
+            if v.Name:lower():find(data.questNPC:lower()) then
+                local r = v:FindFirstChild("HumanoidRootPart")
+                    or v:FindFirstChild("Root")
+                    or v.PrimaryPart
+                if r then
+                    npcPos = r.Position
+                    print("[Concuhub] Tìm thấy NPC Model:", v.Name)
+                    break
+                end
+            end
+        end
+    end
+
+    -- Cách 2: Tìm Part/BasePart tên chứa questNPC
+    if not npcPos then
+        for _, v in pairs(workspace:GetDescendants()) do
+            if v:IsA("BasePart") and v.Name:lower():find(data.questNPC:lower()) then
+                npcPos = v.Position
+                print("[Concuhub] Tìm thấy NPC Part:", v.Name)
+                break
+            end
+        end
+    end
+
+    if npcPos then
+        -- Bay đến NPC
+        FlyTo(npcPos + Vector3.new(0, 3, -5), 2)
+        task.wait(0.8)
+
+        -- Fire quest remote
+        pcall(function()
+            QuestRemote:FireServer(data.questNPC, data.island)
+            print("[Concuhub] FireServer quest:", data.questNPC)
+        end)
+
+        task.wait(0.5)
+        Fluent:Notify({
+            Title   = "Quest",
+            Content = "Nhận quest: " .. data.questNPC,
+            Duration = 3,
+        })
+    else
+        warn("[Concuhub] Không tìm thấy NPC:", data.questNPC)
+        Fluent:Notify({
+            Title   = "Quest",
+            Content = "Không tìm thấy NPC: " .. data.questNPC,
+            Duration = 3,
+        })
+    end
+
+    -- Bật lại farm sau khi quest xong
+    if State.farmEnabled and State.currentTarget and State.currentTarget.Parent then
+        State.isActive = true
+        StartNoFall(State.currentTarget)
+    else
+        -- Reset để main loop tìm mob mới
+        State.isActive      = false
+        State.currentTarget = nil
+        workspace.Gravity   = State.origGravity
+    end
+
+    State.isFlyingQuest = false
+end
+
+-- =====================================================
+-- SCAN MOB XA — quét toàn bộ map tìm đàn tiếp theo
+-- =====================================================
+local function findNearestMob(fromPos, maxDist)
+    local Enemies = workspace:FindFirstChild("Enemies")
+    if not Enemies then return nil, math.huge end
+
+    local closest = nil
+    local closestDist = maxDist or math.huge
 
     for _, Enemy in ipairs(Enemies:GetChildren()) do
         if not Enemy:IsA("Model") then continue end
         local EH = Enemy:FindFirstChildOfClass("Humanoid")
         local ER = Enemy:FindFirstChild("HumanoidRootPart")
         if not EH or EH.Health <= 0 or not ER then continue end
-        local dist = (Root.Position - ER.Position).Magnitude
-        if dist <= 500 then
-            ER.CFrame = Root.CFrame * CFrame.new(
-                math.random(-6,6), 0, math.random(-6,6)
-            )
+        local dist = (fromPos - ER.Position).Magnitude
+        if dist < closestDist then
+            closestDist = dist
+            closest     = Enemy
         end
     end
+
+    return closest, closestDist
 end
 
--- Auto Quest: bay đến NPC → nhận quest
-local function AcceptQuest()
-    local lv   = getPlayerLevel()
-    local data = getDataForLevel(lv)
+-- Bay đến đàn mob tiếp theo khi đàn hiện tại hết
+local function FlyToNextGroup()
+    local Char = LocalPlayer.Character
+    if not Char then return end
+    local Root = Char:FindFirstChild("HumanoidRootPart")
+    if not Root then return end
 
-    -- Tìm NPC trong workspace
-    local npcRoot = nil
-    for _, v in pairs(workspace:GetDescendants()) do
-        if v:IsA("Model") and v.Name:find(data.questNPC) then
-            local r = v:FindFirstChild("HumanoidRootPart") or v.PrimaryPart
-            if r then npcRoot = r; break end
-        end
-    end
+    print("[Concuhub] Tìm đàn mob tiếp theo trong", Cfg.scanRange, "studs...")
 
-    if npcRoot then
-        -- Tắt nofall để bay tự do
-        local wasActive = State.isActive
-        if State.noFallConn then
-            State.noFallConn:Disconnect()
-            State.noFallConn = nil
-        end
-
-        FlyTo(npcRoot.Position + Vector3.new(0, 3, -5), 2)
-        task.wait(0.5)
-
-        pcall(function()
-            QuestRemote:FireServer(data.questNPC, data.island)
-        end)
-
-        print("[Concuhub] Quest nhận:", data.questNPC, "Lv", lv)
-
-        -- Bật lại nofall nếu đang farm
-        if wasActive and State.currentTarget and State.currentTarget.Parent then
-            State.isActive = true
-            StartNoFall(State.currentTarget)
+    local nextMob, dist = findNearestMob(Root.Position, Cfg.scanRange)
+    if nextMob then
+        local ER = nextMob:FindFirstChild("HumanoidRootPart")
+        if ER then
+            print("[Concuhub] Bay đến đàn mới:", nextMob.Name, "cách", math.floor(dist), "studs")
+            Fluent:Notify({
+                Title   = "Farm",
+                Content = "Bay đến đàn mới: " .. nextMob.Name,
+                Duration = 2,
+            })
+            FlyTo(ER.Position + Vector3.new(0, 10, 0), math.clamp(dist/200, 0.5, 4))
+            State.isActive      = true
+            State.currentTarget = nextMob
+            StartNoFall(nextMob)
         end
     else
-        warn("[Concuhub] Không tìm thấy NPC:", data.questNPC)
+        print("[Concuhub] Không tìm thấy mob trong", Cfg.scanRange, "studs")
     end
 end
 
@@ -296,24 +455,24 @@ end
 task.spawn(function()
     while true do
         task.wait(0.001)
-        if State.farmEnabled and State.isActive then
+        if State.farmEnabled and State.isActive and not State.isFlyingQuest then
             VirtualInputManager:SendMouseButtonEvent(0,0,0,true,game,1)
             VirtualInputManager:SendMouseButtonEvent(0,0,0,false,game,1)
         end
     end
 end)
 
--- Quest loop mỗi 30s
+-- Quest loop
 task.spawn(function()
     while true do
-        task.wait(30)
-        if State.farmEnabled and State.autoQuest then
+        task.wait(Cfg.questInterval)
+        if State.farmEnabled and State.autoQuest and not State.isFlyingQuest then
             task.spawn(AcceptQuest)
         end
     end
 end)
 
--- Bring mob loop mỗi 2s
+-- Bring mob loop
 task.spawn(function()
     while true do
         task.wait(2)
@@ -327,9 +486,8 @@ end)
 task.spawn(function()
     while true do
         task.wait()
-
-        if not State.farmEnabled then
-            if State.isActive then ForceReset() end
+        if not State.farmEnabled or State.isFlyingQuest then
+            if State.isActive and not State.isFlyingQuest then ForceReset() end
             continue
         end
 
@@ -342,28 +500,26 @@ task.spawn(function()
             task.wait(0.2); continue
         end
 
-        local Enemies = workspace:FindFirstChild("Enemies")
-        if not Enemies then
-            if State.isActive then ForceReset() end
-            task.wait(0.2); continue
-        end
-
-        local Closest  = nil
-        local ClostDist = 200
+        -- Quét mob gần (trong attackRange)
+        local Closest   = nil
+        local ClostDist = Cfg.attackRange * 2  -- scan rộng hơn attackRange
         local AllNearby = {}
+        local Enemies   = workspace:FindFirstChild("Enemies")
 
-        for _, Enemy in ipairs(Enemies:GetChildren()) do
-            if not State.farmEnabled then break end
-            if not Enemy:IsA("Model") then continue end
-            local EH = Enemy:FindFirstChildOfClass("Humanoid")
-            local ER = Enemy:FindFirstChild("HumanoidRootPart")
-            if not EH or EH.Health <= 0 or not ER then continue end
-            local dist = (Root.Position - ER.Position).Magnitude
-            if dist <= 200 then
-                table.insert(AllNearby, Enemy)
-                if dist < ClostDist then
-                    ClostDist = dist
-                    Closest   = Enemy
+        if Enemies then
+            for _, Enemy in ipairs(Enemies:GetChildren()) do
+                if not State.farmEnabled then break end
+                if not Enemy:IsA("Model") then continue end
+                local EH = Enemy:FindFirstChildOfClass("Humanoid")
+                local ER = Enemy:FindFirstChild("HumanoidRootPart")
+                if not EH or EH.Health <= 0 or not ER then continue end
+                local dist = (Root.Position - ER.Position).Magnitude
+                if dist <= Cfg.attackRange * 2 then
+                    table.insert(AllNearby, Enemy)
+                    if dist < ClostDist then
+                        ClostDist = dist
+                        Closest   = Enemy
+                    end
                 end
             end
         end
@@ -375,7 +531,7 @@ task.spawn(function()
                 StartNoFall(Closest)
             end
 
-            -- Cập nhật target khi mob chết
+            -- Cập nhật target khi mob chết → tự chuyển sang mob kế
             if State.currentTarget then
                 local EH = State.currentTarget:FindFirstChildOfClass("Humanoid")
                 local ER = State.currentTarget:FindFirstChild("HumanoidRootPart")
@@ -385,13 +541,13 @@ task.spawn(function()
                 end
             end
 
-            -- FireServer mỗi mob trong 150 studs
+            -- FireServer tất cả mob trong attackRange
             for _, Enemy in ipairs(AllNearby) do
                 if not State.farmEnabled then break end
                 local EH = Enemy:FindFirstChildOfClass("Humanoid")
                 local ER = Enemy:FindFirstChild("HumanoidRootPart")
                 if not EH or EH.Health <= 0 or not ER then continue end
-                if (Root.Position - ER.Position).Magnitude > 150 then continue end
+                if (Root.Position - ER.Position).Magnitude > Cfg.attackRange then continue end
 
                 local TargetPart = Enemy:FindFirstChild("LeftLowerArm")
                     or Enemy:FindFirstChild("RightLowerArm")
@@ -399,146 +555,205 @@ task.spawn(function()
                     or Enemy:FindFirstChild("RightFoot")
                     or Enemy:FindFirstChild("Head") or ER
 
-                -- Dùng lastArgs để lấy hash mới nhất từ hook
-                -- Nếu hook không hoạt động thì fallback về args cũ
-                local args = {TargetPart, {}, [4] = lastArgs[4] or "079996f9"}
+                local args = {TargetPart, {}, [4] = lastHash}
                 pcall(function()
                     AttackRemote:FireServer(unpack(args))
                 end)
             end
+
         else
-            if State.isActive then ForceReset() end
+            -- Hết mob → tìm đàn tiếp theo trong scanRange
+            if State.isActive then
+                ForceReset()
+                task.wait(0.5)
+                if State.farmEnabled and not State.isFlyingQuest then
+                    task.spawn(FlyToNextGroup)
+                end
+            end
         end
     end
 end)
 
 -- =====================================================
--- FLUENT UI — Delta executor
+-- FLUENT UI — Theme hồng + Logo
 -- =====================================================
 local Window = Fluent:CreateWindow({
-    Title    = "Concuhub",
-    SubTitle = "by Quoc Hoa",
-    TabWidth = 160,
-    Size     = UDim2.fromOffset(560, 400),
-    Acrylic  = true,
-    Theme    = "Pink",  -- Theme hồng
-    MinimizeKey = Enum.KeyCode.LeftControl,
+    Title       = "Concuhub",
+    SubTitle    = "by Quoc Hoa | v2.0",
+    TabWidth    = 160,
+    Size        = UDim2.fromOffset(580, 420),
+    Acrylic     = true,
+    Theme       = "Pink",
+    MinimizeKey = Enum.KeyCode.RightControl,
+    -- Logo ID — thay bằng image ID của bạn
+    Icon        = "rbxassetid://7733960981",
 })
 
--- ── Tabs ──
 local Tabs = {
-    Farm = Window:AddTab({ Title = "Farm",  Icon = "sword" }),
+    Farm = Window:AddTab({ Title = "Farm",  Icon = "sword"    }),
+    Mob  = Window:AddTab({ Title = "Mob",   Icon = "target"   }),
+    Quest= Window:AddTab({ Title = "Quest", Icon = "map"      }),
     Misc = Window:AddTab({ Title = "Misc",  Icon = "settings" }),
-    Info = Window:AddTab({ Title = "Info",  Icon = "info" }),
+    Info = Window:AddTab({ Title = "Info",  Icon = "info"     }),
 }
 
 -- =====================================================
 -- TAB FARM
 -- =====================================================
-local FarmSection = Tabs.Farm:AddSection("⚔ Auto Farm")
+Tabs.Farm:AddSection("⚔ Auto Farm")
 
-Tabs.Farm:AddToggle("AutoFarm", {
+local AutoFarmToggle = Tabs.Farm:AddToggle("AutoFarm", {
     Title       = "Auto Farm",
-    Description = "Tự động tìm và đánh mob theo level",
+    Description = "Tự động đánh mob + bay đàn tiếp theo khi hết",
     Default     = false,
-}):OnChanged(function(v)
+})
+AutoFarmToggle:OnChanged(function(v)
     State.farmEnabled = v
     if not v and State.isActive then ForceReset() end
-    if v and State.autoQuest then
-        task.spawn(AcceptQuest)
+    if v then
+        if State.autoQuest then task.spawn(AcceptQuest) end
+        -- Tìm mob đầu tiên nếu chưa có target
+        if not State.isActive then
+            task.spawn(FlyToNextGroup)
+        end
     end
+    Fluent:Notify({
+        Title   = "Auto Farm",
+        Content = v and "Đã bật Farm" or "Đã tắt Farm",
+        Duration = 2,
+    })
 end)
 
-local QuestSection = Tabs.Farm:AddSection("🎯 Quest")
+Tabs.Farm:AddSlider("ScanRange", {
+    Title       = "Scan Range (studs)",
+    Description = "Phạm vi quét đàn mob tiếp theo",
+    Default     = 2000,
+    Min         = 200,
+    Max         = 5000,
+    Rounding    = 100,
+}):OnChanged(function(v) Cfg.scanRange = v end)
 
-Tabs.Farm:AddToggle("AutoQuest", {
-    Title       = "Auto Quest",
-    Description = "Tự nhận quest phù hợp với level hiện tại",
-    Default     = false,
-}):OnChanged(function(v)
-    State.autoQuest = v
-    if v and State.farmEnabled then
-        task.spawn(AcceptQuest)
-    end
-end)
+Tabs.Farm:AddSlider("AttackRange", {
+    Title       = "Attack Range (studs)",
+    Description = "Phạm vi tấn công mob",
+    Default     = 150,
+    Min         = 50,
+    Max         = 400,
+    Rounding    = 10,
+}):OnChanged(function(v) Cfg.attackRange = v end)
 
 Tabs.Farm:AddButton({
-    Title       = "Nhận Quest Ngay",
-    Description = "Fly đến NPC và nhận quest",
+    Title       = "Bay Đàn Tiếp Theo",
+    Description = "Tìm và bay đến đàn mob gần nhất",
     Callback    = function()
-        task.spawn(AcceptQuest)
+        task.spawn(FlyToNextGroup)
     end,
 })
 
-local MobSection = Tabs.Farm:AddSection("🧲 Mob Control")
+-- =====================================================
+-- TAB MOB
+-- =====================================================
+Tabs.Mob:AddSection("🧲 Bring Mob")
 
-Tabs.Farm:AddToggle("BringMob", {
-    Title       = "Bring Mob",
-    Description = "Kéo tất cả mob trong 500 studs về gần",
+local BringToggle = Tabs.Mob:AddToggle("BringMob", {
+    Title       = "Auto Bring Mob",
+    Description = "Tự động kéo mob về mỗi 2 giây",
     Default     = false,
-}):OnChanged(function(v)
+})
+BringToggle:OnChanged(function(v)
     State.bringMob = v
 end)
 
-Tabs.Farm:AddButton({
-    Title    = "Bring Mob Ngay",
-    Description = "Kéo mob 1 lần ngay bây giờ",
-    Callback = function()
+Tabs.Mob:AddSlider("BringRange", {
+    Title       = "Bring Range (studs)",
+    Description = "Phạm vi kéo mob về",
+    Default     = 500,
+    Min         = 100,
+    Max         = 2000,
+    Rounding    = 50,
+}):OnChanged(function(v) Cfg.bringRange = v end)
+
+Tabs.Mob:AddButton({
+    Title       = "Bring Mob Ngay",
+    Description = "Kéo tất cả mob về 1 lần",
+    Callback    = function()
         BringMobs()
+        Fluent:Notify({ Title = "Bring Mob", Content = "Đã kéo mob về!", Duration = 2 })
+    end,
+})
+
+-- =====================================================
+-- TAB QUEST
+-- =====================================================
+Tabs.Quest:AddSection("🎯 Auto Quest")
+
+local QuestToggle = Tabs.Quest:AddToggle("AutoQuest", {
+    Title       = "Auto Quest",
+    Description = "Tự nhận quest theo level mỗi 30 giây",
+    Default     = false,
+})
+QuestToggle:OnChanged(function(v)
+    State.autoQuest = v
+    if v and State.farmEnabled then task.spawn(AcceptQuest) end
+end)
+
+Tabs.Quest:AddSlider("QuestInterval", {
+    Title       = "Quest Interval (giây)",
+    Description = "Tần suất tự nhận quest",
+    Default     = 30,
+    Min         = 10,
+    Max         = 120,
+    Rounding    = 5,
+}):OnChanged(function(v) Cfg.questInterval = v end)
+
+Tabs.Quest:AddButton({
+    Title       = "Nhận Quest Ngay",
+    Description = "Bay đến NPC và nhận quest phù hợp level",
+    Callback    = function()
+        if State.isFlyingQuest then
+            Fluent:Notify({ Title = "Quest", Content = "Đang bay nhận quest rồi...", Duration = 2 })
+            return
+        end
+        task.spawn(AcceptQuest)
     end,
 })
 
 -- =====================================================
 -- TAB MISC
 -- =====================================================
-Tabs.Misc:AddSection("⚙ Settings")
+Tabs.Misc:AddSection("⚙ Cài Đặt")
 
-Tabs.Misc:AddSlider("AttackRange", {
-    Title   = "Attack Range",
-    Description = "Phạm vi đánh mob (studs)",
-    Default = 150,
-    Min     = 50,
-    Max     = 300,
-    Rounding = 10,
-}):OnChanged(function(v)
-    -- Dùng biến global để main loop đọc
-    _G.AttackRange = v
-end)
-_G.AttackRange = 150
+Tabs.Misc:AddButton({
+    Title    = "Force Reset",
+    Description = "Reset nhân vật về trạng thái bình thường",
+    Callback = function()
+        State.farmEnabled = false
+        State.isFlyingQuest = false
+        ForceReset()
+        Fluent:Notify({ Title = "Reset", Content = "Đã reset!", Duration = 2 })
+    end,
+})
 
-Tabs.Misc:AddSlider("ScanRange", {
-    Title   = "Scan Range",
-    Description = "Phạm vi quét mob (studs)",
-    Default = 200,
-    Min     = 100,
-    Max     = 500,
-    Rounding = 10,
-}):OnChanged(function(v)
-    _G.ScanRange = v
-end)
-_G.ScanRange = 200
-
-Tabs.Misc:AddSlider("QuestInterval", {
-    Title   = "Quest Interval (giây)",
-    Description = "Tần suất tự nhận quest",
-    Default = 30,
-    Min     = 10,
-    Max     = 120,
-    Rounding = 5,
-}):OnChanged(function(v)
-    _G.QuestInterval = v
-end)
-_G.QuestInterval = 30
+SaveManager:SetLibrary(Fluent)
+InterfaceManager:SetLibrary(Fluent)
+InterfaceManager:SetFolder("Concuhub")
+SaveManager:SetFolder("Concuhub/configs")
+SaveManager:BuildConfigSection(Tabs.Misc)
+InterfaceManager:BuildInterfaceSection(Tabs.Misc)
 
 -- =====================================================
 -- TAB INFO
 -- =====================================================
-Tabs.Info:AddSection("📊 Thông Tin Nhân Vật")
+Tabs.Info:AddSection("📊 Thông Tin")
 
--- Paragraph hiển thị info realtime
 local InfoParagraph = Tabs.Info:AddParagraph({
-    Title   = "Level Info",
+    Title   = "Nhân Vật",
     Content = "Đang tải...",
+})
+
+local StatusParagraph = Tabs.Info:AddParagraph({
+    Title   = "Trạng Thái",
+    Content = "Farm: OFF",
 })
 
 task.spawn(function()
@@ -548,57 +763,49 @@ task.spawn(function()
         local data = getDataForLevel(lv)
         pcall(function()
             InfoParagraph:SetContent(
-                "Level: "    .. lv           .. "\n" ..
-                "Sea: "      .. data.sea     .. "\n" ..
-                "Island: "   .. data.island  .. "\n" ..
-                "Quest NPC: ".. data.questNPC.. "\n" ..
-                "Mob: "      .. data.mobName .. "\n" ..
-                "Range: Lv " .. data.minLv   .. " → " .. data.maxLv
+                "Level: "    .. lv            .. "\n" ..
+                "Sea: "      .. data.sea      .. "\n" ..
+                "Island: "   .. data.island   .. "\n" ..
+                "Quest NPC: ".. data.questNPC .. "\n" ..
+                "Mob: "      .. data.mobName  .. "\n" ..
+                "Lv Range: " .. data.minLv .. " → " .. data.maxLv
+            )
+            StatusParagraph:SetContent(
+                "Farm: "      .. (State.farmEnabled and "ON ✓" or "OFF") .. "\n" ..
+                "AutoQuest: " .. (State.autoQuest and "ON ✓" or "OFF")   .. "\n" ..
+                "BringMob: "  .. (State.bringMob and "ON ✓" or "OFF")    .. "\n" ..
+                "Flying Quest: " .. (State.isFlyingQuest and "YES" or "NO") .. "\n" ..
+                "Hash: "      .. lastHash
             )
         end)
     end
 end)
 
-Tabs.Info:AddSection("🔧 Debug")
-
 Tabs.Info:AddButton({
-    Title    = "In Remote Args",
-    Description = "In ra hash đang dùng vào console",
+    Title    = "Debug Info",
+    Description = "In thông tin debug ra console",
     Callback = function()
-        print("[Concuhub] Last args index 4:", lastArgs[4] or "chưa có")
-        print("[Concuhub] Quest Remote:", QuestRemote:GetFullName())
-        print("[Concuhub] Attack Remote:", AttackRemote:GetFullName())
+        print("=== CONCUHUB DEBUG ===")
+        print("Hash:", lastHash)
+        print("Attack Remote:", AttackRemote:GetFullName())
+        print("Quest Remote:", QuestRemote:GetFullName())
+        print("Farm:", State.farmEnabled)
+        print("Scan Range:", Cfg.scanRange)
+        print("Attack Range:", Cfg.attackRange)
+        print("======================")
     end,
 })
 
-Tabs.Info:AddButton({
-    Title    = "Force Reset",
-    Description = "Reset nhân vật về bình thường",
-    Callback = function()
-        State.farmEnabled = false
-        ForceReset()
-        Fluent:Notify({ Title = "Reset", Content = "Đã reset nhân vật", Duration = 3 })
-    end,
-})
-
--- ── Save config ──
-SaveManager:SetLibrary(Fluent)
-InterfaceManager:SetLibrary(Fluent)
-InterfaceManager:SetFolder("Concuhub")
-SaveManager:SetFolder("Concuhub/configs")
-SaveManager:BuildConfigSection(Tabs.Misc)
-InterfaceManager:BuildInterfaceSection(Tabs.Misc)
+-- ── Load config ──
 SaveManager:LoadAutoloadConfig()
-
 Window:SelectTab(1)
 
 Fluent:Notify({
-    Title    = "Concuhub loaded",
-    Content  = "by Quoc Hoa | Farm: OFF",
+    Title    = "Concuhub v2.0",
+    Content  = "Loaded! Bật Auto Farm để bắt đầu.",
     Duration = 5,
 })
 
-print("[Concuhub] Script loaded ✓")
-print("[Concuhub] Quest Remote:", QuestRemote:GetFullName())
-print("[Concuhub] Attack Remote:", AttackRemote:GetFullName())
+print("[Concuhub v2.0] Loaded OK")
+print("[Concuhub] Hash hiện tại:", lastHash)
  
