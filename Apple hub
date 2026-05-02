@@ -578,15 +578,15 @@ end)
 -- FLUENT UI — Theme hồng + Logo
 -- =====================================================
 local Window = Fluent:CreateWindow({
-    Title       = "Concuhub",
-    SubTitle    = "by Quoc Hoa | v2.0",
+    Title       = "Vexz Hub",
+    SubTitle    = "by Quoc Hoa",
     TabWidth    = 160,
     Size        = UDim2.fromOffset(580, 420),
     Acrylic     = true,
     Theme       = "Pink",
     MinimizeKey = Enum.KeyCode.RightControl,
     -- Logo ID — thay bằng image ID của bạn
-    Icon        = "rbxassetid://7733960981",
+    Icon        = "rbxassetid://118274073113294",
 })
 
 local Tabs = {
@@ -796,6 +796,52 @@ Tabs.Info:AddButton({
     end,
 })
 
+-- =====================================================
+-- NÚT LOGO NGOÀI MÀN HÌNH ĐỂ BẬT/TẮT UI
+-- =====================================================
+local LogoButton = Instance.new("ImageButton")
+LogoButton.Size = UDim2.new(0, 55, 0, 55)
+LogoButton.Position = UDim2.new(0.01, 0, 0.5, -27)
+LogoButton.AnchorPoint = Vector2.new(0, 0.5)
+LogoButton.BackgroundTransparency = 1
+LogoButton.Image = "rbxassetid://118274073113294"
+LogoButton.Parent = game:GetService("CoreGui")
+
+local LogoCorner = Instance.new("UICorner", LogoButton)
+LogoCorner.CornerRadius = UDim.new(1, 12)
+
+local LogoStroke = Instance.new("UIStroke", LogoButton)
+LogoStroke.Color = Color3.fromRGB(255, 100, 100)
+LogoStroke.Thickness = 2
+
+local dragging, dragStart, startPos
+LogoButton.InputBegan:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 then
+        dragging = true
+        dragStart = input.Position
+        startPos = LogoButton.Position
+        input.Changed:Connect(function()
+            if input.UserInputState == Enum.UserInputState.End then
+                dragging = false
+            end
+        end)
+    end
+end)
+
+game:GetService("UserInputService").InputChanged:Connect(function(input)
+    if dragging and input.UserInputType == Enum.UserInputType.MouseMovement then
+        local delta = input.Position - dragStart
+        LogoButton.Position = UDim2.new(
+            startPos.X.Scale, startPos.X.Offset + delta.X,
+            startPos.Y.Scale, startPos.Y.Offset + delta.Y
+        )
+    end
+end)
+
+LogoButton.MouseButton1Click:Connect(function()
+    Window:Toggle()
+end)
+
 -- ── Load config ──
 SaveManager:LoadAutoloadConfig()
 Window:SelectTab(1)
@@ -807,5 +853,4 @@ Fluent:Notify({
 })
 
 print("[Concuhub v2.0] Loaded OK")
-print("[Concuhub] Hash hiện tại:", lastHash)
- 
+print("[Concuhub] Hash hiện tại:", lastHash) 
