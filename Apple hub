@@ -16,10 +16,12 @@ task.spawn(function()
     local OriginalWalkSpeed = 16
     local OriginalJumpPower = 50
     local NoFallConnection = nil
+    local BroughtMobs = {}  -- Lưu quái đã kéo rồi
     
     local function ForceReset()
         IsActive = false
         CurrentTarget = nil
+        BroughtMobs = {}
         
         if NoFallConnection then
             NoFallConnection:Disconnect()
@@ -107,45 +109,6 @@ task.spawn(function()
         end
     end)
     
-    -- Bring Mob
-    _G.BringMob = true
-    task.spawn(function()
-        while _G.FastAttackAll do
-            if _G.BringMob and IsActive then
-                local Char = LocalPlayer.Character
-                if Char then
-                    local Root = Char:FindFirstChild("HumanoidRootPart")
-                    if Root then
-                        local Enemies = workspace:FindFirstChild("Enemies")
-                        if Enemies then
-                            for _, Enemy in ipairs(Enemies:GetChildren()) do
-                                if Enemy:IsA("Model") then
-                                    local Humanoid = Enemy:FindFirstChildOfClass("Humanoid")
-                                    local EnemyRoot = Enemy:FindFirstChild("HumanoidRootPart")
-                                    if Humanoid and Humanoid.Health > 0 and EnemyRoot then
-                                        local Distance = (Root.Position - EnemyRoot.Position).Magnitude
-                                        if Distance < 200 then
-                                            EnemyRoot.CFrame = Root.CFrame * CFrame.new(0, 0, -5)
-                                            EnemyRoot.Velocity = Vector3.new(0, 0, 0)
-                                            EnemyRoot.RotVelocity = Vector3.new(0, 0, 0)
-                                            Humanoid.WalkSpeed = 0
-                                            Humanoid.JumpPower = 0
-                                            local Animator = Humanoid:FindFirstChild("Animator")
-                                            if Animator then
-                                                Animator:Destroy()
-                                            end
-                                        end
-                                    end
-                                end
-                            end
-                        end
-                    end
-                end
-            end
-            task.wait(0.1)
-        end
-    end)
-    
     while _G.FastAttackAll do
         local Character = LocalPlayer.Character
         if not Character then
@@ -196,6 +159,18 @@ task.spawn(function()
                     ClosestDistance = Distance
                     ClosestEnemy = Enemy
                 end
+                
+                -- Bring Mob: Chỉ kéo 1 lần, không kéo lại
+                if not BroughtMobs[Enemy] and Distance > 10 then
+                    EnemyRoot.CFrame = Root.CFrame * CFrame.new(math.random(-3, 3), 0, math.random(-5, -2))
+                    EnemyRoot.Velocity = Vector3.new(0, 0, 0)
+                    EnemyRoot.RotVelocity = Vector3.new(0, 0, 0)
+                    EnemyHumanoid.WalkSpeed = 0
+                    EnemyHumanoid.JumpPower = 0
+                    local Animator = EnemyHumanoid:FindFirstChild("Animator")
+                    if Animator then Animator:Destroy() end
+                    BroughtMobs[Enemy] = true
+                end
             end
         end
         
@@ -242,4 +217,4 @@ task.spawn(function()
         
         task.wait()
     end
-end)
+end) 
