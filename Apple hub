@@ -103,19 +103,8 @@ local AttackRemote = ReplicatedStorage:WaitForChild("Modules")
     :WaitForChild("Net"):WaitForChild("RE/RegisterHit")
 
 -- Tìm Quest Remote
-local QuestRemote = nil
-task.spawn(function()
-    for _, v in pairs(ReplicatedStorage:GetDescendants()) do
-        if v:IsA("RemoteEvent") and (
-            v.Name:lower():find("quest") or
-            v.Name:lower():find("accept")
-        ) then
-            QuestRemote = v
-            print("[Concuhub] Quest Remote:", v:GetFullName())
-            break
-        end
-    end
-end)
+local QuestRemote = ReplicatedStorage:WaitForChild("Remotes"):WaitForChild("QuestUpdate")
+
 
 -- =====================================================
 -- TRẠNG THÁI TOÀN CỤC
@@ -284,7 +273,7 @@ local function AcceptQuest()
             -- Fire quest remote nếu có
             if QuestRemote then
                 pcall(function()
-                    QuestRemote:FireServer(data.questNPC)
+                    QuestRemote:FireServer(data.questNPC, data.island)
                 end)
             end
             print("[Concuhub] Nhận quest:", data.questNPC, "| Level:", level)
@@ -479,7 +468,7 @@ Window.Size            = UDim2.new(0, 380, 0, 480)
 Window.Position        = UDim2.new(0.5, -190, 0.5, -240)
 Window.BackgroundColor3 = C.bg
 Window.BorderSizePixel = 0
-Window.ClipDescendants = true
+-- ClipDescendants removed (not supported in executor)
 Window.Parent          = ScreenGui
 
 local WinCorner = Instance.new("UICorner")
