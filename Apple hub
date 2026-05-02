@@ -3,6 +3,14 @@
 -- ║   Auto Farm + Quest + Bring Mob + Fluent UI     ║
 -- ╚══════════════════════════════════════════════════╝
 
+-- Load Fluent UI (Delta executor có sẵn)
+local Fluent = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
+local SaveManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/SaveManager.lua"))()
+local InterfaceManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/InterfaceManager.lua"))()
+
+-- =====================================================
+-- SERVICES
+-- =====================================================
 local Players             = game:GetService("Players")
 local ReplicatedStorage   = game:GetService("ReplicatedStorage")
 local RunService          = game:GetService("RunService")
@@ -12,86 +20,72 @@ local UserInputService    = game:GetService("UserInputService")
 local LocalPlayer         = Players.LocalPlayer
 
 -- =====================================================
--- LEVEL DATA — Quest NPC + Mob theo từng level range
--- Level 1 → 2800
+-- LEVEL DATA — Lv 1 → 2800
+-- { minLv, maxLv, sea, island, questNPC, mobName }
 -- =====================================================
 local LevelData = {
-    -- { minLv, maxLv, sea, island, questNPC, mobFolder, mobName, bossName }
-    {1,   15,  1, "StartIsland",      "Villager1",     "Enemies", "Bandit",          nil},
-    {15,  30,  1, "StartIsland",      "Villager2",     "Enemies", "Bandit",          nil},
-    {30,  60,  1, "Jungle",           "Gorilla King",  "Enemies", "Gorilla",         nil},
-    {60,  90,  1, "PirateVillage",    "Pirate",        "Enemies", "Pirate",          nil},
-    {90,  120, 1, "Desert",           "Desert Bandit", "Enemies", "Desert Bandit",   nil},
-    {120, 150, 1, "SnowIsland",       "Snow Bandit",   "Enemies", "Snow Bandit",     nil},
-    {150, 200, 1, "MarineBase",       "Lieutenant",    "Enemies", "Ensign",          nil},
-    {200, 250, 1, "Skylands",         "Sky Bandit",    "Enemies", "Sky Bandit",      nil},
-    {250, 300, 1, "Fountain City",    "Citizen",       "Enemies", "Citizen",         nil},
-    {300, 375, 1, "GraveyardIsland",  "Zombie",        "Enemies", "Zombie",          nil},
-    {375, 450, 1, "Thriller Bark",    "Zombie",        "Enemies", "Zombie",          nil},
-    {450, 500, 1, "ColossiumIsland",  "Gladiator",     "Enemies", "Gladiator",       nil},
-    {500, 575, 1, "Magma Village",    "Magma Ninja",   "Enemies", "Magma Ninja",     nil},
-    {575, 625, 1, "IronIsland",       "Dark Master",   "Enemies", "Dark Master",     nil},
-    {625, 700, 1, "ZombieIsland",     "Dragon Crew",   "Enemies", "Dragon Crew Archer", nil},
-    {700, 750, 1, "DragonIsland",     "Dragon Crew",   "Enemies", "Dragon Crew Swordsman", nil},
-    -- Sea 2
-    {700, 775, 2, "Kingdom of Rose",  "Flower",        "Enemies", "Chocolate Bar Battler", nil},
-    {775, 850, 2, "DarkArena",        "Imp",           "Enemies", "Imp",             nil},
-    {850, 925, 2, "Ice Side",         "Ice Cream",     "Enemies", "Snow Lurker",     nil},
-    {925, 1000,2, "Forgotten Island", "Forest Pirate", "Enemies", "Forest Pirate",   nil},
-    {1000,1050,2, "Usopp Island",     "Military Soldier","Enemies","Military Soldier",nil},
-    {1050,1100,2, "OakIsland",        "Diable",        "Enemies", "Diable",          nil},
-    {1100,1200,2, "Dimensional Rift", "Dimensional Rift","Enemies","Deranged Slasher",nil},
-    {1200,1250,2, "Mini Sky",         "Sky Stalker",   "Enemies", "Sky Stalker",     nil},
-    {1250,1350,2, "CastleOnTheSea",   "Royal Soldier", "Enemies", "Royal Soldier",   nil},
-    {1350,1425,2, "SeaOfTreat",       "Sea Soldier",   "Enemies", "Sea Soldier",     nil},
-    {1425,1500,2, "HotAndCold",       "Ice Cream Islander","Enemies","Ice Cream Islander",nil},
-    {1500,1575,2, "Terrorshark",      "Ship Deckhand", "Enemies", "Ship Deckhand",   nil},
-    -- Sea 3
-    {1575,1650,3, "Floating Turtle",  "Fishman",       "Enemies", "Fishman Raider",  nil},
-    {1650,1700,3, "ForestOfGiants",   "Poseidon",      "Enemies", "Giant Warrior",   nil},
-    {1700,1750,3, "Hydra Island",     "Marine Lieutenant","Enemies","Marine Lieutenant",nil},
-    {1750,1800,3, "NewWorld",         "Pirate Admin",  "Enemies", "Pirate Admin",    nil},
-    {1800,1875,3, "Tiki Outpost",     "Pirate Millionaire","Enemies","Pirate Millionaire",nil},
-    {1875,1950,3, "TreasureIsland",   "Corrupt Master","Enemies", "Corrupt Master",  nil},
-    {1950,2025,3, "Haunted Castle",   "Sea Samurai",   "Enemies", "Reborn Skeleton", nil},
-    {2025,2100,3, "FarEast",          "Order Leader",  "Enemies", "Order",           nil},
-    {2100,2175,3, "GraveIsland",      "Adventurer",    "Enemies", "Adventurer",      nil},
-    {2175,2275,3, "FrozenPeak",       "Snow Boss",     "Enemies", "Yeti",            nil},
-    {2275,2375,3, "Cursed Ship",      "Pirate Lord",   "Enemies", "Cursed Dual Katana User", nil},
-    {2375,2475,3, "LegacyPort",       "Pirate Warrior","Enemies", "Pirate Warrior",  nil},
-    {2475,2575,3, "BartolomeoIsland", "Bartolomeo",    "Enemies", "Beautiful Pirate",nil},
-    {2575,2650,3, "LondonIsland",     "Kaiju",         "Enemies", "Kaiju",           nil},
-    {2650,2700,3, "Haunted Island",   "Poltergeist",   "Enemies", "Poltergeist",     nil},
-    {2700,2800,3, "GhostIsland",      "Demonic Soul",  "Enemies", "Demonic Soul",    nil},
+    {1,   15,  1, "StartIsland",       "Villager1",          "Bandit"},
+    {15,  30,  1, "StartIsland",       "Villager2",          "Bandit"},
+    {30,  60,  1, "Jungle",            "Gorilla King",       "Gorilla"},
+    {60,  90,  1, "PirateVillage",     "Pirate",             "Pirate"},
+    {90,  120, 1, "Desert",            "Desert Bandit",      "Desert Bandit"},
+    {120, 150, 1, "SnowIsland",        "Snow Bandit",        "Snow Bandit"},
+    {150, 200, 1, "MarineBase",        "Lieutenant",         "Ensign"},
+    {200, 250, 1, "Skylands",          "Sky Bandit",         "Sky Bandit"},
+    {250, 300, 1, "Fountain City",     "Citizen",            "Citizen"},
+    {300, 375, 1, "GraveyardIsland",   "Zombie",             "Zombie"},
+    {375, 450, 1, "Thriller Bark",     "Zombie",             "Zombie"},
+    {450, 500, 1, "ColossiumIsland",   "Gladiator",          "Gladiator"},
+    {500, 575, 1, "Magma Village",     "Magma Ninja",        "Magma Ninja"},
+    {575, 625, 1, "IronIsland",        "Dark Master",        "Dark Master"},
+    {625, 700, 1, "ZombieIsland",      "Dragon Crew",        "Dragon Crew Archer"},
+    {700, 750, 1, "DragonIsland",      "Dragon Crew",        "Dragon Crew Swordsman"},
+    {700, 775, 2, "Kingdom of Rose",   "Flower",             "Chocolate Bar Battler"},
+    {775, 850, 2, "DarkArena",         "Imp",                "Imp"},
+    {850, 925, 2, "Ice Side",          "Ice Cream",          "Snow Lurker"},
+    {925, 1000,2, "Forgotten Island",  "Forest Pirate",      "Forest Pirate"},
+    {1000,1050,2, "Usopp Island",      "Military Soldier",   "Military Soldier"},
+    {1050,1100,2, "OakIsland",         "Diable",             "Diable"},
+    {1100,1200,2, "Dimensional Rift",  "Dimensional Rift",   "Deranged Slasher"},
+    {1200,1250,2, "Mini Sky",          "Sky Stalker",        "Sky Stalker"},
+    {1250,1350,2, "CastleOnTheSea",    "Royal Soldier",      "Royal Soldier"},
+    {1350,1425,2, "SeaOfTreat",        "Sea Soldier",        "Sea Soldier"},
+    {1425,1500,2, "HotAndCold",        "Ice Cream Islander", "Ice Cream Islander"},
+    {1500,1575,2, "Terrorshark",       "Ship Deckhand",      "Ship Deckhand"},
+    {1575,1650,3, "Floating Turtle",   "Fishman",            "Fishman Raider"},
+    {1650,1700,3, "ForestOfGiants",    "Poseidon",           "Giant Warrior"},
+    {1700,1750,3, "Hydra Island",      "Marine Lieutenant",  "Marine Lieutenant"},
+    {1750,1800,3, "NewWorld",          "Pirate Admin",       "Pirate Admin"},
+    {1800,1875,3, "Tiki Outpost",      "Pirate Millionaire", "Pirate Millionaire"},
+    {1875,1950,3, "TreasureIsland",    "Corrupt Master",     "Corrupt Master"},
+    {1950,2025,3, "Haunted Castle",    "Sea Samurai",        "Reborn Skeleton"},
+    {2025,2100,3, "FarEast",           "Order Leader",       "Order"},
+    {2100,2175,3, "GraveIsland",       "Adventurer",         "Adventurer"},
+    {2175,2275,3, "FrozenPeak",        "Snow Boss",          "Yeti"},
+    {2275,2375,3, "Cursed Ship",       "Pirate Lord",        "Cursed Dual Katana User"},
+    {2375,2475,3, "LegacyPort",        "Pirate Warrior",     "Pirate Warrior"},
+    {2475,2575,3, "BartolomeoIsland",  "Bartolomeo",         "Beautiful Pirate"},
+    {2575,2650,3, "LondonIsland",      "Kaiju",              "Kaiju"},
+    {2650,2700,3, "Haunted Island",    "Poltergeist",        "Poltergeist"},
+    {2700,2800,3, "GhostIsland",       "Demonic Soul",       "Demonic Soul"},
 }
 
--- Tìm data phù hợp với level hiện tại
 local function getDataForLevel(level)
-    for _, data in ipairs(LevelData) do
-        if level >= data[1] and level < data[2] then
-            return {
-                minLv      = data[1],
-                maxLv      = data[2],
-                sea        = data[3],
-                island     = data[4],
-                questNPC   = data[5],
-                mobFolder  = data[6],
-                mobName    = data[7],
-            }
-        end
+    for i = #LevelData, 1, -1 do
+        local d = LevelData[i]
+        if level >= d[1] then return {
+            minLv=d[1], maxLv=d[2], sea=d[3],
+            island=d[4], questNPC=d[5], mobName=d[6]
+        } end
     end
-    return LevelData[#LevelData]
+    return {minLv=1,maxLv=15,sea=1,island="StartIsland",questNPC="Villager1",mobName="Bandit"}
 end
 
 local function getPlayerLevel()
-    local Char = LocalPlayer.Character
-    if not Char then return 1 end
-    local Hum = Char:FindFirstChildOfClass("Humanoid")
-    -- Blox Fruits lưu level trong leaderstats
     local stats = LocalPlayer:FindFirstChild("leaderstats")
     if stats then
         local lv = stats:FindFirstChild("Level") or stats:FindFirstChild("Lv")
-        if lv then return lv.Value end
+        if lv then return tonumber(lv.Value) or 1 end
     end
     return 1
 end
@@ -102,27 +96,44 @@ end
 local AttackRemote = ReplicatedStorage:WaitForChild("Modules")
     :WaitForChild("Net"):WaitForChild("RE/RegisterHit")
 
--- Tìm Quest Remote
-local QuestRemote = ReplicatedStorage:WaitForChild("Remotes"):WaitForChild("QuestUpdate")
+local QuestRemote = ReplicatedStorage:WaitForChild("Remotes")
+    :WaitForChild("QuestUpdate")
 
+-- FIX DAME: Hook AttackRemote để tự lấy hash mới nhất
+-- Mỗi lần game gốc fire → ta lấy args đó dùng lại
+local lastArgs = {nil, {}, [4] = "079996f9"}
+
+pcall(function()
+    local mt = getrawmetatable(game)
+    local oldIndex = mt.__namecall
+    setreadonly(mt, false)
+    mt.__namecall = newcclosure(function(self, ...)
+        local method = getnamecallmethod()
+        if method == "FireServer" and self == AttackRemote then
+            lastArgs = {...}  -- Lưu args mới nhất từ game gốc
+        end
+        return oldIndex(self, ...)
+    end)
+    setreadonly(mt, true)
+end)
 
 -- =====================================================
--- TRẠNG THÁI TOÀN CỤC
+-- STATE
 -- =====================================================
 local State = {
-    farmEnabled    = false,
-    bringMob       = false,
-    autoQuest      = false,
-    isActive       = false,
-    currentTarget  = nil,
-    noFallConn     = nil,
-    originalGravity = workspace.Gravity,
-    originalWalkSpeed = 16,
-    originalJumpPower = 50,
+    farmEnabled   = false,
+    bringMob      = false,
+    autoQuest     = false,
+    isActive      = false,
+    currentTarget = nil,
+    noFallConn    = nil,
+    origGravity   = workspace.Gravity,
+    origWalk      = 16,
+    origJump      = 50,
 }
 
 -- =====================================================
--- CORE FUNCTIONS
+-- CORE
 -- =====================================================
 local function ForceReset()
     State.isActive      = false
@@ -133,28 +144,27 @@ local function ForceReset()
         State.noFallConn = nil
     end
 
-    workspace.Gravity = State.originalGravity
+    workspace.Gravity = State.origGravity
     UserInputService.MouseIconEnabled = true
 
     local Char = LocalPlayer.Character
-    if Char then
-        local Hum = Char:FindFirstChildOfClass("Humanoid")
-        if Hum then
-            Hum.WalkSpeed     = State.originalWalkSpeed
-            Hum.JumpPower     = State.originalJumpPower
-            Hum.PlatformStand = false
-            Hum.AutoRotate    = true
-        end
-        local Root = Char:FindFirstChild("HumanoidRootPart")
-        if Root then
-            Root.Velocity                = Vector3.new(0,0,0)
-            Root.RotVelocity             = Vector3.new(0,0,0)
-            Root.AssemblyLinearVelocity  = Vector3.new(0,0,0)
-            Root.AssemblyAngularVelocity = Vector3.new(0,0,0)
-        end
-        for _, Part in ipairs(Char:GetDescendants()) do
-            if Part:IsA("BasePart") then Part.CanCollide = true end
-        end
+    if not Char then return end
+    local Hum = Char:FindFirstChildOfClass("Humanoid")
+    if Hum then
+        Hum.WalkSpeed     = State.origWalk
+        Hum.JumpPower     = State.origJump
+        Hum.PlatformStand = false
+        Hum.AutoRotate    = true
+    end
+    local Root = Char:FindFirstChild("HumanoidRootPart")
+    if Root then
+        Root.Velocity                = Vector3.new(0,0,0)
+        Root.RotVelocity             = Vector3.new(0,0,0)
+        Root.AssemblyLinearVelocity  = Vector3.new(0,0,0)
+        Root.AssemblyAngularVelocity = Vector3.new(0,0,0)
+    end
+    for _, p in ipairs(Char:GetDescendants()) do
+        if p:IsA("BasePart") then p.CanCollide = true end
     end
 end
 
@@ -170,16 +180,16 @@ local function StartNoFall(Target)
     if Char then
         local Hum = Char:FindFirstChildOfClass("Humanoid")
         if Hum then
-            State.originalWalkSpeed = Hum.WalkSpeed
-            State.originalJumpPower = Hum.JumpPower
-            Hum.WalkSpeed           = 0
-            Hum.JumpPower           = 0
-            Hum.PlatformStand       = true
-            Hum.AutoRotate          = false
+            State.origWalk    = Hum.WalkSpeed
+            State.origJump    = Hum.JumpPower
+            Hum.WalkSpeed     = 0
+            Hum.JumpPower     = 0
+            Hum.PlatformStand = true
+            Hum.AutoRotate    = false
         end
-        for _, Part in ipairs(Char:GetDescendants()) do
-            if Part:IsA("BasePart") and Part.Name ~= "HumanoidRootPart" then
-                Part.CanCollide = false
+        for _, p in ipairs(Char:GetDescendants()) do
+            if p:IsA("BasePart") and p.Name ~= "HumanoidRootPart" then
+                p.CanCollide = false
             end
         end
     end
@@ -187,124 +197,123 @@ local function StartNoFall(Target)
     State.noFallConn = RunService.RenderStepped:Connect(function()
         if not State.isActive then return end
         local C = LocalPlayer.Character
-        if C and Target and Target.Parent then
-            local Root      = C:FindFirstChild("HumanoidRootPart")
-            local EnemyRoot = Target:FindFirstChild("HumanoidRootPart")
-            if Root and EnemyRoot then
-                Root.CFrame                  = EnemyRoot.CFrame * CFrame.new(0, 10, 0)
-                Root.Velocity                = Vector3.new(0,0,0)
-                Root.RotVelocity             = Vector3.new(0,0,0)
-                Root.AssemblyLinearVelocity  = Vector3.new(0,0,0)
-                Root.AssemblyAngularVelocity = Vector3.new(0,0,0)
-            end
-        end
+        if not C or not Target or not Target.Parent then return end
+        local Root = C:FindFirstChild("HumanoidRootPart")
+        local ER   = Target:FindFirstChild("HumanoidRootPart")
+        if not Root or not ER then return end
+        Root.CFrame                  = ER.CFrame * CFrame.new(0, 10, 0)
+        Root.Velocity                = Vector3.new(0,0,0)
+        Root.RotVelocity             = Vector3.new(0,0,0)
+        Root.AssemblyLinearVelocity  = Vector3.new(0,0,0)
+        Root.AssemblyAngularVelocity = Vector3.new(0,0,0)
     end)
 end
 
--- Tween bay đến vị trí
-local function TweenTo(targetCFrame, duration)
+-- Bay đến vị trí bằng TweenService
+local function FlyTo(pos, duration)
     local Char = LocalPlayer.Character
     if not Char then return end
     local Root = Char:FindFirstChild("HumanoidRootPart")
     if not Root then return end
-
-    local Tween = TweenService:Create(
-        Root,
-        TweenInfo.new(duration or 1, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
-        {CFrame = targetCFrame}
+    workspace.Gravity = 0
+    local Tween = TweenService:Create(Root,
+        TweenInfo.new(duration or 1.5, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
+        {CFrame = CFrame.new(pos)}
     )
     Tween:Play()
     Tween.Completed:Wait()
 end
 
--- Bring Mob: kéo tất cả mob về phía nhân vật
+-- Bring Mob: kéo mob về gần nhân vật
 local function BringMobs()
     local Char = LocalPlayer.Character
     if not Char then return end
     local Root = Char:FindFirstChild("HumanoidRootPart")
     if not Root then return end
-
     local Enemies = workspace:FindFirstChild("Enemies")
     if not Enemies then return end
 
     for _, Enemy in ipairs(Enemies:GetChildren()) do
         if not Enemy:IsA("Model") then continue end
-        local EnemyHum  = Enemy:FindFirstChildOfClass("Humanoid")
-        local EnemyRoot = Enemy:FindFirstChild("HumanoidRootPart")
-        if not EnemyHum or EnemyHum.Health <= 0 or not EnemyRoot then continue end
-
-        local Dist = (Root.Position - EnemyRoot.Position).Magnitude
-        if Dist <= 300 then
-            -- Kéo mob về gần nhân vật
-            EnemyRoot.CFrame = Root.CFrame * CFrame.new(
-                math.random(-8, 8), 0, math.random(-8, 8)
+        local EH = Enemy:FindFirstChildOfClass("Humanoid")
+        local ER = Enemy:FindFirstChild("HumanoidRootPart")
+        if not EH or EH.Health <= 0 or not ER then continue end
+        local dist = (Root.Position - ER.Position).Magnitude
+        if dist <= 500 then
+            ER.CFrame = Root.CFrame * CFrame.new(
+                math.random(-6,6), 0, math.random(-6,6)
             )
         end
     end
 end
 
--- Auto Quest: tìm NPC quest theo level rồi nhận
+-- Auto Quest: bay đến NPC → nhận quest
 local function AcceptQuest()
-    local level   = getPlayerLevel()
-    local data    = getDataForLevel(level)
-    if not data then return end
+    local lv   = getPlayerLevel()
+    local data = getDataForLevel(lv)
 
-    local Char = LocalPlayer.Character
-    if not Char then return end
-    local Root = Char:FindFirstChild("HumanoidRootPart")
-    if not Root then return end
-
-    -- Tìm NPC quest trong workspace
-    local questNPC = nil
+    -- Tìm NPC trong workspace
+    local npcRoot = nil
     for _, v in pairs(workspace:GetDescendants()) do
         if v:IsA("Model") and v.Name:find(data.questNPC) then
-            questNPC = v
-            break
+            local r = v:FindFirstChild("HumanoidRootPart") or v.PrimaryPart
+            if r then npcRoot = r; break end
         end
     end
 
-    if questNPC then
-        local npcRoot = questNPC:FindFirstChild("HumanoidRootPart")
-            or questNPC:FindFirstChild("PrimaryPart")
-        if npcRoot then
-            -- Bay đến NPC
-            TweenTo(npcRoot.CFrame * CFrame.new(0, 0, -5), 1.5)
-            task.wait(0.5)
-            -- Fire quest remote nếu có
-            if QuestRemote then
-                pcall(function()
-                    QuestRemote:FireServer(data.questNPC, data.island)
-                end)
-            end
-            print("[Concuhub] Nhận quest:", data.questNPC, "| Level:", level)
+    if npcRoot then
+        -- Tắt nofall để bay tự do
+        local wasActive = State.isActive
+        if State.noFallConn then
+            State.noFallConn:Disconnect()
+            State.noFallConn = nil
         end
+
+        FlyTo(npcRoot.Position + Vector3.new(0, 3, -5), 2)
+        task.wait(0.5)
+
+        pcall(function()
+            QuestRemote:FireServer(data.questNPC, data.island)
+        end)
+
+        print("[Concuhub] Quest nhận:", data.questNPC, "Lv", lv)
+
+        -- Bật lại nofall nếu đang farm
+        if wasActive and State.currentTarget and State.currentTarget.Parent then
+            State.isActive = true
+            StartNoFall(State.currentTarget)
+        end
+    else
+        warn("[Concuhub] Không tìm thấy NPC:", data.questNPC)
     end
 end
 
 -- =====================================================
--- MAIN FARM LOOP
+-- LOOPS
 -- =====================================================
+
+-- Click loop
 task.spawn(function()
     while true do
         task.wait(0.001)
-        if not State.farmEnabled then continue end
-        if not State.isActive then continue end
-        VirtualInputManager:SendMouseButtonEvent(0, 0, 0, true, game, 1)
-        VirtualInputManager:SendMouseButtonEvent(0, 0, 0, false, game, 1)
-    end
-end)
-
--- Quest loop riêng
-task.spawn(function()
-    while true do
-        task.wait(30) -- check quest mỗi 30s
-        if State.farmEnabled and State.autoQuest then
-            AcceptQuest()
+        if State.farmEnabled and State.isActive then
+            VirtualInputManager:SendMouseButtonEvent(0,0,0,true,game,1)
+            VirtualInputManager:SendMouseButtonEvent(0,0,0,false,game,1)
         end
     end
 end)
 
--- Bring mob loop riêng
+-- Quest loop mỗi 30s
+task.spawn(function()
+    while true do
+        task.wait(30)
+        if State.farmEnabled and State.autoQuest then
+            task.spawn(AcceptQuest)
+        end
+    end
+end)
+
+-- Bring mob loop mỗi 2s
 task.spawn(function()
     while true do
         task.wait(2)
@@ -314,90 +323,86 @@ task.spawn(function()
     end
 end)
 
--- Loop chính
+-- Main farm loop
 task.spawn(function()
     while true do
         task.wait()
+
         if not State.farmEnabled then
             if State.isActive then ForceReset() end
             continue
         end
 
-        local Character = LocalPlayer.Character
-        local Root      = Character and Character:FindFirstChild("HumanoidRootPart")
-        local Humanoid  = Character and Character:FindFirstChildOfClass("Humanoid")
+        local Char = LocalPlayer.Character
+        local Root = Char and Char:FindFirstChild("HumanoidRootPart")
+        local Hum  = Char and Char:FindFirstChildOfClass("Humanoid")
 
-        if not Character or not Root or not Humanoid or Humanoid.Health <= 0 then
+        if not Char or not Root or not Hum or Hum.Health <= 0 then
             if State.isActive then ForceReset() end
-            task.wait(0.2)
-            continue
+            task.wait(0.2); continue
         end
 
         local Enemies = workspace:FindFirstChild("Enemies")
         if not Enemies then
             if State.isActive then ForceReset() end
-            task.wait(0.2)
-            continue
+            task.wait(0.2); continue
         end
 
-        local ClosestEnemy    = nil
-        local ClosestDistance = 200
-        local AllNearby       = {}
+        local Closest  = nil
+        local ClostDist = 200
+        local AllNearby = {}
 
         for _, Enemy in ipairs(Enemies:GetChildren()) do
             if not State.farmEnabled then break end
             if not Enemy:IsA("Model") then continue end
-
             local EH = Enemy:FindFirstChildOfClass("Humanoid")
             local ER = Enemy:FindFirstChild("HumanoidRootPart")
             if not EH or EH.Health <= 0 or not ER then continue end
-
-            local Dist = (Root.Position - ER.Position).Magnitude
-            if Dist <= 200 then
+            local dist = (Root.Position - ER.Position).Magnitude
+            if dist <= 200 then
                 table.insert(AllNearby, Enemy)
-                if Dist < ClosestDistance then
-                    ClosestDistance = Dist
-                    ClosestEnemy    = Enemy
+                if dist < ClostDist then
+                    ClostDist = dist
+                    Closest   = Enemy
                 end
             end
         end
 
-        if ClosestEnemy then
+        if Closest then
             if not State.isActive then
                 State.isActive      = true
-                State.currentTarget = ClosestEnemy
-                StartNoFall(ClosestEnemy)
+                State.currentTarget = Closest
+                StartNoFall(Closest)
             end
 
-            -- Cập nhật target nếu mob cũ chết
+            -- Cập nhật target khi mob chết
             if State.currentTarget then
                 local EH = State.currentTarget:FindFirstChildOfClass("Humanoid")
                 local ER = State.currentTarget:FindFirstChild("HumanoidRootPart")
                 if not EH or EH.Health <= 0 or not ER then
-                    State.currentTarget = ClosestEnemy
-                    StartNoFall(ClosestEnemy)
+                    State.currentTarget = Closest
+                    StartNoFall(Closest)
                 end
             end
 
-            -- FireServer tất cả mob gần
+            -- FireServer mỗi mob trong 150 studs
             for _, Enemy in ipairs(AllNearby) do
                 if not State.farmEnabled then break end
                 local EH = Enemy:FindFirstChildOfClass("Humanoid")
                 local ER = Enemy:FindFirstChild("HumanoidRootPart")
                 if not EH or EH.Health <= 0 or not ER then continue end
-
-                local Dist = (Root.Position - ER.Position).Magnitude
-                if Dist > 150 then continue end
+                if (Root.Position - ER.Position).Magnitude > 150 then continue end
 
                 local TargetPart = Enemy:FindFirstChild("LeftLowerArm")
                     or Enemy:FindFirstChild("RightLowerArm")
                     or Enemy:FindFirstChild("LeftFoot")
                     or Enemy:FindFirstChild("RightFoot")
-                    or Enemy:FindFirstChild("Head")
-                    or ER
+                    or Enemy:FindFirstChild("Head") or ER
 
+                -- Dùng lastArgs để lấy hash mới nhất từ hook
+                -- Nếu hook không hoạt động thì fallback về args cũ
+                local args = {TargetPart, {}, [4] = lastArgs[4] or "079996f9"}
                 pcall(function()
-                    local args = {TargetPart, {}, [4] = "079996f9"}
                     AttackRemote:FireServer(unpack(args))
                 end)
             end
@@ -408,516 +413,192 @@ task.spawn(function()
 end)
 
 -- =====================================================
--- FLUENT UI — Màu hồng, Title + Subtitle, Tab Farm
+-- FLUENT UI — Delta executor
 -- =====================================================
-local ScreenGui = Instance.new("ScreenGui")
-ScreenGui.Name         = "ConcuhubUI"
-ScreenGui.ResetOnSpawn = false
-ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
-ScreenGui.Parent = LocalPlayer:WaitForChild("PlayerGui")
+local Window = Fluent:CreateWindow({
+    Title    = "Concuhub",
+    SubTitle = "by Quoc Hoa",
+    TabWidth = 160,
+    Size     = UDim2.fromOffset(560, 400),
+    Acrylic  = true,
+    Theme    = "Pink",  -- Theme hồng
+    MinimizeKey = Enum.KeyCode.LeftControl,
+})
 
--- Màu sắc Fluent hồng
-local C = {
-    bg        = Color3.fromRGB(18, 18, 24),
-    surface   = Color3.fromRGB(28, 28, 36),
-    card      = Color3.fromRGB(36, 36, 46),
-    pink      = Color3.fromRGB(255, 105, 180),
-    pinkLight  = Color3.fromRGB(255, 150, 210),
-    pinkDark  = Color3.fromRGB(200, 60, 130),
-    text      = Color3.fromRGB(240, 240, 250),
-    subtext   = Color3.fromRGB(160, 160, 180),
-    toggle_on  = Color3.fromRGB(255, 105, 180),
-    toggle_off = Color3.fromRGB(70, 70, 85),
-    white     = Color3.fromRGB(255, 255, 255),
+-- ── Tabs ──
+local Tabs = {
+    Farm = Window:AddTab({ Title = "Farm",  Icon = "sword" }),
+    Misc = Window:AddTab({ Title = "Misc",  Icon = "settings" }),
+    Info = Window:AddTab({ Title = "Info",  Icon = "info" }),
 }
 
-local function makeTween(obj, props, t)
-    TweenService:Create(obj, TweenInfo.new(t or 0.18, Enum.EasingStyle.Quad), props):Play()
-end
+-- =====================================================
+-- TAB FARM
+-- =====================================================
+local FarmSection = Tabs.Farm:AddSection("⚔ Auto Farm")
 
--- ── Drag Support ──
-local function makeDraggable(frame, handle)
-    local dragging, dragInput, mousePos, framePos = false, nil, nil, nil
-    handle.InputBegan:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseButton1 then
-            dragging  = true
-            mousePos  = input.Position
-            framePos  = frame.Position
-        end
-    end)
-    handle.InputEnded:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseButton1 then
-            dragging = false
-        end
-    end)
-    UserInputService.InputChanged:Connect(function(input)
-        if dragging and input.UserInputType == Enum.UserInputType.MouseMovement then
-            local delta = input.Position - mousePos
-            frame.Position = UDim2.new(
-                framePos.X.Scale, framePos.X.Offset + delta.X,
-                framePos.Y.Scale, framePos.Y.Offset + delta.Y
-            )
-        end
-    end)
-end
-
--- ── Main Window ──
-local Window = Instance.new("Frame")
-Window.Name            = "Window"
-Window.Size            = UDim2.new(0, 380, 0, 480)
-Window.Position        = UDim2.new(0.5, -190, 0.5, -240)
-Window.BackgroundColor3 = C.bg
-Window.BorderSizePixel = 0
--- ClipDescendants removed (not supported in executor)
-Window.Parent          = ScreenGui
-
-local WinCorner = Instance.new("UICorner")
-WinCorner.CornerRadius = UDim.new(0, 12)
-WinCorner.Parent       = Window
-
--- Glow border
-local Stroke = Instance.new("UIStroke")
-Stroke.Color     = C.pink
-Stroke.Thickness = 1.5
-Stroke.Transparency = 0.4
-Stroke.Parent    = Window
-
--- ── Title Bar ──
-local TitleBar = Instance.new("Frame")
-TitleBar.Name              = "TitleBar"
-TitleBar.Size              = UDim2.new(1, 0, 0, 64)
-TitleBar.BackgroundColor3  = C.surface
-TitleBar.BorderSizePixel   = 0
-TitleBar.Parent            = Window
-
-local TitleBarCorner = Instance.new("UICorner")
-TitleBarCorner.CornerRadius = UDim.new(0, 12)
-TitleBarCorner.Parent       = TitleBar
-
--- Patch bottom corners of titlebar
-local TitlePatch = Instance.new("Frame")
-TitlePatch.Size             = UDim2.new(1, 0, 0, 12)
-TitlePatch.Position         = UDim2.new(0, 0, 1, -12)
-TitlePatch.BackgroundColor3 = C.surface
-TitlePatch.BorderSizePixel  = 0
-TitlePatch.Parent           = TitleBar
-
--- Pink accent line
-local AccentLine = Instance.new("Frame")
-AccentLine.Size             = UDim2.new(0, 40, 0, 3)
-AccentLine.Position         = UDim2.new(0, 16, 1, -4)
-AccentLine.BackgroundColor3 = C.pink
-AccentLine.BorderSizePixel  = 0
-AccentLine.Parent           = TitleBar
-Instance.new("UICorner", AccentLine).CornerRadius = UDim.new(1, 0)
-
--- Title text
-local TitleLabel = Instance.new("TextLabel")
-TitleLabel.Text              = "Concuhub"
-TitleLabel.Size              = UDim2.new(1, -80, 0, 28)
-TitleLabel.Position          = UDim2.new(0, 16, 0, 10)
-TitleLabel.BackgroundTransparency = 1
-TitleLabel.TextColor3        = C.white
-TitleLabel.TextSize          = 18
-TitleLabel.Font              = Enum.Font.GothamBold
-TitleLabel.TextXAlignment    = Enum.TextXAlignment.Left
-TitleLabel.Parent            = TitleBar
-
--- Subtitle text
-local SubTitle = Instance.new("TextLabel")
-SubTitle.Text              = "by Quoc Hoa  •  Auto Farm"
-SubTitle.Size              = UDim2.new(1, -80, 0, 18)
-SubTitle.Position          = UDim2.new(0, 16, 0, 36)
-SubTitle.BackgroundTransparency = 1
-SubTitle.TextColor3        = C.pink
-SubTitle.TextSize          = 11
-SubTitle.Font              = Enum.Font.Gotham
-SubTitle.TextXAlignment    = Enum.TextXAlignment.Left
-SubTitle.Parent            = TitleBar
-
--- Close button
-local CloseBtn = Instance.new("TextButton")
-CloseBtn.Text              = "✕"
-CloseBtn.Size              = UDim2.new(0, 28, 0, 28)
-CloseBtn.Position          = UDim2.new(1, -40, 0, 18)
-CloseBtn.BackgroundColor3  = Color3.fromRGB(255, 80, 100)
-CloseBtn.TextColor3        = C.white
-CloseBtn.TextSize          = 13
-CloseBtn.Font              = Enum.Font.GothamBold
-CloseBtn.BorderSizePixel   = 0
-CloseBtn.Parent            = TitleBar
-Instance.new("UICorner", CloseBtn).CornerRadius = UDim.new(0, 6)
-
-CloseBtn.MouseButton1Click:Connect(function()
-    makeTween(Window, {Size = UDim2.new(0, 380, 0, 0)}, 0.2)
-    task.wait(0.25)
-    ScreenGui:Destroy()
-end)
-
-makeDraggable(Window, TitleBar)
-
--- ── Level Info Bar ──
-local LevelBar = Instance.new("Frame")
-LevelBar.Size             = UDim2.new(1, -24, 0, 36)
-LevelBar.Position         = UDim2.new(0, 12, 0, 70)
-LevelBar.BackgroundColor3 = C.card
-LevelBar.BorderSizePixel  = 0
-LevelBar.Parent           = Window
-Instance.new("UICorner", LevelBar).CornerRadius = UDim.new(0, 8)
-
-local LevelLabel = Instance.new("TextLabel")
-LevelLabel.Size               = UDim2.new(1, -12, 1, 0)
-LevelLabel.Position           = UDim2.new(0, 12, 0, 0)
-LevelLabel.BackgroundTransparency = 1
-LevelLabel.TextColor3         = C.pinkLight
-LevelLabel.TextSize           = 12
-LevelLabel.Font               = Enum.Font.Gotham
-LevelLabel.TextXAlignment     = Enum.TextXAlignment.Left
-LevelLabel.Text               = "Level: -- | Island: -- | Mob: --"
-LevelLabel.Parent             = LevelBar
-
--- Cập nhật level info mỗi 3s
-task.spawn(function()
-    while ScreenGui.Parent do
-        task.wait(3)
-        local lv   = getPlayerLevel()
-        local data = getDataForLevel(lv)
-        if data then
-            LevelLabel.Text = ("Lv %d  •  %s  •  Mob: %s"):format(
-                lv, data.island, data.mobName
-            )
-        end
+Tabs.Farm:AddToggle("AutoFarm", {
+    Title       = "Auto Farm",
+    Description = "Tự động tìm và đánh mob theo level",
+    Default     = false,
+}):OnChanged(function(v)
+    State.farmEnabled = v
+    if not v and State.isActive then ForceReset() end
+    if v and State.autoQuest then
+        task.spawn(AcceptQuest)
     end
 end)
 
--- ── Tab Bar ──
-local TabBar = Instance.new("Frame")
-TabBar.Size            = UDim2.new(1, -24, 0, 32)
-TabBar.Position        = UDim2.new(0, 12, 0, 114)
-TabBar.BackgroundColor3 = C.surface
-TabBar.BorderSizePixel = 0
-TabBar.Parent          = Window
-Instance.new("UICorner", TabBar).CornerRadius = UDim.new(0, 8)
+local QuestSection = Tabs.Farm:AddSection("🎯 Quest")
 
-local TabLayout = Instance.new("UIListLayout")
-TabLayout.FillDirection = Enum.FillDirection.Horizontal
-TabLayout.Padding       = UDim.new(0, 4)
-TabLayout.VerticalAlignment = Enum.VerticalAlignment.Center
-TabLayout.Parent        = TabBar
-
-local UIPad = Instance.new("UIPadding")
-UIPad.PaddingLeft = UDim.new(0, 6)
-UIPad.PaddingRight = UDim.new(0, 6)
-UIPad.PaddingTop = UDim.new(0, 4)
-UIPad.PaddingBottom = UDim.new(0, 4)
-UIPad.Parent = TabBar
-
--- ── Content Frame ──
-local Content = Instance.new("ScrollingFrame")
-Content.Size                = UDim2.new(1, -24, 1, -164)
-Content.Position            = UDim2.new(0, 12, 0, 154)
-Content.BackgroundTransparency = 1
-Content.BorderSizePixel     = 0
-Content.ScrollBarThickness  = 3
-Content.ScrollBarImageColor3 = C.pink
-Content.CanvasSize          = UDim2.new(0, 0, 0, 0)
-Content.AutomaticCanvasSize = Enum.AutomaticSize.Y
-Content.Parent              = Window
-
-local ContentLayout = Instance.new("UIListLayout")
-ContentLayout.Padding       = UDim.new(0, 8)
-ContentLayout.Parent        = Content
-
--- =====================================================
--- COMPONENT BUILDERS
--- =====================================================
-
--- Toggle card
-local function makeToggle(parent, title, subtitle, default, callback)
-    local Card = Instance.new("Frame")
-    Card.Size             = UDim2.new(1, 0, 0, 58)
-    Card.BackgroundColor3 = C.card
-    Card.BorderSizePixel  = 0
-    Card.Parent           = parent
-    Instance.new("UICorner", Card).CornerRadius = UDim.new(0, 10)
-
-    local TitleL = Instance.new("TextLabel")
-    TitleL.Text              = title
-    TitleL.Size              = UDim2.new(1, -70, 0, 22)
-    TitleL.Position          = UDim2.new(0, 14, 0, 8)
-    TitleL.BackgroundTransparency = 1
-    TitleL.TextColor3        = C.text
-    TitleL.TextSize          = 13
-    TitleL.Font              = Enum.Font.GothamBold
-    TitleL.TextXAlignment    = Enum.TextXAlignment.Left
-    TitleL.Parent            = Card
-
-    local SubL = Instance.new("TextLabel")
-    SubL.Text              = subtitle
-    SubL.Size              = UDim2.new(1, -70, 0, 16)
-    SubL.Position          = UDim2.new(0, 14, 0, 30)
-    SubL.BackgroundTransparency = 1
-    SubL.TextColor3        = C.subtext
-    SubL.TextSize          = 10
-    SubL.Font              = Enum.Font.Gotham
-    SubL.TextXAlignment    = Enum.TextXAlignment.Left
-    SubL.Parent            = Card
-
-    -- Toggle track
-    local Track = Instance.new("Frame")
-    Track.Size             = UDim2.new(0, 40, 0, 22)
-    Track.Position         = UDim2.new(1, -54, 0.5, -11)
-    Track.BackgroundColor3 = default and C.toggle_on or C.toggle_off
-    Track.BorderSizePixel  = 0
-    Track.Parent           = Card
-    Instance.new("UICorner", Track).CornerRadius = UDim.new(1, 0)
-
-    local Knob = Instance.new("Frame")
-    Knob.Size             = UDim2.new(0, 16, 0, 16)
-    Knob.Position         = default and UDim2.new(1, -19, 0.5, -8) or UDim2.new(0, 3, 0.5, -8)
-    Knob.BackgroundColor3 = C.white
-    Knob.BorderSizePixel  = 0
-    Knob.Parent           = Track
-    Instance.new("UICorner", Knob).CornerRadius = UDim.new(1, 0)
-
-    local state = default or false
-
-    local Btn = Instance.new("TextButton")
-    Btn.Size                  = UDim2.new(1, 0, 1, 0)
-    Btn.BackgroundTransparency = 1
-    Btn.Text                  = ""
-    Btn.Parent                = Card
-
-    Btn.MouseButton1Click:Connect(function()
-        state = not state
-        makeTween(Track, {BackgroundColor3 = state and C.toggle_on or C.toggle_off})
-        makeTween(Knob, {Position = state
-            and UDim2.new(1, -19, 0.5, -8)
-            or  UDim2.new(0, 3,   0.5, -8)
-        })
-        callback(state)
-    end)
-
-    return Card
-end
-
--- Section label
-local function makeSection(parent, text)
-    local L = Instance.new("TextLabel")
-    L.Text              = text:upper()
-    L.Size              = UDim2.new(1, 0, 0, 20)
-    L.BackgroundTransparency = 1
-    L.TextColor3        = C.pink
-    L.TextSize          = 10
-    L.Font              = Enum.Font.GothamBold
-    L.TextXAlignment    = Enum.TextXAlignment.Left
-    L.Parent            = parent
-    return L
-end
-
--- ── Tab system ──
-local tabs      = {}
-local tabFrames = {}
-local activeTab = nil
-
-local function makeTab(name)
-    local Btn = Instance.new("TextButton")
-    Btn.Text              = name
-    Btn.Size              = UDim2.new(0, 80, 1, -8)
-    Btn.BackgroundColor3  = C.card
-    Btn.TextColor3        = C.subtext
-    Btn.TextSize          = 11
-    Btn.Font              = Enum.Font.GothamBold
-    Btn.BorderSizePixel   = 0
-    Btn.Parent            = TabBar
-    Instance.new("UICorner", Btn).CornerRadius = UDim.new(0, 6)
-
-    local Frame = Instance.new("Frame")
-    Frame.Size               = UDim2.new(1, 0, 1, 0)
-    Frame.BackgroundTransparency = 1
-    Frame.Visible            = false
-    Frame.Parent             = Content
-
-    local FLayout = Instance.new("UIListLayout")
-    FLayout.Padding = UDim.new(0, 8)
-    FLayout.Parent  = Frame
-
-    local FPad = Instance.new("UIPadding")
-    FPad.PaddingBottom = UDim.new(0, 8)
-    FPad.Parent        = Frame
-
-    Btn.MouseButton1Click:Connect(function()
-        if activeTab then
-            makeTween(tabs[activeTab].btn, {BackgroundColor3 = C.card, TextColor3 = C.subtext})
-            tabFrames[activeTab].Visible = false
-        end
-        activeTab = name
-        makeTween(Btn, {BackgroundColor3 = C.pink, TextColor3 = C.white})
-        Frame.Visible = true
-    end)
-
-    tabs[name]      = {btn = Btn}
-    tabFrames[name] = Frame
-    return Frame
-end
-
--- ── Build Tabs ──
-local FarmTab  = makeTab("Farm")
-local MiscTab  = makeTab("Misc")
-local InfoTab  = makeTab("Info")
-
--- Activate Farm tab by default
-activeTab = "Farm"
-makeTween(tabs["Farm"].btn, {BackgroundColor3 = C.pink, TextColor3 = C.white})
-tabFrames["Farm"].Visible = true
-
--- =====================================================
--- FARM TAB CONTENT
--- =====================================================
-makeSection(FarmTab, "⚔  Auto Farm")
-
-makeToggle(FarmTab,
-    "Auto Farm",
-    "Tự động tìm & đánh mob theo level",
-    false,
-    function(v)
-        State.farmEnabled = v
-        SubTitle.Text = v and "by Quoc Hoa  •  Farm: ON" or "by Quoc Hoa  •  Farm: OFF"
-        if not v and State.isActive then ForceReset() end
-
-        -- Khi bật farm: chạy luồng quest trước rồi bay đến mob
-        if v and State.autoQuest then
-            task.spawn(function()
-                AcceptQuest()
-            end)
-        end
+Tabs.Farm:AddToggle("AutoQuest", {
+    Title       = "Auto Quest",
+    Description = "Tự nhận quest phù hợp với level hiện tại",
+    Default     = false,
+}):OnChanged(function(v)
+    State.autoQuest = v
+    if v and State.farmEnabled then
+        task.spawn(AcceptQuest)
     end
-)
+end)
 
-makeSection(FarmTab, "🎯  Quest")
+Tabs.Farm:AddButton({
+    Title       = "Nhận Quest Ngay",
+    Description = "Fly đến NPC và nhận quest",
+    Callback    = function()
+        task.spawn(AcceptQuest)
+    end,
+})
 
-makeToggle(FarmTab,
-    "Auto Quest",
-    "Tự nhận quest phù hợp với level",
-    false,
-    function(v)
-        State.autoQuest = v
-        if v and State.farmEnabled then
-            task.spawn(AcceptQuest)
-        end
-    end
-)
+local MobSection = Tabs.Farm:AddSection("🧲 Mob Control")
 
-makeSection(FarmTab, "🧲  Mob")
+Tabs.Farm:AddToggle("BringMob", {
+    Title       = "Bring Mob",
+    Description = "Kéo tất cả mob trong 500 studs về gần",
+    Default     = false,
+}):OnChanged(function(v)
+    State.bringMob = v
+end)
 
-makeToggle(FarmTab,
-    "Bring Mob",
-    "Kéo tất cả mob về phía nhân vật",
-    false,
-    function(v)
-        State.bringMob = v
-    end
-)
-
--- =====================================================
--- MISC TAB CONTENT
--- =====================================================
-makeSection(MiscTab, "⚙  Misc")
-
-makeToggle(MiscTab,
-    "No Fall",
-    "Không rơi xuống khi đứng trên mob",
-    true,
-    function(v)
-        -- NoFall luôn bật khi farm, toggle này chỉ UI
-    end
-)
-
-makeToggle(MiscTab,
-    "Fast Attack",
-    "Click siêu nhanh mỗi frame",
-    true,
-    function(v)
-        -- Đã tích hợp sẵn trong farm loop
-    end
-)
+Tabs.Farm:AddButton({
+    Title    = "Bring Mob Ngay",
+    Description = "Kéo mob 1 lần ngay bây giờ",
+    Callback = function()
+        BringMobs()
+    end,
+})
 
 -- =====================================================
--- INFO TAB CONTENT
+-- TAB MISC
 -- =====================================================
-makeSection(InfoTab, "📊  Level Info")
+Tabs.Misc:AddSection("⚙ Settings")
 
-local InfoCard = Instance.new("Frame")
-InfoCard.Size             = UDim2.new(1, 0, 0, 120)
-InfoCard.BackgroundColor3 = C.card
-InfoCard.BorderSizePixel  = 0
-InfoCard.Parent           = InfoTab
-Instance.new("UICorner", InfoCard).CornerRadius = UDim.new(0, 10)
+Tabs.Misc:AddSlider("AttackRange", {
+    Title   = "Attack Range",
+    Description = "Phạm vi đánh mob (studs)",
+    Default = 150,
+    Min     = 50,
+    Max     = 300,
+    Rounding = 10,
+}):OnChanged(function(v)
+    -- Dùng biến global để main loop đọc
+    _G.AttackRange = v
+end)
+_G.AttackRange = 150
 
-local InfoText = Instance.new("TextLabel")
-InfoText.Size               = UDim2.new(1, -20, 1, -16)
-InfoText.Position           = UDim2.new(0, 10, 0, 8)
-InfoText.BackgroundTransparency = 1
-InfoText.TextColor3         = C.text
-InfoText.TextSize           = 11
-InfoText.Font               = Enum.Font.Gotham
-InfoText.TextXAlignment     = Enum.TextXAlignment.Left
-InfoText.TextYAlignment     = Enum.TextYAlignment.Top
-InfoText.TextWrapped        = true
-InfoText.RichText           = true
-InfoText.Text               = "Loading..."
-InfoText.Parent             = InfoCard
+Tabs.Misc:AddSlider("ScanRange", {
+    Title   = "Scan Range",
+    Description = "Phạm vi quét mob (studs)",
+    Default = 200,
+    Min     = 100,
+    Max     = 500,
+    Rounding = 10,
+}):OnChanged(function(v)
+    _G.ScanRange = v
+end)
+_G.ScanRange = 200
+
+Tabs.Misc:AddSlider("QuestInterval", {
+    Title   = "Quest Interval (giây)",
+    Description = "Tần suất tự nhận quest",
+    Default = 30,
+    Min     = 10,
+    Max     = 120,
+    Rounding = 5,
+}):OnChanged(function(v)
+    _G.QuestInterval = v
+end)
+_G.QuestInterval = 30
+
+-- =====================================================
+-- TAB INFO
+-- =====================================================
+Tabs.Info:AddSection("📊 Thông Tin Nhân Vật")
+
+-- Paragraph hiển thị info realtime
+local InfoParagraph = Tabs.Info:AddParagraph({
+    Title   = "Level Info",
+    Content = "Đang tải...",
+})
 
 task.spawn(function()
-    while ScreenGui.Parent do
+    while true do
         task.wait(2)
         local lv   = getPlayerLevel()
         local data = getDataForLevel(lv)
-        if data then
-            InfoText.Text = (
-                "<b><font color='rgb(255,150,210)'>Level:</font></b> %d\n" ..
-                "<b><font color='rgb(255,150,210)'>Sea:</font></b> %d\n" ..
-                "<b><font color='rgb(255,150,210)'>Island:</font></b> %s\n" ..
-                "<b><font color='rgb(255,150,210)'>Quest NPC:</font></b> %s\n" ..
-                "<b><font color='rgb(255,150,210)'>Mob:</font></b> %s\n" ..
-                "<b><font color='rgb(255,150,210)'>Range:</font></b> Lv %d → %d"
-            ):format(lv, data.sea, data.island, data.questNPC, data.mobName, data.minLv, data.maxLv)
-        end
+        pcall(function()
+            InfoParagraph:SetContent(
+                "Level: "    .. lv           .. "\n" ..
+                "Sea: "      .. data.sea     .. "\n" ..
+                "Island: "   .. data.island  .. "\n" ..
+                "Quest NPC: ".. data.questNPC.. "\n" ..
+                "Mob: "      .. data.mobName .. "\n" ..
+                "Range: Lv " .. data.minLv   .. " → " .. data.maxLv
+            )
+        end)
     end
 end)
 
--- ── Minimize button ──
-local MinBtn = Instance.new("TextButton")
-MinBtn.Text              = "─"
-MinBtn.Size              = UDim2.new(0, 28, 0, 28)
-MinBtn.Position          = UDim2.new(1, -72, 0, 18)
-MinBtn.BackgroundColor3  = C.card
-MinBtn.TextColor3        = C.subtext
-MinBtn.TextSize          = 14
-MinBtn.Font              = Enum.Font.GothamBold
-MinBtn.BorderSizePixel   = 0
-MinBtn.Parent            = TitleBar
-Instance.new("UICorner", MinBtn).CornerRadius = UDim.new(0, 6)
+Tabs.Info:AddSection("🔧 Debug")
 
-local minimized = false
-MinBtn.MouseButton1Click:Connect(function()
-    minimized = not minimized
-    if minimized then
-        makeTween(Window, {Size = UDim2.new(0, 380, 0, 64)}, 0.2)
-    else
-        makeTween(Window, {Size = UDim2.new(0, 380, 0, 480)}, 0.2)
-    end
-end)
+Tabs.Info:AddButton({
+    Title    = "In Remote Args",
+    Description = "In ra hash đang dùng vào console",
+    Callback = function()
+        print("[Concuhub] Last args index 4:", lastArgs[4] or "chưa có")
+        print("[Concuhub] Quest Remote:", QuestRemote:GetFullName())
+        print("[Concuhub] Attack Remote:", AttackRemote:GetFullName())
+    end,
+})
 
--- Entrance animation
-Window.Size = UDim2.new(0, 380, 0, 0)
-Window.BackgroundTransparency = 1
-makeTween(Window, {
-    Size = UDim2.new(0, 380, 0, 480),
-    BackgroundTransparency = 0
-}, 0.3)
+Tabs.Info:AddButton({
+    Title    = "Force Reset",
+    Description = "Reset nhân vật về bình thường",
+    Callback = function()
+        State.farmEnabled = false
+        ForceReset()
+        Fluent:Notify({ Title = "Reset", Content = "Đã reset nhân vật", Duration = 3 })
+    end,
+})
 
-print("[Concuhub] UI loaded ✓")
-print("[Concuhub] Farm: OFF | AutoQuest: OFF | BringMob: OFF")
-print("[Concuhub] Bật 'Auto Farm' trong UI để bắt đầu")
+-- ── Save config ──
+SaveManager:SetLibrary(Fluent)
+InterfaceManager:SetLibrary(Fluent)
+InterfaceManager:SetFolder("Concuhub")
+SaveManager:SetFolder("Concuhub/configs")
+SaveManager:BuildConfigSection(Tabs.Misc)
+InterfaceManager:BuildInterfaceSection(Tabs.Misc)
+SaveManager:LoadAutoloadConfig()
+
+Window:SelectTab(1)
+
+Fluent:Notify({
+    Title    = "Concuhub loaded",
+    Content  = "by Quoc Hoa | Farm: OFF",
+    Duration = 5,
+})
+
+print("[Concuhub] Script loaded ✓")
+print("[Concuhub] Quest Remote:", QuestRemote:GetFullName())
+print("[Concuhub] Attack Remote:", AttackRemote:GetFullName())
  
