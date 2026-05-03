@@ -680,6 +680,9 @@ task.spawn(function()
                     logo.Size = UDim2.new(0, 24, 0, 24)
                     logo.Position = UDim2.new(0, -30, 0.5, -12)
                     logo.BackgroundTransparency = 1
+                    local logoCorner = Instance.new("UICorner")
+                    logoCorner.CornerRadius = UDim.new(1, 0)
+                    logoCorner.Parent = logo
                     logo.ZIndex = 10
                     logo.Parent = v.Parent
                     break
@@ -690,19 +693,20 @@ task.spawn(function()
 end)
 
 -- =====================================================
--- FLOATING TOGGLE BUTTON - BO TRÒN TỰ ĐỘNG
+-- FLOATING TOGGLE BUTTON - FIX CHONG UI + ANH TRON HOAN HAO
 -- =====================================================
 local BUTTON_SIZE = 50
 local BORDER_THICKNESS = 2
 local SHADOW_OFFSET = 3
 local CLICK_SHRINK = 0.85
-local IMAGE_SIZE = 30
+local IMAGE_SIZE = 46  -- Anh bang kich thuoc nut tru vien
 
 local FloatScreenGui = Instance.new("ScreenGui")
 FloatScreenGui.Name = "VexzHub_FloatingButton"
 FloatScreenGui.Parent = LocalPlayer:WaitForChild("PlayerGui")
 FloatScreenGui.ResetOnSpawn = false
 FloatScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+FloatScreenGui.DisplayOrder = 999
 
 local ShadowFrame = Instance.new("Frame")
 ShadowFrame.Name = "Shadow"
@@ -726,7 +730,7 @@ Shadow.ZIndex = 1
 Shadow.Parent = ShadowFrame
 
 local ShadowCorner = Instance.new("UICorner")
-ShadowCorner.CornerRadius = UDim.new(0.5, 0)
+ShadowCorner.CornerRadius = UDim.new(1, 0)
 ShadowCorner.Parent = Shadow
 
 local ButtonFrame = Instance.new("Frame")
@@ -736,10 +740,11 @@ ButtonFrame.Position = UDim2.new(0, 0, 0, 0)
 ButtonFrame.BackgroundColor3 = Color3.fromRGB(255, 105, 180)
 ButtonFrame.BorderSizePixel = 0
 ButtonFrame.ZIndex = 2
+ButtonFrame.Active = true
 ButtonFrame.Parent = ShadowFrame
 
 local ButtonCorner = Instance.new("UICorner")
-ButtonCorner.CornerRadius = UDim.new(0.5, 0)
+ButtonCorner.CornerRadius = UDim.new(1, 0)
 ButtonCorner.Parent = ButtonFrame
 
 local UIStroke = Instance.new("UIStroke")
@@ -747,6 +752,10 @@ UIStroke.Thickness = BORDER_THICKNESS
 UIStroke.Color = Color3.fromRGB(255, 255, 255)
 UIStroke.Transparency = 0.3
 UIStroke.Parent = ButtonFrame
+
+local StrokeCorner = Instance.new("UICorner")
+StrokeCorner.CornerRadius = UDim.new(1, 0)
+StrokeCorner.Parent = UIStroke
 
 local ButtonImage = Instance.new("ImageLabel")
 ButtonImage.Name = "ButtonImage"
@@ -756,6 +765,7 @@ ButtonImage.BackgroundTransparency = 1
 ButtonImage.Image = "rbxassetid://118274073113294"
 ButtonImage.ScaleType = Enum.ScaleType.Fit
 ButtonImage.ZIndex = 3
+ButtonImage.Active = false
 ButtonImage.Parent = ButtonFrame
 
 local ImageCorner = Instance.new("UICorner")
@@ -779,7 +789,7 @@ local function playClickEffect()
     )
     tween:Play()
     tween.Completed:Wait()
-    
+
     local tweenBack = TweenService:Create(
         ButtonFrame,
         TweenInfo.new(0.1, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
@@ -801,7 +811,9 @@ end
 local function toggleMainUI()
     local pGui = LocalPlayer:WaitForChild("PlayerGui")
     for _, gui in ipairs(pGui:GetChildren()) do
-        if gui:IsA("ScreenGui") and gui ~= FloatScreenGui then
+        if gui:IsA("ScreenGui")
+            and gui ~= FloatScreenGui
+            and gui.Name ~= "VexzHub_FloatingButton" then
             gui.Enabled = not gui.Enabled
         end
     end
@@ -858,10 +870,10 @@ RunService.RenderStepped:Connect(function()
     if isDragging then
         local pos = ShadowFrame.Position
         local screenSize = workspace.CurrentCamera.ViewportSize
-        
+
         local x = math.clamp(pos.X.Offset, 0, screenSize.X - BUTTON_SIZE - SHADOW_OFFSET * 2)
         local y = math.clamp(pos.Y.Offset, 0, screenSize.Y - BUTTON_SIZE - SHADOW_OFFSET * 2)
-        
+
         if x ~= pos.X.Offset or y ~= pos.Y.Offset then
             ShadowFrame.Position = UDim2.new(0, x, 0, y)
         end
