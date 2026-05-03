@@ -21,7 +21,6 @@ local InterfaceManager = loadstring(game:HttpGet(
 local Players             = game:GetService("Players")
 local ReplicatedStorage   = game:GetService("ReplicatedStorage")
 local RunService          = game:GetService("RunService")
-local TweenService        = game:GetService("TweenService")
 local VirtualInputManager = game:GetService("VirtualInputManager")
 local UserInputService    = game:GetService("UserInputService")
 local LocalPlayer         = Players.LocalPlayer
@@ -97,38 +96,23 @@ end
 -- =====================================================
 -- REMOTES
 -- =====================================================
-local AttackRemote = ReplicatedStorage:WaitForChild("Modules", 10)
-    and ReplicatedStorage.Modules:WaitForChild("Net", 10)
-    and ReplicatedStorage.Modules.Net:WaitForChild("RE/RegisterHit", 10)
-
-local QuestRemote = ReplicatedStorage:FindFirstChild("Remotes")
-if QuestRemote then
-    QuestRemote = QuestRemote:FindFirstChild("QuestUpdate") or QuestRemote:FindFirstChild("StartQuest")
-end
-
-if not AttackRemote then warn("[Concuhub] Không tìm thấy AttackRemote!") end
-if not QuestRemote  then warn("[Concuhub] Không tìm thấy QuestRemote!")  end
-
--- =====================================================
--- FIX DAME: Hook namecall
--- =====================================================
-local lastAttackArgs = nil
-local hookOK = false
+local AttackRemote = nil
+local QuestRemote = nil
 
 pcall(function()
-    local mt  = getrawmetatable(game)
-    local old = mt.__namecall
-    setreadonly(mt, false)
-    mt.__namecall = newcclosure(function(self, ...)
-        local method = getnamecallmethod()
-        if method == "FireServer" and self == AttackRemote then
-            lastAttackArgs = {...}
-        end
-        return old(self, ...)
+    AttackRemote = ReplicatedStorage.Modules.Net:FindFirstChild("RE/RegisterHit")
+end)
+if not AttackRemote then
+    pcall(function()
+        AttackRemote = ReplicatedStorage.Modules.Net:FindFirstChild("RE/RegisterAttack")
     end)
-    setreadonly(mt, true)
-    hookOK = true
-    print("[Concuhub] Hook dame OK")
+end
+
+pcall(function()
+    local remotes = ReplicatedStorage:FindFirstChild("Remotes")
+    if remotes then
+        QuestRemote = remotes:FindFirstChild("QuestUpdate") or remotes:FindFirstChild("StartQuest")
+    end
 end)
 
 -- =====================================================
@@ -156,8 +140,6 @@ local State = {
     origWalk     = 16,
     origJump     = 50,
 }
-
-local uiVisible = true
 
 -- =====================================================
 -- UTILS
@@ -216,7 +198,7 @@ local function lockChar()
 end
 
 -- =====================================================
--- NOFAIL
+-- NOFALL
 -- =====================================================
 local function startNoFall(mob)
     if State.noFallConn then
@@ -302,7 +284,7 @@ local function findMobs(fromPos, maxDist)
 end
 
 -- =====================================================
--- BRING MOB — FIX: CFrame teleport thẳng mob về
+-- BRING MOB
 -- =====================================================
 local function bringMobs()
     local _, r = getChar()
@@ -319,22 +301,17 @@ local function bringMobs()
         local dist = (r.Position - er.Position).Magnitude
         if dist <= Cfg.bringRange then
             pcall(function()
-                er.CFrame = r.CFrame * CFrame.new(
-                    math.random(-5, 5),
-                    0,
-                    math.random(-8, -3)
-                )
+                er.CFrame = r.CFrame * CFrame.new(math.random(-5,5), 0, math.random(-8,-3))
                 er.Velocity = Vector3.zero
                 er.AssemblyLinearVelocity = Vector3.zero
             end)
             count += 1
         end
     end
-    print("[Concuhub] Bring", count, "mob")
 end
 
 -- =====================================================
--- AUTO QUEST — FIX: Tìm NPC trong workspace.NPCs hoặc fire thẳng
+-- AUTO QUEST
 -- =====================================================
 local function acceptQuest()
     if State.questBusy then return end
@@ -342,10 +319,8 @@ local function acceptQuest()
 
     local lv   = getPlayerLevel()
     local data = getDataForLevel(lv)
-    print("[Concuhub] Quest cho Lv", lv, "→", data.questNPC)
 
     local _, r = getChar()
-    if not r then State.questBusy = false; return end
 
     local questNPC = nil
     local questHRP = nil
@@ -379,7 +354,6 @@ local function acceptQuest()
     pcall(function()
         if QuestRemote then
             QuestRemote:FireServer(data.questNPC, data.island, data.mobName)
-            print("[Concuhub] Quest FireServer OK:", data.questNPC)
         end
     end)
 
@@ -397,7 +371,6 @@ local function acceptQuest()
     end
 
     State.questBusy = false
-    Fluent:Notify({ Title = "Quest", Content = "Nhận quest: " .. data.questNPC, Duration = 3 })
 end
 
 -- =====================================================
@@ -417,16 +390,7 @@ local function attackEnemy(mob)
         or er
 
     pcall(function()
-        if lastAttackArgs then
-            local args = {}
-            for i, v in ipairs(lastAttackArgs) do
-                args[i] = v
-            end
-            args[1] = targetPart
-            AttackRemote:FireServer(unpack(args))
-        else
-            AttackRemote:FireServer(targetPart, {}, "079996f9")
-        end
+        AttackRemote:FireServer(targetPart, {}, "079996f9")
     end)
 end
 
@@ -490,7 +454,6 @@ task.spawn(function()
                     if nextMob then
                         local er2 = nextMob:FindFirstChild("HumanoidRootPart")
                         if er2 then
-                            print("[Concuhub] Bay đến đàn mới cách", math.floor(dist2), "studs")
                             State.active = false
                             flyTo(er2.Position + Vector3.new(0, 10, 0), 300)
                             State.active = true
@@ -523,7 +486,7 @@ task.spawn(function()
 end)
 
 -- =====================================================
--- UI — Fluent
+-- UI
 -- =====================================================
 local Window = Fluent:CreateWindow({
     Title       = "Concuhub",
@@ -546,7 +509,7 @@ local Tabs = {
 -- =====================================================
 -- TAB FARM
 -- =====================================================
-Tabs.Farm:AddSection("⚔ Auto Farm")
+Tabs.Farm:AddSection("Auto Farm")
 
 Tabs.Farm:AddToggle("FarmToggle", {
     Title       = "Auto Farm",
@@ -555,31 +518,21 @@ Tabs.Farm:AddToggle("FarmToggle", {
 }):OnChanged(function(v)
     State.farm = v
     if not v and State.active then resetChar() end
-    if v then
-        if State.quest then task.spawn(acceptQuest) end
-    end
-    Fluent:Notify({
-        Title   = "Auto Farm",
-        Content = v and "✓ Đã bật" or "✗ Đã tắt",
-        Duration = 2,
-    })
+    if v and State.quest then task.spawn(acceptQuest) end
 end)
 
 Tabs.Farm:AddSlider("ScanRange", {
     Title    = "Scan Range",
-    Description = "Phạm vi quét đàn mob tiếp theo (studs)",
     Default  = 2000, Min = 200, Max = 8000, Rounding = 100,
 }):OnChanged(function(v) Cfg.scanRange = v end)
 
 Tabs.Farm:AddSlider("AttackRange", {
     Title    = "Attack Range",
-    Description = "Phạm vi tấn công mob (studs)",
     Default  = 200, Min = 50, Max = 500, Rounding = 10,
 }):OnChanged(function(v) Cfg.attackRange = v end)
 
 Tabs.Farm:AddButton({
     Title    = "Bay Đàn Tiếp Theo",
-    Description = "Tìm và bay đến đàn mob gần nhất",
     Callback = function()
         local _, r = getChar()
         if not r then return end
@@ -595,8 +548,6 @@ Tabs.Farm:AddButton({
                     startNoFall(nextMob)
                 end)
             end
-        else
-            Fluent:Notify({ Title = "Farm", Content = "Không tìm thấy mob!", Duration = 2 })
         end
     end,
 })
@@ -604,36 +555,30 @@ Tabs.Farm:AddButton({
 -- =====================================================
 -- TAB MOB
 -- =====================================================
-Tabs.Mob:AddSection("🧲 Bring Mob")
+Tabs.Mob:AddSection("Bring Mob")
 
 Tabs.Mob:AddToggle("BringToggle", {
     Title       = "Auto Bring Mob",
-    Description = "Kéo mob về mỗi 2 giây (CFrame teleport)",
     Default     = false,
 }):OnChanged(function(v) State.bring = v end)
 
 Tabs.Mob:AddSlider("BringRange", {
     Title    = "Bring Range",
-    Description = "Phạm vi kéo mob (studs)",
     Default  = 500, Min = 100, Max = 3000, Rounding = 50,
 }):OnChanged(function(v) Cfg.bringRange = v end)
 
 Tabs.Mob:AddButton({
     Title    = "Bring Mob Ngay",
-    Callback = function()
-        bringMobs()
-        Fluent:Notify({ Title = "Bring Mob", Content = "Đã kéo mob về!", Duration = 2 })
-    end,
+    Callback = function() bringMobs() end,
 })
 
 -- =====================================================
 -- TAB QUEST
 -- =====================================================
-Tabs.Quest:AddSection("🎯 Auto Quest")
+Tabs.Quest:AddSection("Auto Quest")
 
 Tabs.Quest:AddToggle("QuestToggle", {
     Title       = "Auto Quest",
-    Description = "Tự nhận quest theo level định kỳ",
     Default     = false,
 }):OnChanged(function(v)
     State.quest = v
@@ -642,18 +587,13 @@ end)
 
 Tabs.Quest:AddSlider("QuestInterval", {
     Title    = "Quest Interval",
-    Description = "Nhận quest mỗi bao nhiêu giây",
     Default  = 30, Min = 10, Max = 120, Rounding = 5,
 }):OnChanged(function(v) Cfg.questEvery = v end)
 
 Tabs.Quest:AddButton({
     Title    = "Nhận Quest Ngay",
-    Description = "FireServer quest theo level hiện tại",
     Callback = function()
-        if State.questBusy then
-            Fluent:Notify({ Title = "Quest", Content = "Đang nhận quest rồi...", Duration = 2 })
-            return
-        end
+        if State.questBusy then return end
         task.spawn(acceptQuest)
     end,
 })
@@ -661,16 +601,14 @@ Tabs.Quest:AddButton({
 -- =====================================================
 -- TAB MISC
 -- =====================================================
-Tabs.Misc:AddSection("⚙ Cài Đặt")
+Tabs.Misc:AddSection("Cài Đặt")
 
 Tabs.Misc:AddButton({
     Title    = "Force Reset",
-    Description = "Reset nhân vật về bình thường",
     Callback = function()
         State.farm = false
         State.questBusy = false
         resetChar()
-        Fluent:Notify({ Title = "Reset", Content = "Đã reset!", Duration = 2 })
     end,
 })
 
@@ -689,11 +627,10 @@ InterfaceManager:BuildInterfaceSection(Tabs.Misc)
 -- =====================================================
 -- TAB INFO
 -- =====================================================
-Tabs.Info:AddSection("📊 Thông Tin")
+Tabs.Info:AddSection("Thông Tin")
 
 local InfoP = Tabs.Info:AddParagraph({ Title = "Nhân Vật", Content = "Đang tải..." })
 local StatP = Tabs.Info:AddParagraph({ Title = "Trạng Thái", Content = "..." })
-local HookP = Tabs.Info:AddParagraph({ Title = "Hook Dame", Content = "Chờ tự đánh 1 lần..." })
 
 task.spawn(function()
     while true do
@@ -709,45 +646,19 @@ task.spawn(function()
                 "Mob: "      .. data.mobName
             )
             StatP:SetContent(
-                "Farm: "    .. (State.farm  and "ON ✓" or "OFF") .. "\n" ..
-                "Quest: "   .. (State.quest and "ON ✓" or "OFF") .. "\n" ..
-                "Bring: "   .. (State.bring and "ON ✓" or "OFF") .. "\n" ..
-                "Active: "  .. tostring(State.active)            .. "\n" ..
+                "Farm: "    .. (State.farm  and "ON" or "OFF") .. "\n" ..
+                "Quest: "   .. (State.quest and "ON" or "OFF") .. "\n" ..
+                "Bring: "   .. (State.bring and "ON" or "OFF") .. "\n" ..
                 "Target: "  .. (State.target and State.target.Name or "nil")
-            )
-            HookP:SetContent(
-                "Hook: "    .. (hookOK and "OK ✓" or "FAILED") .. "\n" ..
-                "Args: "    .. (lastAttackArgs and tostring(#lastAttackArgs) .. " args" or "Chưa có — hãy tự đánh 1 lần!")
             )
         end)
     end
 end)
 
-Tabs.Info:AddButton({
-    Title    = "Print Debug",
-    Callback = function()
-        print("=== CONCUHUB DEBUG ===")
-        print("Hook OK:", hookOK)
-        print("lastAttackArgs:", lastAttackArgs)
-        if lastAttackArgs then
-            for i,v in ipairs(lastAttackArgs) do
-                print("  arg["..i.."]:", type(v), tostring(v))
-            end
-        end
-        print("Quest Remote:", QuestRemote and QuestRemote:GetFullName() or "nil")
-        print("Attack Remote:", AttackRemote and AttackRemote:GetFullName() or "nil")
-        print("======================")
-    end,
-})
-
--- ── Load config & chọn tab đầu ──
+-- =====================================================
+-- LOAD
+-- =====================================================
 SaveManager:LoadAutoloadConfig()
 Window:SelectTab(1)
 
-Fluent:Notify({
-    Title    = "Concuhub v3.0",
-    Content  = "Loaded! Bấm RightShift để ẩn/hiện UI.\nTự đánh 1 lần trước khi bật Farm để hook dame.",
-    Duration = 6,
-})
-
-print("[Concuhub v3.0] OK | RightShift = toggle UI") 
+print("[Concuhub v3.0] Loaded! RightShift = toggle UI") 
