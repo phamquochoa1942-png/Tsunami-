@@ -1,5 +1,5 @@
 -- ╔══════════════════════════════════════════════════╗
--- ║         VEXZ HUB | by Quoc Hoa                  ║
+-- ║         CONCUHUB | by Quoc Hoa                  ║
 -- ╚══════════════════════════════════════════════════╝
 
 -- =====================================================
@@ -115,14 +115,14 @@ pcall(function()
         return old(self, ...)
     end)
     setreadonly(mt, true)
-    print("[Vexz Hub] Hash hook OK")
+    print("[Concuhub] Hash hook OK")
 end)
 
 -- =====================================================
 -- CONFIG (đọc/ghi từ slider)
 -- =====================================================
 local Cfg = {
-    scanRange    = 2000,
+    scanRange    = 2000,  -- quét xa để bay tới đàn khác
     attackRange  = 150,
     bringRange   = 500,
     questInterval = 30,
@@ -217,6 +217,7 @@ local function StartNoFall(Target)
         local ER   = Target:FindFirstChild("HumanoidRootPart")
         if not Root or not ER then return end
 
+        -- Kiểm tra mob còn sống
         local EH = Target:FindFirstChildOfClass("Humanoid")
         if not EH or EH.Health <= 0 then return end
 
@@ -228,12 +229,14 @@ local function StartNoFall(Target)
     end)
 end
 
+-- FlyTo: Bay đến vị trí bằng CFrame trực tiếp (không dùng Tween vì hay bị kẹt)
 local function FlyTo(targetPos, duration)
     local Char = LocalPlayer.Character
     if not Char then return end
     local Root = Char:FindFirstChild("HumanoidRootPart")
     if not Root then return end
 
+    -- Tạm tắt NoFall trong lúc bay
     if State.noFallConn then
         State.noFallConn:Disconnect()
         State.noFallConn = nil
@@ -250,6 +253,7 @@ local function FlyTo(targetPos, duration)
     conn = RunService.RenderStepped:Connect(function(dt)
         elapsed = elapsed + dt
         local alpha = math.clamp(elapsed / totalTime, 0, 1)
+        -- Ease out quad
         alpha = 1 - (1 - alpha)^2
 
         local Char2 = LocalPlayer.Character
@@ -264,12 +268,13 @@ local function FlyTo(targetPos, duration)
         if alpha >= 1 then conn:Disconnect() end
     end)
 
+    -- Chờ bay xong
     local waited = 0
     repeat task.wait(0.05); waited += 0.05 until waited >= totalTime + 0.1
 end
 
 -- =====================================================
--- BRING MOB
+-- BRING MOB — FIX: dùng CFrame.new thay vì gán trực tiếp
 -- =====================================================
 local function BringMobs()
     local Char = LocalPlayer.Character
@@ -278,7 +283,7 @@ local function BringMobs()
     if not Root then return end
     local Enemies = workspace:FindFirstChild("Enemies")
     if not Enemies then
-        warn("[Vexz Hub] Không tìm thấy folder Enemies")
+        warn("[Concuhub] Không tìm thấy folder Enemies")
         return
     end
 
@@ -291,6 +296,7 @@ local function BringMobs()
 
         local dist = (Root.Position - ER.Position).Magnitude
         if dist <= Cfg.bringRange then
+            -- FIX: dùng pcall để tránh crash khi set CFrame của mob
             pcall(function()
                 ER.CFrame = CFrame.new(
                     Root.Position + Vector3.new(
@@ -303,11 +309,11 @@ local function BringMobs()
             count += 1
         end
     end
-    print("[Vexz Hub] Brought", count, "mobs")
+    print("[Concuhub] Brought", count, "mobs")
 end
 
 -- =====================================================
--- AUTO QUEST
+-- AUTO QUEST — FIX: tìm NPC bằng nhiều cách
 -- =====================================================
 local function AcceptQuest()
     if State.isFlyingQuest then return end
@@ -315,10 +321,12 @@ local function AcceptQuest()
 
     local lv   = getPlayerLevel()
     local data = getDataForLevel(lv)
-    print("[Vexz Hub] Tìm NPC quest:", data.questNPC, "| Lv:", lv)
+    print("[Concuhub] Tìm NPC quest:", data.questNPC, "| Lv:", lv)
 
+    -- Tìm NPC bằng nhiều cách
     local npcPos = nil
 
+    -- Cách 1: Tìm Model tên chứa questNPC
     for _, v in pairs(workspace:GetDescendants()) do
         if v:IsA("Model") then
             if v.Name:lower():find(data.questNPC:lower()) then
@@ -327,30 +335,33 @@ local function AcceptQuest()
                     or v.PrimaryPart
                 if r then
                     npcPos = r.Position
-                    print("[Vexz Hub] Tìm thấy NPC Model:", v.Name)
+                    print("[Concuhub] Tìm thấy NPC Model:", v.Name)
                     break
                 end
             end
         end
     end
 
+    -- Cách 2: Tìm Part/BasePart tên chứa questNPC
     if not npcPos then
         for _, v in pairs(workspace:GetDescendants()) do
             if v:IsA("BasePart") and v.Name:lower():find(data.questNPC:lower()) then
                 npcPos = v.Position
-                print("[Vexz Hub] Tìm thấy NPC Part:", v.Name)
+                print("[Concuhub] Tìm thấy NPC Part:", v.Name)
                 break
             end
         end
     end
 
     if npcPos then
+        -- Bay đến NPC
         FlyTo(npcPos + Vector3.new(0, 3, -5), 2)
         task.wait(0.8)
 
+        -- Fire quest remote
         pcall(function()
             QuestRemote:FireServer(data.questNPC, data.island)
-            print("[Vexz Hub] FireServer quest:", data.questNPC)
+            print("[Concuhub] FireServer quest:", data.questNPC)
         end)
 
         task.wait(0.5)
@@ -360,7 +371,7 @@ local function AcceptQuest()
             Duration = 3,
         })
     else
-        warn("[Vexz Hub] Không tìm thấy NPC:", data.questNPC)
+        warn("[Concuhub] Không tìm thấy NPC:", data.questNPC)
         Fluent:Notify({
             Title   = "Quest",
             Content = "Không tìm thấy NPC: " .. data.questNPC,
@@ -368,10 +379,12 @@ local function AcceptQuest()
         })
     end
 
+    -- Bật lại farm sau khi quest xong
     if State.farmEnabled and State.currentTarget and State.currentTarget.Parent then
         State.isActive = true
         StartNoFall(State.currentTarget)
     else
+        -- Reset để main loop tìm mob mới
         State.isActive      = false
         State.currentTarget = nil
         workspace.Gravity   = State.origGravity
@@ -381,7 +394,7 @@ local function AcceptQuest()
 end
 
 -- =====================================================
--- SCAN MOB XA
+-- SCAN MOB XA — quét toàn bộ map tìm đàn tiếp theo
 -- =====================================================
 local function findNearestMob(fromPos, maxDist)
     local Enemies = workspace:FindFirstChild("Enemies")
@@ -405,19 +418,20 @@ local function findNearestMob(fromPos, maxDist)
     return closest, closestDist
 end
 
+-- Bay đến đàn mob tiếp theo khi đàn hiện tại hết
 local function FlyToNextGroup()
     local Char = LocalPlayer.Character
     if not Char then return end
     local Root = Char:FindFirstChild("HumanoidRootPart")
     if not Root then return end
 
-    print("[Vexz Hub] Tìm đàn mob tiếp theo trong", Cfg.scanRange, "studs...")
+    print("[Concuhub] Tìm đàn mob tiếp theo trong", Cfg.scanRange, "studs...")
 
     local nextMob, dist = findNearestMob(Root.Position, Cfg.scanRange)
     if nextMob then
         local ER = nextMob:FindFirstChild("HumanoidRootPart")
         if ER then
-            print("[Vexz Hub] Bay đến đàn mới:", nextMob.Name, "cách", math.floor(dist), "studs")
+            print("[Concuhub] Bay đến đàn mới:", nextMob.Name, "cách", math.floor(dist), "studs")
             Fluent:Notify({
                 Title   = "Farm",
                 Content = "Bay đến đàn mới: " .. nextMob.Name,
@@ -429,7 +443,7 @@ local function FlyToNextGroup()
             StartNoFall(nextMob)
         end
     else
-        print("[Vexz Hub] Không tìm thấy mob trong", Cfg.scanRange, "studs")
+        print("[Concuhub] Không tìm thấy mob trong", Cfg.scanRange, "studs")
     end
 end
 
@@ -486,8 +500,9 @@ task.spawn(function()
             task.wait(0.2); continue
         end
 
+        -- Quét mob gần (trong attackRange)
         local Closest   = nil
-        local ClostDist = Cfg.attackRange * 2
+        local ClostDist = Cfg.attackRange * 2  -- scan rộng hơn attackRange
         local AllNearby = {}
         local Enemies   = workspace:FindFirstChild("Enemies")
 
@@ -516,6 +531,7 @@ task.spawn(function()
                 StartNoFall(Closest)
             end
 
+            -- Cập nhật target khi mob chết → tự chuyển sang mob kế
             if State.currentTarget then
                 local EH = State.currentTarget:FindFirstChildOfClass("Humanoid")
                 local ER = State.currentTarget:FindFirstChild("HumanoidRootPart")
@@ -525,6 +541,7 @@ task.spawn(function()
                 end
             end
 
+            -- FireServer tất cả mob trong attackRange
             for _, Enemy in ipairs(AllNearby) do
                 if not State.farmEnabled then break end
                 local EH = Enemy:FindFirstChildOfClass("Humanoid")
@@ -545,6 +562,7 @@ task.spawn(function()
             end
 
         else
+            -- Hết mob → tìm đàn tiếp theo trong scanRange
             if State.isActive then
                 ForceReset()
                 task.wait(0.5)
@@ -561,12 +579,13 @@ end)
 -- =====================================================
 local Window = Fluent:CreateWindow({
     Title       = "Vexz Hub",
-    SubTitle    = "by Quoc Hoa | v2.0",
+    SubTitle    = "by Quoc Hoa",
     TabWidth    = 160,
     Size        = UDim2.fromOffset(580, 420),
     Acrylic     = true,
     Theme       = "Pink",
     MinimizeKey = Enum.KeyCode.RightControl,
+    -- Logo ID — thay bằng image ID của bạn
     Icon        = "rbxassetid://118274073113294",
 })
 
@@ -593,6 +612,7 @@ AutoFarmToggle:OnChanged(function(v)
     if not v and State.isActive then ForceReset() end
     if v then
         if State.autoQuest then task.spawn(AcceptQuest) end
+        -- Tìm mob đầu tiên nếu chưa có target
         if not State.isActive then
             task.spawn(FlyToNextGroup)
         end
@@ -716,8 +736,8 @@ Tabs.Misc:AddButton({
 
 SaveManager:SetLibrary(Fluent)
 InterfaceManager:SetLibrary(Fluent)
-InterfaceManager:SetFolder("VexzHub")
-SaveManager:SetFolder("VexzHub/configs")
+InterfaceManager:SetFolder("Concuhub")
+SaveManager:SetFolder("Concuhub/configs")
 SaveManager:BuildConfigSection(Tabs.Misc)
 InterfaceManager:BuildInterfaceSection(Tabs.Misc)
 
@@ -765,7 +785,7 @@ Tabs.Info:AddButton({
     Title    = "Debug Info",
     Description = "In thông tin debug ra console",
     Callback = function()
-        print("=== VEXZ HUB DEBUG ===")
+        print("=== CONCUHUB DEBUG ===")
         print("Hash:", lastHash)
         print("Attack Remote:", AttackRemote:GetFullName())
         print("Quest Remote:", QuestRemote:GetFullName())
@@ -776,67 +796,16 @@ Tabs.Info:AddButton({
     end,
 })
 
--- =====================================================
--- NÚT LOGO NGOÀI MÀN HÌNH ĐỂ BẬT/TẮT UI
--- =====================================================
-local LogoButton = Instance.new("ImageButton")
-LogoButton.Size = UDim2.new(0, 60, 0, 60)
-LogoButton.Position = UDim2.new(0.01, 0, 0.5, -30)
-LogoButton.AnchorPoint = Vector2.new(0, 0.5)
-LogoButton.BackgroundTransparency = 1
-LogoButton.Image = "rbxassetid://118274073113294"
-LogoButton.Active = true
-LogoButton.Visible = true
-LogoButton.ZIndex = 10
-LogoButton.Parent = game:GetService("CoreGui")
-
-local LogoCorner = Instance.new("UICorner", LogoButton)
-LogoCorner.CornerRadius = UDim.new(1, 15)
-
-local LogoStroke = Instance.new("UIStroke", LogoButton)
-LogoStroke.Color = Color3.fromRGB(255, 100, 100)
-LogoStroke.Thickness = 2
-
-local dragging = false
-local dragStart = nil
-local startPos = nil
-
-LogoButton.InputBegan:Connect(function(input)
-    if input.UserInputType == Enum.UserInputType.MouseButton1 then
-        dragging = true
-        dragStart = input.Position
-        startPos = LogoButton.Position
-        input.Changed:Connect(function()
-            if input.UserInputState == Enum.UserInputState.End then
-                dragging = false
-            end
-        end)
-    end
-end)
-
-game:GetService("UserInputService").InputChanged:Connect(function(input)
-    if dragging and input.UserInputType == Enum.UserInputType.MouseMovement then
-        local delta = input.Position - dragStart
-        LogoButton.Position = UDim2.new(
-            startPos.X.Scale, startPos.X.Offset + delta.X,
-            startPos.Y.Scale, startPos.Y.Offset + delta.Y
-        )
-    end
-end)
-
-LogoButton.MouseButton1Click:Connect(function()
-    Window:Toggle()
-end)
-
 -- ── Load config ──
 SaveManager:LoadAutoloadConfig()
 Window:SelectTab(1)
 
 Fluent:Notify({
-    Title    = "Vexz Hub v2.0",
+    Title    = "Concuhub v2.0",
     Content  = "Loaded! Bật Auto Farm để bắt đầu.",
     Duration = 5,
 })
 
-print("[Vexz Hub v2.0] Loaded OK")
-print("[Vexz Hub] Hash hiện tại:", lastHash) 
+print("[Concuhub v2.0] Loaded OK")
+print("[Concuhub] Hash hiện tại:", lastHash)
+ 
