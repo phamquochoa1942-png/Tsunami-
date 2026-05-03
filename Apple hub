@@ -1,13 +1,19 @@
 -- ╔══════════════════════════════════════════════════╗
--- ║         CONCUHUB | by Quoc Hoa                  ║
+-- ║  CONCUHUB v3.0  |  by Quoc Hoa                 ║
 -- ╚══════════════════════════════════════════════════╝
 
 -- =====================================================
--- LOAD FLUENT UI
+-- FLUENT UI
 -- =====================================================
-local Fluent         = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
-local SaveManager    = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/SaveManager.lua"))()
-local InterfaceManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/InterfaceManager.lua"))()
+local Fluent = loadstring(game:HttpGet(
+    "https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"
+))()
+local SaveManager = loadstring(game:HttpGet(
+    "https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/SaveManager.lua"
+))()
+local InterfaceManager = loadstring(game:HttpGet(
+    "https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/InterfaceManager.lua"
+))()
 
 -- =====================================================
 -- SERVICES
@@ -21,53 +27,52 @@ local UserInputService    = game:GetService("UserInputService")
 local LocalPlayer         = Players.LocalPlayer
 
 -- =====================================================
--- LEVEL DATA — Lv 1 → 2800
+-- LEVEL DATA
 -- =====================================================
 local LevelData = {
-    {1,   15,  1, "StartIsland",       "Villager1",          "Bandit"},
-    {15,  30,  1, "StartIsland",       "Villager2",          "Bandit"},
-    {30,  60,  1, "Jungle",            "Gorilla King",       "Gorilla"},
-    {60,  90,  1, "PirateVillage",     "Pirate",             "Pirate"},
-    {90,  120, 1, "Desert",            "Desert Bandit",      "Desert Bandit"},
-    {120, 150, 1, "SnowIsland",        "Snow Bandit",        "Snow Bandit"},
-    {150, 200, 1, "MarineBase",        "Lieutenant",         "Ensign"},
-    {200, 250, 1, "Skylands",          "Sky Bandit",         "Sky Bandit"},
-    {250, 300, 1, "Fountain City",     "Citizen",            "Citizen"},
-    {300, 375, 1, "GraveyardIsland",   "Zombie",             "Zombie"},
-    {375, 450, 1, "Thriller Bark",     "Zombie",             "Zombie"},
-    {450, 500, 1, "ColossiumIsland",   "Gladiator",          "Gladiator"},
-    {500, 575, 1, "Magma Village",     "Magma Ninja",        "Magma Ninja"},
-    {575, 625, 1, "IronIsland",        "Dark Master",        "Dark Master"},
-    {625, 700, 1, "ZombieIsland",      "Dragon Crew",        "Dragon Crew Archer"},
-    {700, 750, 1, "DragonIsland",      "Dragon Crew",        "Dragon Crew Swordsman"},
-    {700, 775, 2, "Kingdom of Rose",   "Flower",             "Chocolate Bar Battler"},
-    {775, 850, 2, "DarkArena",         "Imp",                "Imp"},
-    {850, 925, 2, "Ice Side",          "Ice Cream",          "Snow Lurker"},
-    {925, 1000,2, "Forgotten Island",  "Forest Pirate",      "Forest Pirate"},
-    {1000,1050,2, "Usopp Island",      "Military Soldier",   "Military Soldier"},
-    {1050,1100,2, "OakIsland",         "Diable",             "Diable"},
-    {1100,1200,2, "Dimensional Rift",  "Dimensional Rift",   "Deranged Slasher"},
-    {1200,1250,2, "Mini Sky",          "Sky Stalker",        "Sky Stalker"},
-    {1250,1350,2, "CastleOnTheSea",    "Royal Soldier",      "Royal Soldier"},
-    {1350,1425,2, "SeaOfTreat",        "Sea Soldier",        "Sea Soldier"},
-    {1425,1500,2, "HotAndCold",        "Ice Cream Islander", "Ice Cream Islander"},
-    {1500,1575,2, "Terrorshark",       "Ship Deckhand",      "Ship Deckhand"},
-    {1575,1650,3, "Floating Turtle",   "Fishman",            "Fishman Raider"},
-    {1650,1700,3, "ForestOfGiants",    "Poseidon",           "Giant Warrior"},
-    {1700,1750,3, "Hydra Island",      "Marine Lieutenant",  "Marine Lieutenant"},
-    {1750,1800,3, "NewWorld",          "Pirate Admin",       "Pirate Admin"},
-    {1800,1875,3, "Tiki Outpost",      "Pirate Millionaire", "Pirate Millionaire"},
-    {1875,1950,3, "TreasureIsland",    "Corrupt Master",     "Corrupt Master"},
-    {1950,2025,3, "Haunted Castle",    "Sea Samurai",        "Reborn Skeleton"},
-    {2025,2100,3, "FarEast",           "Order Leader",       "Order"},
-    {2100,2175,3, "GraveIsland",       "Adventurer",         "Adventurer"},
-    {2175,2275,3, "FrozenPeak",        "Snow Boss",          "Yeti"},
-    {2275,2375,3, "Cursed Ship",       "Pirate Lord",        "Cursed Dual Katana User"},
-    {2375,2475,3, "LegacyPort",        "Pirate Warrior",     "Pirate Warrior"},
-    {2475,2575,3, "BartolomeoIsland",  "Bartolomeo",         "Beautiful Pirate"},
-    {2575,2650,3, "LondonIsland",      "Kaiju",              "Kaiju"},
-    {2650,2700,3, "Haunted Island",    "Poltergeist",        "Poltergeist"},
-    {2700,2800,3, "GhostIsland",       "Demonic Soul",       "Demonic Soul"},
+    {1,   15,  1, "StartIsland",      "Villager1",          "Bandit"},
+    {15,  30,  1, "StartIsland",      "Villager2",          "Bandit"},
+    {30,  60,  1, "Jungle",           "Gorilla King",       "Gorilla"},
+    {60,  90,  1, "PirateVillage",    "Pirate",             "Pirate"},
+    {90,  120, 1, "Desert",           "Desert Bandit",      "Desert Bandit"},
+    {120, 150, 1, "SnowIsland",       "Snow Bandit",        "Snow Bandit"},
+    {150, 200, 1, "MarineBase",       "Lieutenant",         "Ensign"},
+    {200, 250, 1, "Skylands",         "Sky Bandit",         "Sky Bandit"},
+    {250, 300, 1, "Fountain City",    "Citizen",            "Citizen"},
+    {300, 375, 1, "GraveyardIsland",  "Zombie",             "Zombie"},
+    {375, 450, 1, "Thriller Bark",    "Zombie",             "Zombie"},
+    {450, 500, 1, "ColossiumIsland",  "Gladiator",          "Gladiator"},
+    {500, 575, 1, "Magma Village",    "Magma Ninja",        "Magma Ninja"},
+    {575, 625, 1, "IronIsland",       "Dark Master",        "Dark Master"},
+    {625, 700, 1, "ZombieIsland",     "Dragon Crew",        "Dragon Crew Archer"},
+    {700, 775, 2, "Kingdom of Rose",  "Flower",             "Chocolate Bar Battler"},
+    {775, 850, 2, "DarkArena",        "Imp",                "Imp"},
+    {850, 925, 2, "Ice Side",         "Ice Cream",          "Snow Lurker"},
+    {925, 1000,2, "Forgotten Island", "Forest Pirate",      "Forest Pirate"},
+    {1000,1050,2, "Usopp Island",     "Military Soldier",   "Military Soldier"},
+    {1050,1100,2, "OakIsland",        "Diable",             "Diable"},
+    {1100,1200,2, "Dimensional Rift", "Dimensional Rift",   "Deranged Slasher"},
+    {1200,1250,2, "Mini Sky",         "Sky Stalker",        "Sky Stalker"},
+    {1250,1350,2, "CastleOnTheSea",   "Royal Soldier",      "Royal Soldier"},
+    {1350,1425,2, "SeaOfTreat",       "Sea Soldier",        "Sea Soldier"},
+    {1425,1500,2, "HotAndCold",       "Ice Cream Islander", "Ice Cream Islander"},
+    {1500,1575,2, "Terrorshark",      "Ship Deckhand",      "Ship Deckhand"},
+    {1575,1650,3, "Floating Turtle",  "Fishman",            "Fishman Raider"},
+    {1650,1700,3, "ForestOfGiants",   "Poseidon",           "Giant Warrior"},
+    {1700,1750,3, "Hydra Island",     "Marine Lieutenant",  "Marine Lieutenant"},
+    {1750,1800,3, "NewWorld",         "Pirate Admin",       "Pirate Admin"},
+    {1800,1875,3, "Tiki Outpost",     "Pirate Millionaire", "Pirate Millionaire"},
+    {1875,1950,3, "TreasureIsland",   "Corrupt Master",     "Corrupt Master"},
+    {1950,2025,3, "Haunted Castle",   "Sea Samurai",        "Reborn Skeleton"},
+    {2025,2100,3, "FarEast",          "Order Leader",       "Order"},
+    {2100,2175,3, "GraveIsland",      "Adventurer",         "Adventurer"},
+    {2175,2275,3, "FrozenPeak",       "Snow Boss",          "Yeti"},
+    {2275,2375,3, "Cursed Ship",      "Pirate Lord",        "Cursed Dual Katana User"},
+    {2375,2475,3, "LegacyPort",       "Pirate Warrior",     "Pirate Warrior"},
+    {2475,2575,3, "BartolomeoIsland", "Bartolomeo",         "Beautiful Pirate"},
+    {2575,2650,3, "LondonIsland",     "Kaiju",              "Kaiju"},
+    {2650,2700,3, "Haunted Island",   "Poltergeist",        "Poltergeist"},
+    {2700,2800,3, "GhostIsland",      "Demonic Soul",       "Demonic Soul"},
 }
 
 local function getDataForLevel(lv)
@@ -92,382 +97,409 @@ end
 -- =====================================================
 -- REMOTES
 -- =====================================================
-local AttackRemote = ReplicatedStorage:WaitForChild("Modules")
-    :WaitForChild("Net"):WaitForChild("RE/RegisterHit")
+local AttackRemote = ReplicatedStorage:WaitForChild("Modules", 10)
+    and ReplicatedStorage.Modules:WaitForChild("Net", 10)
+    and ReplicatedStorage.Modules.Net:WaitForChild("RE/RegisterHit", 10)
 
-local QuestRemote = ReplicatedStorage:WaitForChild("Remotes")
-    :WaitForChild("QuestUpdate")
+local QuestRemote = ReplicatedStorage:FindFirstChild("Remotes")
+if QuestRemote then
+    QuestRemote = QuestRemote:FindFirstChild("QuestUpdate") or QuestRemote:FindFirstChild("StartQuest")
+end
 
--- FIX DAME: Hook để lấy hash mới nhất từ game gốc
-local lastHash = "079996f9"
+if not AttackRemote then warn("[Concuhub] Không tìm thấy AttackRemote!") end
+if not QuestRemote  then warn("[Concuhub] Không tìm thấy QuestRemote!")  end
+
+-- =====================================================
+-- FIX DAME: Hook namecall
+-- =====================================================
+local lastAttackArgs = nil
+local hookOK = false
+
 pcall(function()
-    local mt = getrawmetatable(game)
+    local mt  = getrawmetatable(game)
     local old = mt.__namecall
     setreadonly(mt, false)
     mt.__namecall = newcclosure(function(self, ...)
         local method = getnamecallmethod()
         if method == "FireServer" and self == AttackRemote then
-            local args = {...}
-            if args[4] and type(args[4]) == "string" then
-                lastHash = args[4]
-            end
+            lastAttackArgs = {...}
         end
         return old(self, ...)
     end)
     setreadonly(mt, true)
-    print("[Concuhub] Hash hook OK")
+    hookOK = true
+    print("[Concuhub] Hook dame OK")
 end)
 
 -- =====================================================
--- CONFIG (đọc/ghi từ slider)
+-- CONFIG
 -- =====================================================
 local Cfg = {
-    scanRange    = 2000,  -- quét xa để bay tới đàn khác
-    attackRange  = 150,
+    scanRange    = 2000,
+    attackRange  = 200,
     bringRange   = 500,
-    questInterval = 30,
+    questEvery   = 30,
 }
 
 -- =====================================================
 -- STATE
 -- =====================================================
 local State = {
-    farmEnabled   = false,
-    bringMob      = false,
-    autoQuest     = false,
-    isActive      = false,
-    isFlyingQuest = false,
-    currentTarget = nil,
-    noFallConn    = nil,
-    origGravity   = workspace.Gravity,
-    origWalk      = 16,
-    origJump      = 50,
+    farm         = false,
+    bring        = false,
+    quest        = false,
+    active       = false,
+    questBusy    = false,
+    target       = nil,
+    noFallConn   = nil,
+    origGravity  = workspace.Gravity,
+    origWalk     = 16,
+    origJump     = 50,
 }
 
--- =====================================================
--- CORE FUNCTIONS
--- =====================================================
-local function ForceReset()
-    State.isActive      = false
-    State.currentTarget = nil
+local uiVisible = true
 
+-- =====================================================
+-- UTILS
+-- =====================================================
+local function getChar()
+    local c = LocalPlayer.Character
+    if not c then return nil, nil, nil end
+    local r = c:FindFirstChild("HumanoidRootPart")
+    local h = c:FindFirstChildOfClass("Humanoid")
+    return c, r, h
+end
+
+local function resetChar()
+    State.active = false
+    State.target = nil
     if State.noFallConn then
         State.noFallConn:Disconnect()
         State.noFallConn = nil
     end
-
     workspace.Gravity = State.origGravity
-    UserInputService.MouseIconEnabled = true
-
-    local Char = LocalPlayer.Character
-    if not Char then return end
-    local Hum = Char:FindFirstChildOfClass("Humanoid")
-    if Hum then
-        Hum.WalkSpeed     = State.origWalk
-        Hum.JumpPower     = State.origJump
-        Hum.PlatformStand = false
-        Hum.AutoRotate    = true
+    local c, r, h = getChar()
+    if not c then return end
+    if h then
+        h.WalkSpeed     = State.origWalk
+        h.JumpPower     = State.origJump
+        h.PlatformStand = false
+        h.AutoRotate    = true
     end
-    local Root = Char:FindFirstChild("HumanoidRootPart")
-    if Root then
-        Root.Velocity                = Vector3.new(0,0,0)
-        Root.RotVelocity             = Vector3.new(0,0,0)
-        Root.AssemblyLinearVelocity  = Vector3.new(0,0,0)
-        Root.AssemblyAngularVelocity = Vector3.new(0,0,0)
+    if r then
+        r.Velocity                = Vector3.zero
+        r.RotVelocity             = Vector3.zero
+        r.AssemblyLinearVelocity  = Vector3.zero
+        r.AssemblyAngularVelocity = Vector3.zero
     end
-    for _, p in ipairs(Char:GetDescendants()) do
+    for _, p in ipairs(c:GetDescendants()) do
         if p:IsA("BasePart") then p.CanCollide = true end
     end
 end
 
-local function LockChar()
-    local Char = LocalPlayer.Character
-    if not Char then return end
-    local Hum = Char:FindFirstChildOfClass("Humanoid")
-    if Hum then
-        State.origWalk    = Hum.WalkSpeed
-        State.origJump    = Hum.JumpPower
-        Hum.WalkSpeed     = 0
-        Hum.JumpPower     = 0
-        Hum.PlatformStand = true
-        Hum.AutoRotate    = false
+local function lockChar()
+    local c, r, h = getChar()
+    if not c then return end
+    if h then
+        State.origWalk    = h.WalkSpeed
+        State.origJump    = h.JumpPower
+        h.WalkSpeed       = 0
+        h.JumpPower       = 0
+        h.PlatformStand   = true
+        h.AutoRotate      = false
     end
-    for _, p in ipairs(Char:GetDescendants()) do
+    for _, p in ipairs(c:GetDescendants()) do
         if p:IsA("BasePart") and p.Name ~= "HumanoidRootPart" then
             p.CanCollide = false
         end
     end
-    UserInputService.MouseIconEnabled = false
 end
 
-local function StartNoFall(Target)
+-- =====================================================
+-- NOFAIL
+-- =====================================================
+local function startNoFall(mob)
     if State.noFallConn then
         State.noFallConn:Disconnect()
         State.noFallConn = nil
     end
-
     workspace.Gravity = 0
-    LockChar()
+    lockChar()
 
     State.noFallConn = RunService.RenderStepped:Connect(function()
-        if not State.isActive then return end
-        local C = LocalPlayer.Character
-        if not C or not Target or not Target.Parent then return end
-        local Root = C:FindFirstChild("HumanoidRootPart")
-        local ER   = Target:FindFirstChild("HumanoidRootPart")
-        if not Root or not ER then return end
-
-        -- Kiểm tra mob còn sống
-        local EH = Target:FindFirstChildOfClass("Humanoid")
-        if not EH or EH.Health <= 0 then return end
-
-        Root.CFrame                  = ER.CFrame * CFrame.new(0, 10, 0)
-        Root.Velocity                = Vector3.new(0,0,0)
-        Root.RotVelocity             = Vector3.new(0,0,0)
-        Root.AssemblyLinearVelocity  = Vector3.new(0,0,0)
-        Root.AssemblyAngularVelocity = Vector3.new(0,0,0)
+        if not State.active then return end
+        local _, r = getChar()
+        if not r or not mob or not mob.Parent then return end
+        local er = mob:FindFirstChild("HumanoidRootPart")
+        local eh = mob:FindFirstChildOfClass("Humanoid")
+        if not er or not eh or eh.Health <= 0 then return end
+        r.CFrame                  = er.CFrame * CFrame.new(0, 10, 0)
+        r.Velocity                = Vector3.zero
+        r.RotVelocity             = Vector3.zero
+        r.AssemblyLinearVelocity  = Vector3.zero
+        r.AssemblyAngularVelocity = Vector3.zero
     end)
 end
 
--- FlyTo: Bay đến vị trí bằng CFrame trực tiếp (không dùng Tween vì hay bị kẹt)
-local function FlyTo(targetPos, duration)
-    local Char = LocalPlayer.Character
-    if not Char then return end
-    local Root = Char:FindFirstChild("HumanoidRootPart")
-    if not Root then return end
-
-    -- Tạm tắt NoFall trong lúc bay
+-- =====================================================
+-- FLY TO
+-- =====================================================
+local function flyTo(targetPos, speed)
+    speed = speed or 150
     if State.noFallConn then
         State.noFallConn:Disconnect()
         State.noFallConn = nil
     end
-
     workspace.Gravity = 0
-    LockChar()
+    lockChar()
 
-    local startPos  = Root.Position
-    local elapsed   = 0
-    local totalTime = duration or 2
+    local done = false
     local conn
-
     conn = RunService.RenderStepped:Connect(function(dt)
-        elapsed = elapsed + dt
-        local alpha = math.clamp(elapsed / totalTime, 0, 1)
-        -- Ease out quad
-        alpha = 1 - (1 - alpha)^2
-
-        local Char2 = LocalPlayer.Character
-        if not Char2 then conn:Disconnect(); return end
-        local Root2 = Char2:FindFirstChild("HumanoidRootPart")
-        if not Root2 then conn:Disconnect(); return end
-
-        Root2.CFrame                 = CFrame.new(startPos:Lerp(targetPos, alpha))
-        Root2.Velocity               = Vector3.new(0,0,0)
-        Root2.AssemblyLinearVelocity = Vector3.new(0,0,0)
-
-        if alpha >= 1 then conn:Disconnect() end
+        local _, r = getChar()
+        if not r then conn:Disconnect(); done = true; return end
+        local diff = targetPos - r.Position
+        if diff.Magnitude < 3 then
+            r.CFrame                  = CFrame.new(targetPos)
+            r.Velocity                = Vector3.zero
+            r.AssemblyLinearVelocity  = Vector3.zero
+            conn:Disconnect(); done = true; return
+        end
+        local step = math.min(speed * dt, diff.Magnitude)
+        r.CFrame                  = CFrame.new(r.Position + diff.Unit * step)
+        r.Velocity                = Vector3.zero
+        r.AssemblyLinearVelocity  = Vector3.zero
     end)
 
-    -- Chờ bay xong
-    local waited = 0
-    repeat task.wait(0.05); waited += 0.05 until waited >= totalTime + 0.1
+    local t = 0
+    repeat task.wait(0.05); t += 0.05 until done or t >= 10
 end
 
 -- =====================================================
--- BRING MOB — FIX: dùng CFrame.new thay vì gán trực tiếp
+-- FIND MOB
 -- =====================================================
-local function BringMobs()
-    local Char = LocalPlayer.Character
-    if not Char then return end
-    local Root = Char:FindFirstChild("HumanoidRootPart")
-    if not Root then return end
+local function findMobs(fromPos, maxDist)
+    local closest, closestDist = nil, maxDist or math.huge
+    local nearby = {}
     local Enemies = workspace:FindFirstChild("Enemies")
-    if not Enemies then
-        warn("[Concuhub] Không tìm thấy folder Enemies")
-        return
+    if not Enemies then return nil, math.huge, {} end
+
+    for _, e in ipairs(Enemies:GetChildren()) do
+        if not e:IsA("Model") then continue end
+        local eh = e:FindFirstChildOfClass("Humanoid")
+        local er = e:FindFirstChild("HumanoidRootPart")
+        if not eh or eh.Health <= 0 or not er then continue end
+        local dist = (fromPos - er.Position).Magnitude
+        if dist <= (maxDist or math.huge) then
+            table.insert(nearby, {mob=e, dist=dist})
+            if dist < closestDist then
+                closestDist = dist
+                closest = e
+            end
+        end
     end
+    return closest, closestDist, nearby
+end
+
+-- =====================================================
+-- BRING MOB — FIX: CFrame teleport thẳng mob về
+-- =====================================================
+local function bringMobs()
+    local _, r = getChar()
+    if not r then return end
+    local Enemies = workspace:FindFirstChild("Enemies")
+    if not Enemies then return end
 
     local count = 0
-    for _, Enemy in ipairs(Enemies:GetChildren()) do
-        if not Enemy:IsA("Model") then continue end
-        local EH = Enemy:FindFirstChildOfClass("Humanoid")
-        local ER = Enemy:FindFirstChild("HumanoidRootPart")
-        if not EH or EH.Health <= 0 or not ER then continue end
-
-        local dist = (Root.Position - ER.Position).Magnitude
+    for _, e in ipairs(Enemies:GetChildren()) do
+        if not e:IsA("Model") then continue end
+        local eh = e:FindFirstChildOfClass("Humanoid")
+        local er = e:FindFirstChild("HumanoidRootPart")
+        if not eh or eh.Health <= 0 or not er then continue end
+        local dist = (r.Position - er.Position).Magnitude
         if dist <= Cfg.bringRange then
-            -- FIX: dùng pcall để tránh crash khi set CFrame của mob
             pcall(function()
-                ER.CFrame = CFrame.new(
-                    Root.Position + Vector3.new(
-                        math.random(-8, 8),
-                        0,
-                        math.random(-8, 8)
-                    )
+                er.CFrame = r.CFrame * CFrame.new(
+                    math.random(-5, 5),
+                    0,
+                    math.random(-8, -3)
                 )
+                er.Velocity = Vector3.zero
+                er.AssemblyLinearVelocity = Vector3.zero
             end)
             count += 1
         end
     end
-    print("[Concuhub] Brought", count, "mobs")
+    print("[Concuhub] Bring", count, "mob")
 end
 
 -- =====================================================
--- AUTO QUEST — FIX: tìm NPC bằng nhiều cách
+-- AUTO QUEST — FIX: Tìm NPC trong workspace.NPCs hoặc fire thẳng
 -- =====================================================
-local function AcceptQuest()
-    if State.isFlyingQuest then return end
-    State.isFlyingQuest = true
+local function acceptQuest()
+    if State.questBusy then return end
+    State.questBusy = true
 
     local lv   = getPlayerLevel()
     local data = getDataForLevel(lv)
-    print("[Concuhub] Tìm NPC quest:", data.questNPC, "| Lv:", lv)
+    print("[Concuhub] Quest cho Lv", lv, "→", data.questNPC)
 
-    -- Tìm NPC bằng nhiều cách
-    local npcPos = nil
+    local _, r = getChar()
+    if not r then State.questBusy = false; return end
 
-    -- Cách 1: Tìm Model tên chứa questNPC
-    for _, v in pairs(workspace:GetDescendants()) do
-        if v:IsA("Model") then
-            if v.Name:lower():find(data.questNPC:lower()) then
-                local r = v:FindFirstChild("HumanoidRootPart")
-                    or v:FindFirstChild("Root")
-                    or v.PrimaryPart
-                if r then
-                    npcPos = r.Position
-                    print("[Concuhub] Tìm thấy NPC Model:", v.Name)
-                    break
-                end
-            end
-        end
-    end
+    local questNPC = nil
+    local questHRP = nil
 
-    -- Cách 2: Tìm Part/BasePart tên chứa questNPC
-    if not npcPos then
-        for _, v in pairs(workspace:GetDescendants()) do
-            if v:IsA("BasePart") and v.Name:lower():find(data.questNPC:lower()) then
-                npcPos = v.Position
-                print("[Concuhub] Tìm thấy NPC Part:", v.Name)
+    local npcsFolder = workspace:FindFirstChild("NPCs")
+    if npcsFolder then
+        for _, npc in ipairs(npcsFolder:GetChildren()) do
+            if npc:IsA("Model") and npc.Name:lower():find(data.questNPC:lower()) then
+                questNPC = npc
+                questHRP = npc:FindFirstChild("HumanoidRootPart") or npc:FindFirstChild("Head")
                 break
             end
         end
     end
 
-    if npcPos then
-        -- Bay đến NPC
-        FlyTo(npcPos + Vector3.new(0, 3, -5), 2)
-        task.wait(0.8)
+    if not questNPC then
+        for _, v in ipairs(workspace:GetDescendants()) do
+            if v:IsA("Model") and v.Name:lower():find(data.questNPC:lower()) then
+                questNPC = v
+                questHRP = v:FindFirstChild("HumanoidRootPart") or v:FindFirstChild("Head")
+                break
+            end
+        end
+    end
 
-        -- Fire quest remote
-        pcall(function()
-            QuestRemote:FireServer(data.questNPC, data.island)
-            print("[Concuhub] FireServer quest:", data.questNPC)
-        end)
-
+    if questHRP then
+        flyTo(questHRP.Position + Vector3.new(0, 3, -5), 200)
         task.wait(0.5)
-        Fluent:Notify({
-            Title   = "Quest",
-            Content = "Nhận quest: " .. data.questNPC,
-            Duration = 3,
-        })
-    else
-        warn("[Concuhub] Không tìm thấy NPC:", data.questNPC)
-        Fluent:Notify({
-            Title   = "Quest",
-            Content = "Không tìm thấy NPC: " .. data.questNPC,
-            Duration = 3,
-        })
     end
 
-    -- Bật lại farm sau khi quest xong
-    if State.farmEnabled and State.currentTarget and State.currentTarget.Parent then
-        State.isActive = true
-        StartNoFall(State.currentTarget)
-    else
-        -- Reset để main loop tìm mob mới
-        State.isActive      = false
-        State.currentTarget = nil
-        workspace.Gravity   = State.origGravity
-    end
+    pcall(function()
+        if QuestRemote then
+            QuestRemote:FireServer(data.questNPC, data.island, data.mobName)
+            print("[Concuhub] Quest FireServer OK:", data.questNPC)
+        end
+    end)
 
-    State.isFlyingQuest = false
-end
+    task.wait(0.5)
 
--- =====================================================
--- SCAN MOB XA — quét toàn bộ map tìm đàn tiếp theo
--- =====================================================
-local function findNearestMob(fromPos, maxDist)
-    local Enemies = workspace:FindFirstChild("Enemies")
-    if not Enemies then return nil, math.huge end
-
-    local closest = nil
-    local closestDist = maxDist or math.huge
-
-    for _, Enemy in ipairs(Enemies:GetChildren()) do
-        if not Enemy:IsA("Model") then continue end
-        local EH = Enemy:FindFirstChildOfClass("Humanoid")
-        local ER = Enemy:FindFirstChild("HumanoidRootPart")
-        if not EH or EH.Health <= 0 or not ER then continue end
-        local dist = (fromPos - ER.Position).Magnitude
-        if dist < closestDist then
-            closestDist = dist
-            closest     = Enemy
+    if State.farm then
+        if State.target and State.target.Parent then
+            State.active = true
+            startNoFall(State.target)
+        else
+            State.active = false
+            State.target = nil
+            workspace.Gravity = State.origGravity
         end
     end
 
-    return closest, closestDist
+    State.questBusy = false
+    Fluent:Notify({ Title = "Quest", Content = "Nhận quest: " .. data.questNPC, Duration = 3 })
 end
 
--- Bay đến đàn mob tiếp theo khi đàn hiện tại hết
-local function FlyToNextGroup()
-    local Char = LocalPlayer.Character
-    if not Char then return end
-    local Root = Char:FindFirstChild("HumanoidRootPart")
-    if not Root then return end
+-- =====================================================
+-- ATTACK
+-- =====================================================
+local function attackEnemy(mob)
+    if not AttackRemote then return end
+    local eh = mob:FindFirstChildOfClass("Humanoid")
+    local er = mob:FindFirstChild("HumanoidRootPart")
+    if not eh or eh.Health <= 0 or not er then return end
 
-    print("[Concuhub] Tìm đàn mob tiếp theo trong", Cfg.scanRange, "studs...")
+    local targetPart = mob:FindFirstChild("LeftLowerArm")
+        or mob:FindFirstChild("RightLowerArm")
+        or mob:FindFirstChild("LeftFoot")
+        or mob:FindFirstChild("RightFoot")
+        or mob:FindFirstChild("Head")
+        or er
 
-    local nextMob, dist = findNearestMob(Root.Position, Cfg.scanRange)
-    if nextMob then
-        local ER = nextMob:FindFirstChild("HumanoidRootPart")
-        if ER then
-            print("[Concuhub] Bay đến đàn mới:", nextMob.Name, "cách", math.floor(dist), "studs")
-            Fluent:Notify({
-                Title   = "Farm",
-                Content = "Bay đến đàn mới: " .. nextMob.Name,
-                Duration = 2,
-            })
-            FlyTo(ER.Position + Vector3.new(0, 10, 0), math.clamp(dist/200, 0.5, 4))
-            State.isActive      = true
-            State.currentTarget = nextMob
-            StartNoFall(nextMob)
+    pcall(function()
+        if lastAttackArgs then
+            local args = {}
+            for i, v in ipairs(lastAttackArgs) do
+                args[i] = v
+            end
+            args[1] = targetPart
+            AttackRemote:FireServer(unpack(args))
+        else
+            AttackRemote:FireServer(targetPart, {}, "079996f9")
         end
-    else
-        print("[Concuhub] Không tìm thấy mob trong", Cfg.scanRange, "studs")
-    end
+    end)
 end
 
 -- =====================================================
--- LOOPS
+-- MAIN FARM LOOP
 -- =====================================================
-
--- Click loop
 task.spawn(function()
     while true do
-        task.wait(0.001)
-        if State.farmEnabled and State.isActive and not State.isFlyingQuest then
+        task.wait()
+        if not State.farm or State.questBusy then
+            if State.active and not State.questBusy then resetChar() end
+            continue
+        end
+
+        local c, r, h = getChar()
+        if not c or not r or not h or h.Health <= 0 then
+            if State.active then resetChar() end
+            task.wait(0.2); continue
+        end
+
+        local closest, closestDist, nearby = findMobs(r.Position, Cfg.scanRange)
+
+        local inRange = {}
+        for _, item in ipairs(nearby) do
+            if item.dist <= Cfg.attackRange then
+                table.insert(inRange, item.mob)
+            end
+        end
+
+        if closest then
+            if not State.active then
+                State.active = true
+                State.target = closest
+                startNoFall(closest)
+            end
+
+            if State.target then
+                local teh = State.target:FindFirstChildOfClass("Humanoid")
+                if not teh or teh.Health <= 0 or not State.target.Parent then
+                    State.target = closest
+                    startNoFall(closest)
+                end
+            end
+
+            for _, mob in ipairs(inRange) do
+                if not State.farm then break end
+                attackEnemy(mob)
+            end
+
             VirtualInputManager:SendMouseButtonEvent(0,0,0,true,game,1)
             VirtualInputManager:SendMouseButtonEvent(0,0,0,false,game,1)
-        end
-    end
-end)
-
--- Quest loop
-task.spawn(function()
-    while true do
-        task.wait(Cfg.questInterval)
-        if State.farmEnabled and State.autoQuest and not State.isFlyingQuest then
-            task.spawn(AcceptQuest)
+        else
+            if State.active then
+                resetChar()
+                task.wait(0.3)
+            end
+            if State.farm and not State.questBusy then
+                local c2, r2 = getChar()
+                if r2 then
+                    local nextMob, dist2 = findMobs(r2.Position, Cfg.scanRange)
+                    if nextMob then
+                        local er2 = nextMob:FindFirstChild("HumanoidRootPart")
+                        if er2 then
+                            print("[Concuhub] Bay đến đàn mới cách", math.floor(dist2), "studs")
+                            State.active = false
+                            flyTo(er2.Position + Vector3.new(0, 10, 0), 300)
+                            State.active = true
+                            State.target = nextMob
+                            startNoFall(nextMob)
+                        end
+                    end
+                end
+            end
         end
     end
 end)
@@ -476,125 +508,39 @@ end)
 task.spawn(function()
     while true do
         task.wait(2)
-        if State.farmEnabled and State.bringMob then
-            BringMobs()
-        end
+        if State.farm and State.bring then bringMobs() end
     end
 end)
 
--- Main farm loop
+-- Quest loop
 task.spawn(function()
     while true do
-        task.wait()
-        if not State.farmEnabled or State.isFlyingQuest then
-            if State.isActive and not State.isFlyingQuest then ForceReset() end
-            continue
-        end
-
-        local Char = LocalPlayer.Character
-        local Root = Char and Char:FindFirstChild("HumanoidRootPart")
-        local Hum  = Char and Char:FindFirstChildOfClass("Humanoid")
-
-        if not Char or not Root or not Hum or Hum.Health <= 0 then
-            if State.isActive then ForceReset() end
-            task.wait(0.2); continue
-        end
-
-        -- Quét mob gần (trong attackRange)
-        local Closest   = nil
-        local ClostDist = Cfg.attackRange * 2  -- scan rộng hơn attackRange
-        local AllNearby = {}
-        local Enemies   = workspace:FindFirstChild("Enemies")
-
-        if Enemies then
-            for _, Enemy in ipairs(Enemies:GetChildren()) do
-                if not State.farmEnabled then break end
-                if not Enemy:IsA("Model") then continue end
-                local EH = Enemy:FindFirstChildOfClass("Humanoid")
-                local ER = Enemy:FindFirstChild("HumanoidRootPart")
-                if not EH or EH.Health <= 0 or not ER then continue end
-                local dist = (Root.Position - ER.Position).Magnitude
-                if dist <= Cfg.attackRange * 2 then
-                    table.insert(AllNearby, Enemy)
-                    if dist < ClostDist then
-                        ClostDist = dist
-                        Closest   = Enemy
-                    end
-                end
-            end
-        end
-
-        if Closest then
-            if not State.isActive then
-                State.isActive      = true
-                State.currentTarget = Closest
-                StartNoFall(Closest)
-            end
-
-            -- Cập nhật target khi mob chết → tự chuyển sang mob kế
-            if State.currentTarget then
-                local EH = State.currentTarget:FindFirstChildOfClass("Humanoid")
-                local ER = State.currentTarget:FindFirstChild("HumanoidRootPart")
-                if not EH or EH.Health <= 0 or not ER then
-                    State.currentTarget = Closest
-                    StartNoFall(Closest)
-                end
-            end
-
-            -- FireServer tất cả mob trong attackRange
-            for _, Enemy in ipairs(AllNearby) do
-                if not State.farmEnabled then break end
-                local EH = Enemy:FindFirstChildOfClass("Humanoid")
-                local ER = Enemy:FindFirstChild("HumanoidRootPart")
-                if not EH or EH.Health <= 0 or not ER then continue end
-                if (Root.Position - ER.Position).Magnitude > Cfg.attackRange then continue end
-
-                local TargetPart = Enemy:FindFirstChild("LeftLowerArm")
-                    or Enemy:FindFirstChild("RightLowerArm")
-                    or Enemy:FindFirstChild("LeftFoot")
-                    or Enemy:FindFirstChild("RightFoot")
-                    or Enemy:FindFirstChild("Head") or ER
-
-                local args = {TargetPart, {}, [4] = lastHash}
-                pcall(function()
-                    AttackRemote:FireServer(unpack(args))
-                end)
-            end
-
-        else
-            -- Hết mob → tìm đàn tiếp theo trong scanRange
-            if State.isActive then
-                ForceReset()
-                task.wait(0.5)
-                if State.farmEnabled and not State.isFlyingQuest then
-                    task.spawn(FlyToNextGroup)
-                end
-            end
+        task.wait(Cfg.questEvery)
+        if State.farm and State.quest and not State.questBusy then
+            task.spawn(acceptQuest)
         end
     end
 end)
 
 -- =====================================================
--- FLUENT UI — Theme hồng + Logo
+-- UI — Fluent
 -- =====================================================
 local Window = Fluent:CreateWindow({
-    Title       = "Vexz Hub",
-    SubTitle    = "by Quoc Hoa",
+    Title       = "Concuhub",
+    SubTitle    = "by Quoc Hoa  •  v3.0",
     TabWidth    = 160,
-    Size        = UDim2.fromOffset(580, 420),
+    Size        = UDim2.fromOffset(580, 440),
     Acrylic     = true,
     Theme       = "Pink",
-    MinimizeKey = Enum.KeyCode.RightControl,
-    -- Logo ID — thay bằng image ID của bạn
-    Icon        = "rbxassetid://118274073113294",
+    MinimizeKey = Enum.KeyCode.RightShift,
 })
 
 local Tabs = {
-    Farm = Window:AddTab({ Title = "Farm",  Icon = "sword"    }),
-    Mob  = Window:AddTab({ Title = "Mob",   Icon = "target"   }),
-    Quest= Window:AddTab({ Title = "Quest", Icon = "map"      }),
-    Misc = Window:AddTab({ Title = "Misc",  Icon = "settings" }),
-    Info = Window:AddTab({ Title = "Info",  Icon = "info"     }),
+    Farm  = Window:AddTab({ Title = "Farm",  Icon = "swords"   }),
+    Mob   = Window:AddTab({ Title = "Mob",   Icon = "zap"      }),
+    Quest = Window:AddTab({ Title = "Quest", Icon = "map-pin"  }),
+    Misc  = Window:AddTab({ Title = "Misc",  Icon = "settings" }),
+    Info  = Window:AddTab({ Title = "Info",  Icon = "bar-chart"}),
 }
 
 -- =====================================================
@@ -602,51 +548,56 @@ local Tabs = {
 -- =====================================================
 Tabs.Farm:AddSection("⚔ Auto Farm")
 
-local AutoFarmToggle = Tabs.Farm:AddToggle("AutoFarm", {
+Tabs.Farm:AddToggle("FarmToggle", {
     Title       = "Auto Farm",
-    Description = "Tự động đánh mob + bay đàn tiếp theo khi hết",
+    Description = "Tự đánh mob + bay đàn tiếp theo khi hết",
     Default     = false,
-})
-AutoFarmToggle:OnChanged(function(v)
-    State.farmEnabled = v
-    if not v and State.isActive then ForceReset() end
+}):OnChanged(function(v)
+    State.farm = v
+    if not v and State.active then resetChar() end
     if v then
-        if State.autoQuest then task.spawn(AcceptQuest) end
-        -- Tìm mob đầu tiên nếu chưa có target
-        if not State.isActive then
-            task.spawn(FlyToNextGroup)
-        end
+        if State.quest then task.spawn(acceptQuest) end
     end
     Fluent:Notify({
         Title   = "Auto Farm",
-        Content = v and "Đã bật Farm" or "Đã tắt Farm",
+        Content = v and "✓ Đã bật" or "✗ Đã tắt",
         Duration = 2,
     })
 end)
 
 Tabs.Farm:AddSlider("ScanRange", {
-    Title       = "Scan Range (studs)",
-    Description = "Phạm vi quét đàn mob tiếp theo",
-    Default     = 2000,
-    Min         = 200,
-    Max         = 5000,
-    Rounding    = 100,
+    Title    = "Scan Range",
+    Description = "Phạm vi quét đàn mob tiếp theo (studs)",
+    Default  = 2000, Min = 200, Max = 8000, Rounding = 100,
 }):OnChanged(function(v) Cfg.scanRange = v end)
 
 Tabs.Farm:AddSlider("AttackRange", {
-    Title       = "Attack Range (studs)",
-    Description = "Phạm vi tấn công mob",
-    Default     = 150,
-    Min         = 50,
-    Max         = 400,
-    Rounding    = 10,
+    Title    = "Attack Range",
+    Description = "Phạm vi tấn công mob (studs)",
+    Default  = 200, Min = 50, Max = 500, Rounding = 10,
 }):OnChanged(function(v) Cfg.attackRange = v end)
 
 Tabs.Farm:AddButton({
-    Title       = "Bay Đàn Tiếp Theo",
+    Title    = "Bay Đàn Tiếp Theo",
     Description = "Tìm và bay đến đàn mob gần nhất",
-    Callback    = function()
-        task.spawn(FlyToNextGroup)
+    Callback = function()
+        local _, r = getChar()
+        if not r then return end
+        local nextMob, dist = findMobs(r.Position, Cfg.scanRange)
+        if nextMob then
+            local er = nextMob:FindFirstChild("HumanoidRootPart")
+            if er then
+                task.spawn(function()
+                    State.active = false
+                    flyTo(er.Position + Vector3.new(0,10,0), 300)
+                    State.active = true
+                    State.target = nextMob
+                    startNoFall(nextMob)
+                end)
+            end
+        else
+            Fluent:Notify({ Title = "Farm", Content = "Không tìm thấy mob!", Duration = 2 })
+        end
     end,
 })
 
@@ -655,29 +606,22 @@ Tabs.Farm:AddButton({
 -- =====================================================
 Tabs.Mob:AddSection("🧲 Bring Mob")
 
-local BringToggle = Tabs.Mob:AddToggle("BringMob", {
+Tabs.Mob:AddToggle("BringToggle", {
     Title       = "Auto Bring Mob",
-    Description = "Tự động kéo mob về mỗi 2 giây",
+    Description = "Kéo mob về mỗi 2 giây (CFrame teleport)",
     Default     = false,
-})
-BringToggle:OnChanged(function(v)
-    State.bringMob = v
-end)
+}):OnChanged(function(v) State.bring = v end)
 
 Tabs.Mob:AddSlider("BringRange", {
-    Title       = "Bring Range (studs)",
-    Description = "Phạm vi kéo mob về",
-    Default     = 500,
-    Min         = 100,
-    Max         = 2000,
-    Rounding    = 50,
+    Title    = "Bring Range",
+    Description = "Phạm vi kéo mob (studs)",
+    Default  = 500, Min = 100, Max = 3000, Rounding = 50,
 }):OnChanged(function(v) Cfg.bringRange = v end)
 
 Tabs.Mob:AddButton({
-    Title       = "Bring Mob Ngay",
-    Description = "Kéo tất cả mob về 1 lần",
-    Callback    = function()
-        BringMobs()
+    Title    = "Bring Mob Ngay",
+    Callback = function()
+        bringMobs()
         Fluent:Notify({ Title = "Bring Mob", Content = "Đã kéo mob về!", Duration = 2 })
     end,
 })
@@ -687,34 +631,30 @@ Tabs.Mob:AddButton({
 -- =====================================================
 Tabs.Quest:AddSection("🎯 Auto Quest")
 
-local QuestToggle = Tabs.Quest:AddToggle("AutoQuest", {
+Tabs.Quest:AddToggle("QuestToggle", {
     Title       = "Auto Quest",
-    Description = "Tự nhận quest theo level mỗi 30 giây",
+    Description = "Tự nhận quest theo level định kỳ",
     Default     = false,
-})
-QuestToggle:OnChanged(function(v)
-    State.autoQuest = v
-    if v and State.farmEnabled then task.spawn(AcceptQuest) end
+}):OnChanged(function(v)
+    State.quest = v
+    if v and State.farm then task.spawn(acceptQuest) end
 end)
 
 Tabs.Quest:AddSlider("QuestInterval", {
-    Title       = "Quest Interval (giây)",
-    Description = "Tần suất tự nhận quest",
-    Default     = 30,
-    Min         = 10,
-    Max         = 120,
-    Rounding    = 5,
-}):OnChanged(function(v) Cfg.questInterval = v end)
+    Title    = "Quest Interval",
+    Description = "Nhận quest mỗi bao nhiêu giây",
+    Default  = 30, Min = 10, Max = 120, Rounding = 5,
+}):OnChanged(function(v) Cfg.questEvery = v end)
 
 Tabs.Quest:AddButton({
-    Title       = "Nhận Quest Ngay",
-    Description = "Bay đến NPC và nhận quest phù hợp level",
-    Callback    = function()
-        if State.isFlyingQuest then
-            Fluent:Notify({ Title = "Quest", Content = "Đang bay nhận quest rồi...", Duration = 2 })
+    Title    = "Nhận Quest Ngay",
+    Description = "FireServer quest theo level hiện tại",
+    Callback = function()
+        if State.questBusy then
+            Fluent:Notify({ Title = "Quest", Content = "Đang nhận quest rồi...", Duration = 2 })
             return
         end
-        task.spawn(AcceptQuest)
+        task.spawn(acceptQuest)
     end,
 })
 
@@ -725,13 +665,18 @@ Tabs.Misc:AddSection("⚙ Cài Đặt")
 
 Tabs.Misc:AddButton({
     Title    = "Force Reset",
-    Description = "Reset nhân vật về trạng thái bình thường",
+    Description = "Reset nhân vật về bình thường",
     Callback = function()
-        State.farmEnabled = false
-        State.isFlyingQuest = false
-        ForceReset()
+        State.farm = false
+        State.questBusy = false
+        resetChar()
         Fluent:Notify({ Title = "Reset", Content = "Đã reset!", Duration = 2 })
     end,
+})
+
+Tabs.Misc:AddParagraph({
+    Title   = "Phím tắt",
+    Content = "RightShift — Ẩn/Hiện UI",
 })
 
 SaveManager:SetLibrary(Fluent)
@@ -746,15 +691,9 @@ InterfaceManager:BuildInterfaceSection(Tabs.Misc)
 -- =====================================================
 Tabs.Info:AddSection("📊 Thông Tin")
 
-local InfoParagraph = Tabs.Info:AddParagraph({
-    Title   = "Nhân Vật",
-    Content = "Đang tải...",
-})
-
-local StatusParagraph = Tabs.Info:AddParagraph({
-    Title   = "Trạng Thái",
-    Content = "Farm: OFF",
-})
+local InfoP = Tabs.Info:AddParagraph({ Title = "Nhân Vật", Content = "Đang tải..." })
+local StatP = Tabs.Info:AddParagraph({ Title = "Trạng Thái", Content = "..." })
+local HookP = Tabs.Info:AddParagraph({ Title = "Hook Dame", Content = "Chờ tự đánh 1 lần..." })
 
 task.spawn(function()
     while true do
@@ -762,50 +701,53 @@ task.spawn(function()
         local lv   = getPlayerLevel()
         local data = getDataForLevel(lv)
         pcall(function()
-            InfoParagraph:SetContent(
+            InfoP:SetContent(
                 "Level: "    .. lv            .. "\n" ..
                 "Sea: "      .. data.sea      .. "\n" ..
                 "Island: "   .. data.island   .. "\n" ..
                 "Quest NPC: ".. data.questNPC .. "\n" ..
-                "Mob: "      .. data.mobName  .. "\n" ..
-                "Lv Range: " .. data.minLv .. " → " .. data.maxLv
+                "Mob: "      .. data.mobName
             )
-            StatusParagraph:SetContent(
-                "Farm: "      .. (State.farmEnabled and "ON ✓" or "OFF") .. "\n" ..
-                "AutoQuest: " .. (State.autoQuest and "ON ✓" or "OFF")   .. "\n" ..
-                "BringMob: "  .. (State.bringMob and "ON ✓" or "OFF")    .. "\n" ..
-                "Flying Quest: " .. (State.isFlyingQuest and "YES" or "NO") .. "\n" ..
-                "Hash: "      .. lastHash
+            StatP:SetContent(
+                "Farm: "    .. (State.farm  and "ON ✓" or "OFF") .. "\n" ..
+                "Quest: "   .. (State.quest and "ON ✓" or "OFF") .. "\n" ..
+                "Bring: "   .. (State.bring and "ON ✓" or "OFF") .. "\n" ..
+                "Active: "  .. tostring(State.active)            .. "\n" ..
+                "Target: "  .. (State.target and State.target.Name or "nil")
+            )
+            HookP:SetContent(
+                "Hook: "    .. (hookOK and "OK ✓" or "FAILED") .. "\n" ..
+                "Args: "    .. (lastAttackArgs and tostring(#lastAttackArgs) .. " args" or "Chưa có — hãy tự đánh 1 lần!")
             )
         end)
     end
 end)
 
 Tabs.Info:AddButton({
-    Title    = "Debug Info",
-    Description = "In thông tin debug ra console",
+    Title    = "Print Debug",
     Callback = function()
         print("=== CONCUHUB DEBUG ===")
-        print("Hash:", lastHash)
-        print("Attack Remote:", AttackRemote:GetFullName())
-        print("Quest Remote:", QuestRemote:GetFullName())
-        print("Farm:", State.farmEnabled)
-        print("Scan Range:", Cfg.scanRange)
-        print("Attack Range:", Cfg.attackRange)
+        print("Hook OK:", hookOK)
+        print("lastAttackArgs:", lastAttackArgs)
+        if lastAttackArgs then
+            for i,v in ipairs(lastAttackArgs) do
+                print("  arg["..i.."]:", type(v), tostring(v))
+            end
+        end
+        print("Quest Remote:", QuestRemote and QuestRemote:GetFullName() or "nil")
+        print("Attack Remote:", AttackRemote and AttackRemote:GetFullName() or "nil")
         print("======================")
     end,
 })
 
--- ── Load config ──
+-- ── Load config & chọn tab đầu ──
 SaveManager:LoadAutoloadConfig()
 Window:SelectTab(1)
 
 Fluent:Notify({
-    Title    = "Concuhub v2.0",
-    Content  = "Loaded! Bật Auto Farm để bắt đầu.",
-    Duration = 5,
+    Title    = "Concuhub v3.0",
+    Content  = "Loaded! Bấm RightShift để ẩn/hiện UI.\nTự đánh 1 lần trước khi bật Farm để hook dame.",
+    Duration = 6,
 })
 
-print("[Concuhub v2.0] Loaded OK")
-print("[Concuhub] Hash hiện tại:", lastHash)
- 
+print("[Concuhub v3.0] OK | RightShift = toggle UI") 
