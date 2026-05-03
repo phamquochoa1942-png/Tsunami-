@@ -111,7 +111,7 @@ end
 pcall(function()
     local remotes = ReplicatedStorage:FindFirstChild("Remotes")
     if remotes then
-        QuestRemote = remotes:FindFirstChild("QuestUpdate") or remotes:FindFirstChild("StartQuest")
+        QuestRemote = remotes:FindFirstChild("QuestUpdate") or remotes:FindFirstChild("StartQuest") or remotes:FindFirstChild("Quest")
     end
 end)
 
@@ -320,8 +320,6 @@ local function acceptQuest()
     local lv   = getPlayerLevel()
     local data = getDataForLevel(lv)
 
-    local _, r = getChar()
-
     local questNPC = nil
     local questHRP = nil
 
@@ -467,7 +465,9 @@ task.spawn(function()
     end
 end)
 
--- Bring mob loop
+-- =====================================================
+-- BRING MOB LOOP
+-- =====================================================
 task.spawn(function()
     while true do
         task.wait(2)
@@ -475,7 +475,9 @@ task.spawn(function()
     end
 end)
 
--- Quest loop
+-- =====================================================
+-- QUEST LOOP
+-- =====================================================
 task.spawn(function()
     while true do
         task.wait(Cfg.questEvery)
@@ -486,7 +488,7 @@ task.spawn(function()
 end)
 
 -- =====================================================
--- UI
+-- UI - FLUENT
 -- =====================================================
 local Window = Fluent:CreateWindow({
     Title       = "Concuhub",
@@ -660,5 +662,30 @@ end)
 -- =====================================================
 SaveManager:LoadAutoloadConfig()
 Window:SelectTab(1)
+
+-- =====================================================
+-- LOGO - Chèn vào title bar Fluent
+-- =====================================================
+task.spawn(function()
+    task.wait(0.5)
+    local pGui = LocalPlayer:WaitForChild("PlayerGui")
+    for _, gui in ipairs(pGui:GetChildren()) do
+        if gui:IsA("ScreenGui") then
+            for _, v in ipairs(gui:GetDescendants()) do
+                if v:IsA("TextLabel") and v.Name == "Title" then
+                    local logo = Instance.new("ImageLabel")
+                    logo.Image = "rbxassetid://118274073113294"
+                    logo.Size = UDim2.new(0, 24, 0, 24)
+                    logo.Position = UDim2.new(0, -30, 0.5, -12)
+                    logo.BackgroundTransparency = 1
+                    logo.ZIndex = 10
+                    logo.Parent = v.Parent
+                    print("[Concuhub] Logo inserted")
+                    return
+                end
+            end
+        end
+    end
+end)
 
 print("[Concuhub v3.0] Loaded! RightShift = toggle UI") 
