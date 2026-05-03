@@ -21,6 +21,7 @@ local InterfaceManager = loadstring(game:HttpGet(
 local Players             = game:GetService("Players")
 local ReplicatedStorage   = game:GetService("ReplicatedStorage")
 local RunService          = game:GetService("RunService")
+local TweenService        = game:GetService("TweenService")
 local VirtualInputManager = game:GetService("VirtualInputManager")
 local UserInputService    = game:GetService("UserInputService")
 local LocalPlayer         = Players.LocalPlayer
@@ -258,7 +259,7 @@ local function flyTo(targetPos, speed)
 end
 
 -- =====================================================
--- FIND MOB (FIXED)
+-- FIND MOB
 -- =====================================================
 local function findMobs(fromPos, maxDist)
     maxDist = tonumber(maxDist) or 99999
@@ -617,7 +618,7 @@ Tabs.Misc:AddButton({
 
 Tabs.Misc:AddParagraph({
     Title   = "Phim tat",
-    Content = "RightShift — An/Hien UI",
+    Content = "RightShift — An/Hien UI\nNut tron goc trai — An/Hien UI",
 })
 
 SaveManager:SetLibrary(Fluent)
@@ -665,7 +666,7 @@ SaveManager:LoadAutoloadConfig()
 Window:SelectTab(1)
 
 -- =====================================================
--- LOGO
+-- LOGO TRONG TITLE BAR
 -- =====================================================
 task.spawn(function()
     task.wait(0.5)
@@ -688,4 +689,174 @@ task.spawn(function()
     end
 end)
 
-print("[Concuhub v3.0] Loaded! RightShift = toggle UI") 
+-- =====================================================
+-- FLOATING TOGGLE BUTTON - Nút tròn kéo thả
+-- =====================================================
+local BUTTON_SIZE = 50
+local BORDER_THICKNESS = 2
+local SHADOW_OFFSET = 3
+local CLICK_SHRINK = 0.85
+local CORNER_RADIUS = UDim.new(1, 0)
+
+local FloatScreenGui = Instance.new("ScreenGui")
+FloatScreenGui.Name = "Concuhub_FloatingButton"
+FloatScreenGui.Parent = LocalPlayer:WaitForChild("PlayerGui")
+FloatScreenGui.ResetOnSpawn = false
+FloatScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+
+local ShadowFrame = Instance.new("Frame")
+ShadowFrame.Name = "Shadow"
+ShadowFrame.Size = UDim2.new(0, BUTTON_SIZE, 0, BUTTON_SIZE)
+ShadowFrame.Position = UDim2.new(0, 20, 0, 100)
+ShadowFrame.BackgroundTransparency = 1
+ShadowFrame.BorderSizePixel = 0
+ShadowFrame.ZIndex = 1
+ShadowFrame.Parent = FloatScreenGui
+
+local Shadow = Instance.new("ImageLabel")
+Shadow.Name = "ShadowImage"
+Shadow.Size = UDim2.new(1, SHADOW_OFFSET * 2, 1, SHADOW_OFFSET * 2)
+Shadow.Position = UDim2.new(0, SHADOW_OFFSET, 0, SHADOW_OFFSET)
+Shadow.BackgroundTransparency = 1
+Shadow.Image = "rbxassetid://118274073113294"
+Shadow.ImageColor3 = Color3.new(0, 0, 0)
+Shadow.ImageTransparency = 0.5
+Shadow.ScaleType = Enum.ScaleType.Fit
+Shadow.ZIndex = 1
+Shadow.Parent = ShadowFrame
+
+local ButtonFrame = Instance.new("Frame")
+ButtonFrame.Name = "ButtonFrame"
+ButtonFrame.Size = UDim2.new(1, -SHADOW_OFFSET * 2, 1, -SHADOW_OFFSET * 2)
+ButtonFrame.Position = UDim2.new(0, 0, 0, 0)
+ButtonFrame.BackgroundColor3 = Color3.fromRGB(255, 105, 180)
+ButtonFrame.BorderSizePixel = 0
+ButtonFrame.ZIndex = 2
+ButtonFrame.Parent = ShadowFrame
+
+local UICorner = Instance.new("UICorner")
+UICorner.CornerRadius = CORNER_RADIUS
+UICorner.Parent = ButtonFrame
+
+local UIStroke = Instance.new("UIStroke")
+UIStroke.Thickness = BORDER_THICKNESS
+UIStroke.Color = Color3.fromRGB(255, 255, 255)
+UIStroke.Transparency = 0.3
+UIStroke.Parent = ButtonFrame
+
+local ButtonImage = Instance.new("ImageLabel")
+ButtonImage.Name = "ButtonImage"
+ButtonImage.Size = UDim2.new(1, -20, 1, -20)
+ButtonImage.Position = UDim2.new(0, 10, 0, 10)
+ButtonImage.BackgroundTransparency = 1
+ButtonImage.Image = "rbxassetid://118274073113294"
+ButtonImage.ScaleType = Enum.ScaleType.Fit
+ButtonImage.ZIndex = 3
+ButtonImage.Parent = ButtonFrame
+
+local isDragging = false
+local dragStart = nil
+local startPos = nil
+local dragThreshold = 5
+local hasMoved = false
+
+local function playClickEffect()
+    local tween = TweenService:Create(
+        ButtonFrame,
+        TweenInfo.new(0.1, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
+        { Size = UDim2.new(CLICK_SHRINK, -SHADOW_OFFSET * 2, CLICK_SHRINK, -SHADOW_OFFSET * 2) }
+    )
+    tween:Play()
+    tween.Completed:Wait()
+    
+    local tweenBack = TweenService:Create(
+        ButtonFrame,
+        TweenInfo.new(0.1, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
+        { Size = UDim2.new(1, -SHADOW_OFFSET * 2, 1, -SHADOW_OFFSET * 2) }
+    )
+    tweenBack:Play()
+end
+
+local function playHoverEffect(enter)
+    local targetTransparency = enter and 0.2 or 0.5
+    local tween = TweenService:Create(
+        Shadow,
+        TweenInfo.new(0.2, Enum.EasingStyle.Quad),
+        { ImageTransparency = targetTransparency }
+    )
+    tween:Play()
+end
+
+local function toggleMainUI()
+    local pGui = LocalPlayer:WaitForChild("PlayerGui")
+    for _, gui in ipairs(pGui:GetChildren()) do
+        if gui:IsA("ScreenGui") and gui ~= FloatScreenGui then
+            gui.Enabled = not gui.Enabled
+        end
+    end
+end
+
+ButtonFrame.InputBegan:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 or
+       input.UserInputType == Enum.UserInputType.Touch then
+        isDragging = true
+        dragStart = input.Position
+        startPos = ShadowFrame.Position
+        hasMoved = false
+    end
+end)
+
+UserInputService.InputChanged:Connect(function(input)
+    if isDragging and (input.UserInputType == Enum.UserInputType.MouseMovement or
+        input.UserInputType == Enum.UserInputType.Touch) then
+        local delta = input.Position - dragStart
+        if delta.Magnitude > dragThreshold then
+            hasMoved = true
+            ShadowFrame.Position = UDim2.new(
+                0,
+                startPos.X.Offset + delta.X,
+                0,
+                startPos.Y.Offset + delta.Y
+            )
+        end
+    end
+end)
+
+UserInputService.InputEnded:Connect(function(input)
+    if isDragging and (input.UserInputType == Enum.UserInputType.MouseButton1 or
+        input.UserInputType == Enum.UserInputType.Touch) then
+        isDragging = false
+        if not hasMoved then
+            playClickEffect()
+            toggleMainUI()
+        end
+    end
+end)
+
+ButtonFrame.MouseEnter:Connect(function()
+    if not isDragging then
+        playHoverEffect(true)
+    end
+end)
+
+ButtonFrame.MouseLeave:Connect(function()
+    playHoverEffect(false)
+end)
+
+RunService.RenderStepped:Connect(function()
+    if isDragging then
+        local pos = ShadowFrame.Position
+        local screenSize = workspace.CurrentCamera.ViewportSize
+        
+        local x = math.clamp(pos.X.Offset, 0, screenSize.X - BUTTON_SIZE - SHADOW_OFFSET * 2)
+        local y = math.clamp(pos.Y.Offset, 0, screenSize.Y - BUTTON_SIZE - SHADOW_OFFSET * 2)
+        
+        if x ~= pos.X.Offset or y ~= pos.Y.Offset then
+            ShadowFrame.Position = UDim2.new(0, x, 0, y)
+        end
+    end
+end)
+
+print("[Concuhub v3.0] Loaded!")
+print("  - RightShift: An/Hien UI")
+print("  - Nut tron goc trai: An/Hien UI + keo tha") 
