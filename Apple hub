@@ -1,5 +1,5 @@
 -- ╔══════════════════════════════════════════════════╗
--- ║  CONCUHUB v3.0  |  by Quoc Hoa                 ║
+-- ║  VEXZ HUB v3.0  |  By Quoc Hoa                 ║
 -- ╚══════════════════════════════════════════════════╝
 
 -- =====================================================
@@ -493,8 +493,8 @@ end)
 -- UI - FLUENT
 -- =====================================================
 local Window = Fluent:CreateWindow({
-    Title       = "Concuhub",
-    SubTitle    = "by Quoc Hoa  •  v3.0",
+    Title       = "Vexz Hub",
+    SubTitle    = "By Quoc Hoa  •  v3.0",
     TabWidth    = 160,
     Size        = UDim2.fromOffset(580, 440),
     Acrylic     = true,
@@ -623,8 +623,8 @@ Tabs.Misc:AddParagraph({
 
 SaveManager:SetLibrary(Fluent)
 InterfaceManager:SetLibrary(Fluent)
-InterfaceManager:SetFolder("Concuhub")
-SaveManager:SetFolder("Concuhub/configs")
+InterfaceManager:SetFolder("VexzHub")
+SaveManager:SetFolder("VexzHub/configs")
 SaveManager:BuildConfigSection(Tabs.Misc)
 InterfaceManager:BuildInterfaceSection(Tabs.Misc)
 
@@ -690,16 +690,16 @@ task.spawn(function()
 end)
 
 -- =====================================================
--- FLOATING TOGGLE BUTTON - Nút tròn kéo thả
+-- FLOATING TOGGLE BUTTON - BO TRÒN TỰ ĐỘNG
 -- =====================================================
 local BUTTON_SIZE = 50
 local BORDER_THICKNESS = 2
 local SHADOW_OFFSET = 3
 local CLICK_SHRINK = 0.85
-local CORNER_RADIUS = UDim.new(1, 0)
+local IMAGE_SIZE = 30
 
 local FloatScreenGui = Instance.new("ScreenGui")
-FloatScreenGui.Name = "Concuhub_FloatingButton"
+FloatScreenGui.Name = "VexzHub_FloatingButton"
 FloatScreenGui.Parent = LocalPlayer:WaitForChild("PlayerGui")
 FloatScreenGui.ResetOnSpawn = false
 FloatScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
@@ -725,6 +725,10 @@ Shadow.ScaleType = Enum.ScaleType.Fit
 Shadow.ZIndex = 1
 Shadow.Parent = ShadowFrame
 
+local ShadowCorner = Instance.new("UICorner")
+ShadowCorner.CornerRadius = UDim.new(0.5, 0)
+ShadowCorner.Parent = Shadow
+
 local ButtonFrame = Instance.new("Frame")
 ButtonFrame.Name = "ButtonFrame"
 ButtonFrame.Size = UDim2.new(1, -SHADOW_OFFSET * 2, 1, -SHADOW_OFFSET * 2)
@@ -734,9 +738,9 @@ ButtonFrame.BorderSizePixel = 0
 ButtonFrame.ZIndex = 2
 ButtonFrame.Parent = ShadowFrame
 
-local UICorner = Instance.new("UICorner")
-UICorner.CornerRadius = CORNER_RADIUS
-UICorner.Parent = ButtonFrame
+local ButtonCorner = Instance.new("UICorner")
+ButtonCorner.CornerRadius = UDim.new(0.5, 0)
+ButtonCorner.Parent = ButtonFrame
 
 local UIStroke = Instance.new("UIStroke")
 UIStroke.Thickness = BORDER_THICKNESS
@@ -746,14 +750,21 @@ UIStroke.Parent = ButtonFrame
 
 local ButtonImage = Instance.new("ImageLabel")
 ButtonImage.Name = "ButtonImage"
-ButtonImage.Size = UDim2.new(1, -20, 1, -20)
-ButtonImage.Position = UDim2.new(0, 10, 0, 10)
+ButtonImage.Size = UDim2.new(0, IMAGE_SIZE, 0, IMAGE_SIZE)
+ButtonImage.Position = UDim2.new(0.5, -IMAGE_SIZE/2, 0.5, -IMAGE_SIZE/2)
 ButtonImage.BackgroundTransparency = 1
 ButtonImage.Image = "rbxassetid://118274073113294"
 ButtonImage.ScaleType = Enum.ScaleType.Fit
 ButtonImage.ZIndex = 3
 ButtonImage.Parent = ButtonFrame
 
+local ImageCorner = Instance.new("UICorner")
+ImageCorner.CornerRadius = UDim.new(1, 0)
+ImageCorner.Parent = ButtonImage
+
+-- =====================================================
+-- FLOATING BUTTON LOGIC
+-- =====================================================
 local isDragging = false
 local dragStart = nil
 local startPos = nil
@@ -857,6 +868,6 @@ RunService.RenderStepped:Connect(function()
     end
 end)
 
-print("[Concuhub v3.0] Loaded!")
+print("[Vexz Hub v3.0] Loaded!")
 print("  - RightShift: An/Hien UI")
 print("  - Nut tron goc trai: An/Hien UI + keo tha") 
