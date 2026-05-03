@@ -258,13 +258,14 @@ local function flyTo(targetPos, speed)
 end
 
 -- =====================================================
--- FIND MOB
+-- FIND MOB (FIXED)
 -- =====================================================
 local function findMobs(fromPos, maxDist)
-    local closest, closestDist = nil, maxDist or math.huge
+    maxDist = tonumber(maxDist) or 99999
+    local closest, closestDist = nil, maxDist
     local nearby = {}
     local Enemies = workspace:FindFirstChild("Enemies")
-    if not Enemies then return nil, math.huge, {} end
+    if not Enemies then return nil, maxDist, {} end
 
     for _, e in ipairs(Enemies:GetChildren()) do
         if not e:IsA("Model") then continue end
@@ -272,7 +273,7 @@ local function findMobs(fromPos, maxDist)
         local er = e:FindFirstChild("HumanoidRootPart")
         if not eh or eh.Health <= 0 or not er then continue end
         local dist = (fromPos - er.Position).Magnitude
-        if dist <= (maxDist or math.huge) then
+        if dist <= maxDist then
             table.insert(nearby, {mob=e, dist=dist})
             if dist < closestDist then
                 closestDist = dist
@@ -515,7 +516,7 @@ Tabs.Farm:AddSection("Auto Farm")
 
 Tabs.Farm:AddToggle("FarmToggle", {
     Title       = "Auto Farm",
-    Description = "Tự đánh mob + bay đàn tiếp theo khi hết",
+    Description = "Tu danh mob + bay dan tiep theo khi het",
     Default     = false,
 }):OnChanged(function(v)
     State.farm = v
@@ -534,7 +535,7 @@ Tabs.Farm:AddSlider("AttackRange", {
 }):OnChanged(function(v) Cfg.attackRange = v end)
 
 Tabs.Farm:AddButton({
-    Title    = "Bay Đàn Tiếp Theo",
+    Title    = "Bay Dan Tiep Theo",
     Callback = function()
         local _, r = getChar()
         if not r then return end
@@ -593,7 +594,7 @@ Tabs.Quest:AddSlider("QuestInterval", {
 }):OnChanged(function(v) Cfg.questEvery = v end)
 
 Tabs.Quest:AddButton({
-    Title    = "Nhận Quest Ngay",
+    Title    = "Nhan Quest Ngay",
     Callback = function()
         if State.questBusy then return end
         task.spawn(acceptQuest)
@@ -603,7 +604,7 @@ Tabs.Quest:AddButton({
 -- =====================================================
 -- TAB MISC
 -- =====================================================
-Tabs.Misc:AddSection("Cài Đặt")
+Tabs.Misc:AddSection("Cai Dat")
 
 Tabs.Misc:AddButton({
     Title    = "Force Reset",
@@ -615,8 +616,8 @@ Tabs.Misc:AddButton({
 })
 
 Tabs.Misc:AddParagraph({
-    Title   = "Phím tắt",
-    Content = "RightShift — Ẩn/Hiện UI",
+    Title   = "Phim tat",
+    Content = "RightShift — An/Hien UI",
 })
 
 SaveManager:SetLibrary(Fluent)
@@ -629,10 +630,10 @@ InterfaceManager:BuildInterfaceSection(Tabs.Misc)
 -- =====================================================
 -- TAB INFO
 -- =====================================================
-Tabs.Info:AddSection("Thông Tin")
+Tabs.Info:AddSection("Thong Tin")
 
-local InfoP = Tabs.Info:AddParagraph({ Title = "Nhân Vật", Content = "Đang tải..." })
-local StatP = Tabs.Info:AddParagraph({ Title = "Trạng Thái", Content = "..." })
+local InfoP = Tabs.Info:AddParagraph({ Title = "Nhan Vat", Content = "Dang tai..." })
+local StatP = Tabs.Info:AddParagraph({ Title = "Trang Thai", Content = "..." })
 
 task.spawn(function()
     while true do
@@ -664,7 +665,7 @@ SaveManager:LoadAutoloadConfig()
 Window:SelectTab(1)
 
 -- =====================================================
--- LOGO - Chèn vào title bar Fluent
+-- LOGO
 -- =====================================================
 task.spawn(function()
     task.wait(0.5)
@@ -680,8 +681,7 @@ task.spawn(function()
                     logo.BackgroundTransparency = 1
                     logo.ZIndex = 10
                     logo.Parent = v.Parent
-                    print("[Concuhub] Logo inserted")
-                    return
+                    break
                 end
             end
         end
